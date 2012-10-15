@@ -121,5 +121,27 @@ insert into Datos_Clientes (dni, nombre, apellido, direccion, telefono, mail, fe
 		   master.Cli_Direccion, master.Cli_Telefono, master.Cli_Mail, master.Cli_Fecha_Nac, master.Cli_Ciudad
 		from gd_esquema.Maestra master 
 
-		where master.Cli_Dni is not null
 
+insert into Cupones(codigo, precio, precio_fict, cantidad, descripcion)
+	
+	select distinct master.Groupon_Codigo, master.Groupon_Precio, master.Groupon_Precio_Ficticio,
+			master.Groupon_Cantidad, master.Groupon_Descripcion
+		from gd_esquema.Maestra master
+		where master.Groupon_Codigo is not null
+
+
+insert into Cupones_Transacciones(codigo,fecha,fecha_venc,
+								  fecha_compra,fecha_devolucion,fecha_entregado)
+		select master.Groupon_Codigo,master.Groupon_Fecha,
+		 	   master.Groupon_Fecha_Venc, master.Groupon_Fecha_Compra,
+		 	   master.Groupon_Devolucion_Fecha, master.Groupon_Entregado_Fecha
+			from gd_esquema.Maestra master
+			
+
+insert into Giftcard(fecha, monto, cliente_origen,cliente_destino)
+
+	select master.GiftCard_Fecha, master.GiftCard_Monto,
+	 		master.Cli_Dni, master.Cli_Dest_Dni
+		from gd_esquema.Maestra master
+
+		where master.Cli_Dest_Dni is not null and master.Cli_Dni is not null
