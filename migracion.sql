@@ -145,3 +145,10 @@ insert into Giftcard(fecha, monto, cliente_origen,cliente_destino)
 		from gd_esquema.Maestra master
 
 		where master.Cli_Dest_Dni is not null and master.Cli_Dni is not null
+
+
+
+insert into Datos_Proveedores(provee_cuit,provee_rs,provee_dom,provee_ciudad,provee_telefono,provee_rubro)
+	select distinct master.Provee_CUIT,master.Provee_RS,master.Provee_Dom,master.Provee_Ciudad,master.Provee_Telefono,master.Provee_Rubro
+	from gd_esquema.Maestra master
+	where master.Provee_CUIT is not null
