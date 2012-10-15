@@ -1,3 +1,6 @@
+
+--Creacion de tablas
+
 create table Datos_Clientes
 (
 	dni			numeric(18,0) primary key,	
@@ -9,6 +12,48 @@ create table Datos_Clientes
 	fecha_nac   datetime,
 	ciudad      nvarchar(255)
 
+)
+
+create table Cupones
+(
+	codigo 			 nvarchar(50) primary key,
+	precio			 numeric(18,2),
+	precio_fict 	 numeric(18,2),
+	cantidad	     numeric(18,0),
+	descripcion	     nvarchar(255)		
+)
+
+
+create table Cupones_Transacciones
+(
+	codigo 			 nvarchar(50),
+	fecha 			 datetime,
+	fecha_venc 		 datetime,
+	fecha_compra	 datetime,
+	fecha_devolucion datetime,
+	fecha_entregado  datetime,
+
+	foreign key (codigo) references dbo.Cupones(codigo)
+
+)
+
+
+create table Giftcard
+(
+	fecha 		datetime,
+	monto		numeric(18,2),
+	cliente_origen numeric(18,0) constraint dni1 foreign key  references dbo.Datos_Clientes(dni),
+	cliente_destino numeric(18,0) constraint dni2 foreign key  references dbo.Datos_Clientes(dni)
+
+)
+
+create table cargas
+(
+	dni numeric(18,0),
+	carga_credito numeric(18,2),
+	carga_fecha datetime,
+
+	foreign key (dni) references dbo.Datos_Clientes(dni)
 )
 
 create table Datos_Proveedores (
@@ -65,26 +110,16 @@ create table Login (
 	inhabilitado bit,
 
 )
+--- Termina la creacion de tablas, arranca el relleno de datos
 
-create table Cupones
-(
-	codigo 			 nvarchar(50) primary key,
-	precio			 numeric(18,2),
-	precio_fict 	 numeric(18,2),
-	cantidad	     numeric(18,0),
-	descripcion	     nvarchar(255),
-	fecha 			 datetime,
-	fecha_venc 		 datetime,
-	fecha_compra	 datetime,
-	fecha_devolucion datetime,
-	fecha_entregado  datetime	
-)
 
-create table Giftcard
-(
-	fecha 		datetime,
-	monto		numeric(18,2),
-	cliente_origen numeric(18,0) constraint dni1 foreign key  references dbo.Datos_Clientes(dni),
-	cliente_destino numeric(18,0) constraint dni2 foreign key  references dbo.Datos_Clientes(dni)
 
-)
+
+insert into Datos_Clientes (dni, nombre, apellido, direccion, telefono, mail, fecha_nac, ciudad)
+	
+	select distinct master.Cli_Dni, master.Cli_Nombre, master.Cli_Apellido, 
+		   master.Cli_Direccion, master.Cli_Telefono, master.Cli_Mail, master.Cli_Fecha_Nac, master.Cli_Ciudad
+		from gd_esquema.Maestra master 
+
+		where master.Cli_Dni is not null
+
