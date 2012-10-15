@@ -65,3 +65,26 @@ create table Login (
 	inhabilitado bit,
 
 )
+
+create table Cupones
+(
+	codigo 			 nvarchar(50) primary key,
+	precio			 numeric(18,2),
+	precio_fict 	 numeric(18,2),
+	cantidad	     numeric(18,0),
+	descripcion	     nvarchar(255),
+	fecha 			 datetime,
+	fecha_venc 		 datetime,
+	fecha_compra	 datetime,
+	fecha_devolucion datetime,
+	fecha_entregado  datetime	
+)
+
+create table Giftcard
+(
+	fecha 		datetime,
+	monto		numeric(18,2),
+	cliente_origen numeric(18,0) constraint dni1 foreign key  references dbo.Datos_Clientes(dni),
+	cliente_destino numeric(18,0) constraint dni2 foreign key  references dbo.Datos_Clientes(dni)
+
+)
