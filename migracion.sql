@@ -93,7 +93,6 @@ begin tran trn_creacion_tablas
 	create table Credito (
 
 		cli_dni numeric(18,0) PRIMARY KEY,
-		username nvarchar(100),
 		valor_credito numeric(18,2),
 		fecha_ultima_cargada datetime
 
@@ -157,5 +156,26 @@ begin tran trn_inserts_tablas
 		select distinct master.Provee_CUIT,master.Provee_RS,master.Provee_Dom,master.Provee_Ciudad,master.Provee_Telefono,master.Provee_Rubro
 		from gd_esquema.Maestra master
 		where master.Provee_CUIT is not null
+
+
+	insert into Cargas(dni,carga_credito,carga_fecha)
+		select master.Cli_Dni,master.carga_credito,master.carga_fecha
+		from gd_esquema.Maestra master
+		where master.Cli_Dni is not null and master.carga_credito is not null and master.carga_fecha is not null
+
+--Testing (FALTA)
+
+	--insert into Credito(cli_dni,valor_credito,fecha_ultima_cargada)
+		--select master.Cli_Dni
+
+	--insert into Factura()
+	--	select TOP 100 Factura_Nro, Factura_Fecha, Groupon_Fecha_Compra, Provee_RS, Provee_CUIT
+	--from gd_esquema.Maestra
+	--where Factura_Nro is not null and Factura_Fecha is not null
+	--order by Factura_Nro
+
+	--insert into Renglon_Factura()
+
+	--insert into login()
 
 commit tran trn_inserts_tablas
