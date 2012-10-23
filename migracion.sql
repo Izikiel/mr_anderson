@@ -47,7 +47,7 @@ create table Giftcard
 
 )
 
-create table cargas
+create table Cargas
 (
 	dni numeric(18,0),
 	carga_credito numeric(18,2),
