@@ -101,11 +101,9 @@ begin tran trn_creacion_tablas
 
 	create table Login (
 
-		id_usuario numeric(18,0) PRIMARY KEY,
-		username nvarchar(100),
+		username nvarchar(100) PRIMARY KEY,
 		user_password nvarchar(64),
 		lastlogin datetime,
-		ip nvarchar(15),
 		rol_asignado numeric(18,0),
 		intentos_fallidos numeric(18,0),
 		inhabilitado bit,
