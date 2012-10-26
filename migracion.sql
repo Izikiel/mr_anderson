@@ -160,6 +160,10 @@ begin tran trn_inserts_tablas
 		select master.Cli_Dni,master.carga_credito,master.carga_fecha
 		from gd_esquema.Maestra master
 		where master.Cli_Dni is not null and master.carga_credito is not null and master.carga_fecha is not null
+		
+	-- Insertamos el administrador a la tabla de Login (pass: gdadmin2012)
+	insert into Login(username,user_password,lastlogin,rol_asignado,intentos_fallidos,inhabilitado) 
+		VALUES('administrador','914B8A5A8AD525437A7723C688AED4E72E7F7893184BF087C6E91C93E102891B',NULL,1,NULL,0)
 
 --Testing (FALTA)
 
