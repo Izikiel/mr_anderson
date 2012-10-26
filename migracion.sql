@@ -192,6 +192,4 @@ begin tran trn_inserts_tablas
 
 	--insert into MR_ANDERSON.Renglon_Factura()
 
-	--insert into MR_ANDERSON.login()
-
 commit tran trn_inserts_tablas
