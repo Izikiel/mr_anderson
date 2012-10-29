@@ -386,14 +386,17 @@ begin tran trn_inserts_tablas
         insert into MR_ANDERSON.Roles(Rol,Habilitado)
             values('Proveedor',1)
 			
+		-- Insertamos el administrador a la tabla de Login (pass: gdadmin2012)	
 		insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,inhabilitado,Rol) 
 			VALUES('administrador','914B8A5A8AD525437A7723C688AED4E72E7F7893184BF087C6E91C93E102891B',NULL,0,0,'Admin')
-
+		
+		-- Insertamos los datos de los clientes al Login
         insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,inhabilitado,Rol)
 
             select distinct master.Cli_Dni, NULL,NULL,0,0,'Cliente' 
                 from gd_esquema.Maestra master
 
+		-- Insertamos los datos de los proveedores al Login
         insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,inhabilitado,Rol)
 
             select distinct master.Provee_CUIT,NULL,NULL,0,0,'Proveedor' 
