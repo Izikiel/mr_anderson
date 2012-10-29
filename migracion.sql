@@ -13,11 +13,10 @@ begin transaction trn_creacion_tablas
 		nombre		nvarchar(255),
 		apellido	nvarchar(255),
 		direccion	nvarchar(255),
-		telefono	numeric(18,0),
+		telefono	numeric(18,0) unique,
 		mail		nvarchar(255),
 		fecha_nac   datetime,
 		ciudad      nvarchar(255)
-
 	)
 
 	create table MR_ANDERSON.Cupones
@@ -40,7 +39,6 @@ begin transaction trn_creacion_tablas
 		fecha_entregado  datetime,
 
 		foreign key (codigo) references MR_ANDERSON.Cupones(codigo)
-
 	)
 
 
@@ -70,6 +68,7 @@ begin transaction trn_creacion_tablas
 		provee_ciudad nvarchar(255),
 		provee_telefono numeric(18,0),
 		provee_rubro nvarchar(100),
+		provee_nombre_contacto nvarchar(255),
 		primary key(provee_cuit,provee_rs)
 	)
 
@@ -112,6 +111,13 @@ begin transaction trn_creacion_tablas
 		intentos_fallidos numeric(18,0),
 		inhabilitado bit,
 
+	)
+
+	create table MR_ANDERSON.Direcciones(
+		calle nvarchar(255),
+		nro_piso numeric(2,0),
+		depto nvarchar(255),
+		localidad (255)
 	)
 
 commit transaction trn_creacion_tablas
@@ -176,7 +182,7 @@ begin tran trn_inserts_tablas
 		
 	-- Insertamos los datos de los proveedores al Login
 	insert into MR_ANDERSON.Login(username,user_password,lastlogin,rol_asignado,intentos_fallidos,inhabilitado) 
-		select distinct Provee_CUIT,NULL,NULL,3,NULL,0
+		select distinc	t Provee_CUIT,NULL,NULL,3,NULL,0
 		from MR_ANDERSON.Datos_Proveedores
 
 --Testing (FALTA)

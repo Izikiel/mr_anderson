@@ -1,14 +1,5 @@
-/* ---------------------------------------------------------------------- */
-/* Script generated with: DeZign for Databases V7.2.1                     */
-/* Target DBMS:           MS SQL Server 2008                              */
-/* Project file:          der_gestion.dez                                 */
-/* Project name:                                                          */
-/* Author:                                                                */
-/* Script type:           Database creation script                        */
-/* Created on:            2012-10-26 16:56                                */
-/* ---------------------------------------------------------------------- */
 
-
+---Creacion de modelo de datos
 /* ---------------------------------------------------------------------- */
 /* Tables                                                                 */
 /* ---------------------------------------------------------------------- */
@@ -31,8 +22,8 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
     /* ---------------------------------------------------------------------- */
 
     CREATE TABLE [Funcionalidades_Roles] (
-        [Funcionalidad] VARCHAR(40),
-        [Rol] NVARCHAR(255)
+        [Funcionalidad] VARCHAR(40) NOT NULL,
+        [Rol] NVARCHAR(255) NOT NULL
     )
     
 
@@ -43,9 +34,8 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
 
     CREATE TABLE [Login] (
         [username] NVARCHAR(100) NOT NULL,
-        [user_password] NVARCHAR(255) NOT NULL,
-        [last_login] DATETIME NOT NULL,
-        [ip] NVARCHAR(15) NOT NULL,
+        [user_password] NVARCHAR(255) ,
+        [last_login] DATETIME ,
         [intentos_fallidos] NUMERIC(3) NOT NULL,
         [inhabilitado] BIT NOT NULL,
         [Rol] NVARCHAR(255) NOT NULL,
@@ -64,7 +54,7 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
         [depto] NVARCHAR(40),
         [localidad] NVARCHAR(100) NOT NULL,
         [username] NVARCHAR(100) NOT NULL,
-        CONSTRAINT [PK_Direccion] PRIMARY KEY ([calle], [localidad])
+        CONSTRAINT [PK_Direccion] PRIMARY KEY ([calle], [localidad],[username])
     )
     
 
@@ -77,11 +67,9 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
         [nombre] NVARCHAR(255) NOT NULL,
         [dni] NUMERIC(18) NOT NULL,
         [apellido] NVARCHAR(255) NOT NULL,
-        [direccion] NVARCHAR(255) NOT NULL,
         [telefono] NUMERIC(18) unique NOT NULL,
         [mail] NVARCHAR(255) NOT NULL,
         [fecha_nac] DATETIME NOT NULL,
-        [Rol] NVARCHAR(255),
         [username] NVARCHAR(100) NOT NULL,
         CONSTRAINT [dni] PRIMARY KEY ([dni])
     )
@@ -130,8 +118,6 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
     CREATE TABLE [Datos_Proveedores] (
         [provee_cuit] NVARCHAR(20) NOT NULL,
         [provee_rs] NVARCHAR(100) NOT NULL,
-        [provee_dom] NVARCHAR(100) NOT NULL,
-        [provee_ciudad] NVARCHAR(255) NOT NULL,
         [provee_telefono] NUMERIC(18) NOT NULL,
         [provee_rubro] NVARCHAR(100) NOT NULL,
         [username] NVARCHAR(100) NOT NULL,
@@ -149,8 +135,6 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
     CREATE TABLE [Factura] (
         [factura_nro] NUMERIC(18) NOT NULL,
         [factura_fecha] DATETIME NOT NULL,
-        [fecha_inicio_perido] DATETIME NOT NULL,
-        [fecha_fin_periodo] DATETIME NOT NULL,
         [provee_cuit] NVARCHAR(20),
         [provee_rs] NVARCHAR(100),
         CONSTRAINT [PK_Factura] PRIMARY KEY ([factura_nro])
@@ -387,3 +371,116 @@ GO
     ALTER TABLE [MR_ANDERSON].[Consumos] ADD CONSTRAINT [Datos_Clientes_Consumos] 
         FOREIGN KEY ([dni]) REFERENCES [MR_ANDERSON].[Datos_Clientes] ([dni])
     
+
+
+--Migracion de Datos 
+
+begin tran trn_inserts_tablas
+        
+        insert into MR_ANDERSON.Roles(Rol,Habilitado)
+            values('Admin',1)
+
+        insert into MR_ANDERSON.Roles(Rol,Habilitado)
+            values('Cliente',1)
+
+        insert into MR_ANDERSON.Roles(Rol,Habilitado)
+            values('Proveedor',1)
+
+        insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,inhabilitado,Rol)
+
+            select distinct master.Cli_Dni, NULL,NULL,0,0,'Cliente' 
+                from gd_esquema.Maestra master
+
+        insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,inhabilitado,Rol)
+
+            select distinct master.Provee_CUIT,NULL,NULL,0,0,'Proveedor' 
+                from gd_esquema.Maestra master 
+                where master.Provee_CUIT is not NULL
+
+
+        insert into MR_ANDERSON.Datos_Clientes (dni, nombre, apellido,  telefono, mail, fecha_nac, username )
+        
+            select distinct master.Cli_Dni, master.Cli_Nombre, master.Cli_Apellido,
+                            master.Cli_Telefono, master.Cli_Mail, master.Cli_Fecha_Nac,cast(master.Cli_Dni as NVARCHAR)
+                from gd_esquema.Maestra master 
+
+        insert into MR_ANDERSON.Direccion(calle,nro_piso,depto,localidad,username)
+
+            select master.Cli_Direccion,NULL,NULL,master.Cli_Ciudad, cast(Clientes.dni as NVARCHAR)
+                from gd_esquema.Maestra master
+                join MR_ANDERSON.Datos_Clientes Clientes
+                    on   master.Cli_Dni = Clientes.dni
+                
+                group by master.Cli_Direccion,master.Cli_Ciudad, Clientes.dni
+
+
+        insert into MR_ANDERSON.Cliente_Origen(dni)
+
+            select distinct master.Cli_Dni 
+                from gd_esquema.Maestra master
+                where master.Cli_Dni is not NULL
+
+        insert into MR_ANDERSON.Cliente_Destino(dni)
+
+            select distinct master.Cli_Dest_Dni 
+                from gd_esquema.Maestra master
+                where master.Cli_Dest_Dni is not NULL
+
+
+        insert into MR_ANDERSON.Giftcard(fecha,monto,cliente_origen,cliente_destino)
+
+            select master.Giftcard_Fecha, master.Giftcard_Monto, master.Cli_Dni, master.Cli_Dest_Dni 
+                from gd_esquema.Maestra master
+
+                join MR_ANDERSON.Cliente_Origen origen
+                    on   master.Cli_Dni = origen.dni
+                
+                join MR_ANDERSON.Cliente_Destino destino
+                    on   master.Cli_Dest_Dni = destino.dni
+
+        insert into MR_ANDERSON.Cargas(monto,fecha,dni,tipo_pago)
+
+            select master.Carga_Credito, master.Carga_Fecha,master.Cli_Dni, master.Tipo_Pago_Desc 
+                from gd_esquema.Maestra master
+
+                join MR_ANDERSON.Datos_Clientes Clientes
+                    on   master.Cli_Dni = Clientes.dni
+                
+                where master.Carga_Credito is not NULL and master.Carga_Fecha is not NULL 
+                    and master.Tipo_Pago_Desc is not NULL
+
+
+        insert into MR_ANDERSON.Datos_Proveedores(provee_cuit,provee_rs,provee_telefono,provee_rubro,username,nombre_contacto,provee_email)
+
+            select master.Provee_CUIT,master.Provee_RS,master.Provee_Telefono,master.Provee_Rubro,
+                cast(master.Provee_CUIT as NVARCHAR), NULL,NULL
+                from gd_esquema.Maestra master
+
+                group by master.Provee_CUIT,master.Provee_RS,master.Provee_Telefono,master.Provee_Rubro
+
+                having master.Provee_CUIT is not NULL and master.Provee_RS is not null
+
+        insert into MR_ANDERSON.Direccion(calle,nro_piso,depto,localidad,username)
+
+            select master.Provee_Dom, null,null,master.Provee_Ciudad, cast(master.Provee_CUIT as NVARCHAR)  
+                from gd_esquema.Maestra master
+
+                join MR_ANDERSON.Datos_Proveedores Proveedores
+                    on   master.Provee_CUIT = Proveedores.provee_cuit
+                
+                group by master.Provee_Dom, master.Provee_Ciudad, master.Provee_CUIT
+
+        insert into MR_ANDERSON.Factura(factura_nro,factura_fecha,provee_cuit,provee_rs)
+
+            select master.Factura_Nro,master.Factura_Fecha, master.Provee_CUIT,master.Provee_RS 
+                from gd_esquema.Maestra master
+
+                group by master.Factura_Nro,master.Factura_Fecha, master.Provee_CUIT,master.Provee_RS 
+                having master.Factura_Nro is not null
+
+        
+
+                
+
+
+commit tran trn_inserts_tablas
