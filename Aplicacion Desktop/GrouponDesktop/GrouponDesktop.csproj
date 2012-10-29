@@ -84,6 +84,7 @@
     <Compile Include="ComprarGiftCard\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\DataAccess.cs" />
     <Compile Include="FacturarProveedor\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
