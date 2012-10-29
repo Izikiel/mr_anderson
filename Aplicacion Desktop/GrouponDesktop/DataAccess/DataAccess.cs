@@ -53,22 +53,16 @@ namespace GrouponDesktop
     {
         public SqlDataReader executeSPWithOutParameters(String spName)
         {
-            SqlConnection conn = DataManager.Instance.Connection;
-            SqlDataReader rdr = null;
             try
             {
-
-                SqlCommand cmd = new SqlCommand(spName, conn);
-                cmd.CommandType = CommandType.StoredProcedure;
-                rdr = cmd.ExecuteReader();
-                return rdr;
+                return executeSPWithParameters(spName, new Dictionary<string, object>(0));
             }
             catch
             {
                 throw new Exception("no se pudo ejecutar el StoredProcedure");
             }
         }
-        public void executeSPWithParametersWithOutReturn(String spName, Dictionary<String, Object> parameters)
+        public SqlDataReader executeSPWithParameters(String spName, Dictionary<String, Object> parameters)
         {
             SqlConnection conn = DataManager.Instance.Connection;
             SqlDataReader rdr = null;
@@ -82,6 +76,7 @@ namespace GrouponDesktop
                     cmd.Parameters.Add(new SqlParameter("@"+paramKey, parameters[paramKey]));
                 }
                 rdr = cmd.ExecuteReader();
+                return rdr;
             }
             catch(Exception e)
             {
