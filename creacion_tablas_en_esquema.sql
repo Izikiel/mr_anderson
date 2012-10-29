@@ -385,6 +385,9 @@ begin tran trn_inserts_tablas
 
         insert into MR_ANDERSON.Roles(Rol,Habilitado)
             values('Proveedor',1)
+			
+		insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,inhabilitado,Rol) 
+			VALUES('administrador','914B8A5A8AD525437A7723C688AED4E72E7F7893184BF087C6E91C93E102891B',NULL,0,0,'Admin')
 
         insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,inhabilitado,Rol)
 
