@@ -8,25 +8,15 @@ using System.Data.SqlClient;
 
 namespace GrouponDesktop
 {
-    class DataManager
+    class DBManager
     {
-        private static DataManager instance = null;
-
-        static public DataManager Instance
-        {
-            get
-            {
-                if (instance == null)
-                    instance = new DataManager();
-                return instance;
-            }
-        }
         private SqlConnection connection;
         public SqlConnection Connection
         {
             get { return connection; }
         }
-        private DataManager()
+
+        public DBManager()
         {
             try
             {
@@ -37,9 +27,11 @@ namespace GrouponDesktop
             {
                 throw new Exception("Error al querer abrir la DB");
             }
-            
         }
-
+        public void closeConnection()
+        {
+            connection.Close();
+        }
         
 
         String connectionString = "Server=Rodri-PC\\SQLSERVER2008;Database=GD2C2012;User Id=gd;Password=gd2012;";
@@ -49,8 +41,14 @@ namespace GrouponDesktop
     /// Estros métodos van a ser llamados por métodos especializados por cada tipo de SP. 
     /// Cuando se retorne un SqlDataReader se debe recordar de cerrar el data reader.
     /// </summary>
-    public class StoredProcedureHelper
+    public class SPManager
     {
+        DBManager dbManager; 
+        public SPManager()
+        {
+            dbManager = new DBManager();
+        }
+
         public SqlDataReader executeSPWithOutParameters(String spName)
         {
             try
@@ -64,7 +62,7 @@ namespace GrouponDesktop
         }
         public SqlDataReader executeSPWithParameters(String spName, Dictionary<String, Object> parameters)
         {
-            SqlConnection conn = DataManager.Instance.Connection;
+            SqlConnection conn = dbManager.Connection;
             SqlDataReader rdr = null;
             try
             {
