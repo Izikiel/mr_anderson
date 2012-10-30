@@ -123,7 +123,7 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
         [username] NVARCHAR(100) NOT NULL,
         [nombre_contacto] VARCHAR(40),
         [provee_email] NVARCHAR(255),
-        CONSTRAINT [PK_Datos_Proveedores] PRIMARY KEY ([provee_cuit], [provee_rs])
+        CONSTRAINT [PK_Datos_Proveedores] PRIMARY KEY ([provee_cuit])
     )
     
 
@@ -136,7 +136,6 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
         [factura_nro] NUMERIC(18) NOT NULL,
         [factura_fecha] DATETIME NOT NULL,
         [provee_cuit] NVARCHAR(20),
-        [provee_rs] NVARCHAR(100),
         CONSTRAINT [PK_Factura] PRIMARY KEY ([factura_nro])
     )
     
@@ -236,7 +235,7 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
         [fecha_devolucion] DATETIME NOT NULL,
         [dni] NUMERIC(18) NOT NULL,
         [codigo] NVARCHAR(50) NOT NULL,
-        [motivo] NVARCHAR(255) NOT NULL
+        [motivo] NVARCHAR(255) 
     )
     
 
@@ -264,7 +263,7 @@ GO
 
 
     ALTER TABLE [MR_ANDERSON].[Cupones] ADD CONSTRAINT [Datos_Proveedores_Cupones] 
-        FOREIGN KEY ([provee_cuit], [provee_rs]) REFERENCES [MR_ANDERSON].[Datos_Proveedores] ([provee_cuit],[provee_rs])
+        FOREIGN KEY ([provee_cuit]) REFERENCES [MR_ANDERSON].[Datos_Proveedores] ([provee_cuit])
     
 
 
@@ -299,7 +298,7 @@ GO
 
 
     ALTER TABLE [MR_ANDERSON].[Factura] ADD CONSTRAINT [Datos_Proveedores_Factura] 
-        FOREIGN KEY ([provee_cuit], [provee_rs]) REFERENCES [MR_ANDERSON].[Datos_Proveedores] ([provee_cuit],[provee_rs])
+        FOREIGN KEY ([provee_cuit]) REFERENCES [MR_ANDERSON].[Datos_Proveedores] ([provee_cuit])
     
 
 
@@ -476,16 +475,88 @@ begin tran trn_inserts_tablas
                 
                 group by master.Provee_Dom, master.Provee_Ciudad, master.Provee_CUIT
 
-        insert into MR_ANDERSON.Factura(factura_nro,factura_fecha,provee_cuit,provee_rs)
 
-            select master.Factura_Nro,master.Factura_Fecha, master.Provee_CUIT,master.Provee_RS 
+        insert into MR_ANDERSON.Cupones(codigo,precio,precio_fict,cantidad_x_usuario,descripcion,
+                                        stock_disponible,provee_cuit,provee_rs,vencimiento_oferta,
+                                        vencimiento_canje,fecha_publicacion)
+
+            select master.Groupon_Codigo, master.Groupon_Precio, master.Groupon_Precio_Ficticio,
+                    master.Groupon_Cantidad, master.Groupon_Descripcion, sum(master.Groupon_Cantidad),
+                    master.Provee_CUIT, master.Provee_RS, master.Groupon_Fecha_Venc, NULL, master.Groupon_Fecha
                 from gd_esquema.Maestra master
 
-                group by master.Factura_Nro,master.Factura_Fecha, master.Provee_CUIT,master.Provee_RS 
+                join MR_ANDERSON.Datos_Proveedores Proveedores
+                    on   master.Provee_CUIT = Proveedores.provee_cuit
+                
+                group by master.Groupon_Codigo, master.Groupon_Precio, master.Groupon_Precio_Ficticio,
+                    master.Groupon_Cantidad, master.Groupon_Descripcion, master.Provee_CUIT, master.Provee_RS, 
+                    master.Groupon_Fecha_Venc, master.Groupon_Fecha
+
+
+        insert into MR_ANDERSON.Devoluciones(fecha_devolucion,dni,codigo,motivo)
+
+            select master.Groupon_Devolucion_Fecha, master.Cli_Dni, master.Groupon_Codigo, NULL 
+                from gd_esquema.Maestra master
+
+            join MR_ANDERSON.Datos_Clientes Clientes
+                on   master.Cli_Dni = Clientes.dni
+            
+            join MR_ANDERSON.Cupones Cupones
+                on   master.Groupon_Codigo = Cupones.codigo
+            
+            where master.Groupon_Devolucion_Fecha is not null
+
+        insert into MR_ANDERSON.Consumos(fecha_consumo, codigo, dni)
+
+            select master.Groupon_Entregado_Fecha, master.Groupon_Codigo, master.Cli_Dni 
+                from gd_esquema.Maestra master
+
+                join MR_ANDERSON.Cupones Cupones
+                    on   master.Groupon_Codigo = Cupones.codigo
+                
+                join MR_ANDERSON.Datos_Clientes Cliente
+                    on   master.Cli_Dni = Cliente.dni
+                
+                where master.Groupon_Entregado_Fecha is not null
+
+        insert into MR_ANDERSON.Compras(dni,cantidad,fecha,codigo)
+
+            select master.Cli_Dni, master.Groupon_Cantidad, master.Groupon_Fecha_Compra,
+                    master.Groupon_Codigo
+                from gd_esquema.Maestra master
+                
+                join MR_ANDERSON.Datos_Clientes Clientes
+                    on   master.Cli_Dni = Clientes.dni
+                
+                join MR_ANDERSON.Cupones Cupones
+                    on   master.Groupon_Codigo = Cupones.codigo
+                
+                where master.Groupon_Fecha_Compra is not null
+
+                group by master.Cli_Dni, master.Groupon_Cantidad, master.Groupon_Fecha_Compra,
+                    master.Groupon_Codigo
+
+
+        insert into MR_ANDERSON.Factura(factura_nro,factura_fecha,provee_cuit)
+
+            select master.Factura_Nro,master.Factura_Fecha, master.Provee_CUIT
+                from gd_esquema.Maestra master
+
+                group by master.Factura_Nro,master.Factura_Fecha, master.Provee_CUIT
                 having master.Factura_Nro is not null
 
-        
+        insert into MR_ANDERSON.Factura_Renglon(cantidad,factura_nro,codigo)
 
+            select sum(master.Groupon_Cantidad), master.Factura_Nro, master.Groupon_Codigo 
+                from gd_esquema.Maestra master
+
+                join MR_ANDERSON.Factura Factura
+                    on   master.Factura_Nro = Factura.factura_nro
+                
+                join MR_ANDERSON.Cupones Cupones
+                    on   master.Groupon_Codigo = Cupones.codigo
+
+                group by master.Factura_Nro, master.Groupon_Codigo 
                 
 
 
