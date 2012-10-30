@@ -7,5 +7,6 @@ namespace GrouponDesktop.User
 {
     class Client : User
     {
+        
     }
 }

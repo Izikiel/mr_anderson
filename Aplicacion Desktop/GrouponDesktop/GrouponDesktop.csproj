@@ -48,17 +48,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccess\DataAccess.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="DataAccess\DBManager.cs" />
+    <Compile Include="DataAccess\SPManager.cs" />
+    <Compile Include="UsersClass\Login.cs" />
+    <Compile Include="LoginWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="LoginWindow.Designer.cs">
+      <DependentUpon>LoginWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="LoginWindow.resx">
+      <DependentUpon>LoginWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -69,6 +71,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="Properties\DataSources\Login.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -80,10 +83,7 @@
     </Compile>
     <Compile Include="Rol\FuncRol.cs" />
     <Compile Include="Rol\Rol.cs" />
-    <Compile Include="Rol\RolAdmin.cs" />
     <Compile Include="Rol\RolBuilder.cs" />
-    <Compile Include="Rol\RolCliente.cs" />
-    <Compile Include="Rol\RolProveedor.cs" />
     <Compile Include="User\Admin.cs" />
     <Compile Include="User\Client.cs" />
     <Compile Include="User\Provider.cs" />
