@@ -34,7 +34,7 @@ namespace GrouponDesktop
         }
         
 
-        String connectionString = "Server=Rodri-PC\\SQLSERVER2008;Database=GD2C2012;User Id=gd;Password=gd2012;";
+        String connectionString = "Server=localhost\\SQLSERVER2008;Database=GD2C2012;User Id=gd;Password=gd2012;";
     }
 
     /// <summary>
