@@ -49,6 +49,19 @@ namespace GrouponDesktop
             dbManager = new DBManager();
         }
 
+        public void executeSPWithOutParametersWithOutReturn(String spName)
+        {
+            try
+            {
+                SqlDataReader rdr = executeSPWithParameters(spName, new Dictionary<string, object>(0));
+                rdr.Close();
+            }
+            catch
+            {
+                throw new Exception("no se pudo ejecutar el StoredProcedure");
+            }
+        }
+
         public SqlDataReader executeSPWithOutParameters(String spName)
         {
             try
@@ -60,13 +73,13 @@ namespace GrouponDesktop
                 throw new Exception("no se pudo ejecutar el StoredProcedure");
             }
         }
+
         public SqlDataReader executeSPWithParameters(String spName, Dictionary<String, Object> parameters)
         {
             SqlConnection conn = dbManager.Connection;
             SqlDataReader rdr = null;
             try
             {
-
                 SqlCommand cmd = new SqlCommand(spName, conn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 foreach (String paramKey in parameters.Keys)
