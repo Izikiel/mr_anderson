@@ -2,13 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GrouponDesktop.Rol;
 
 namespace GrouponDesktop.User
 {
     class User
     {
         String tipoUsuario;
+        List<FuncRol> funcionalidades;
+        public User()
+        {
 
+        }
         public void setTipoUsuario(String unTipo)
         {
             this.tipoUsuario = unTipo;
@@ -17,5 +22,6 @@ namespace GrouponDesktop.User
         {
             return this.tipoUsuario;
         }
+        
     }
 }

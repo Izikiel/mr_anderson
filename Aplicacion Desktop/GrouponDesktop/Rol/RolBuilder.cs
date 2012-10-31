@@ -7,20 +7,31 @@ namespace GrouponDesktop.Rol
 {
     class RolBuilder
     {
-        public Rol buildRol(String nombreRol, String tipoUsuario, List<FuncRol> funcionalidades)
+        //hacer el chequeo de q las funcionalidades sean validas desde la ui
+
+        public FuncRol getFuncRol(String nombreFunc)
+        {
+            switch (nombreFunc)
+            {
+                case "comprarGiftCard":
+                    return new FuncRol("cliente");
+                    
+
+            }
+
+            return null;
+        }
+
+        public Rol buildRol(String nombreRol, String tipoUsuario, List<String> funcionalidades)
         {
             Rol unRol = new Rol();
-            foreach (FuncRol unaFuncionalidad in funcionalidades)
+            foreach (String unaFuncionalidad in funcionalidades)
             {
-                if (!unaFuncionalidad.esUsuarioValido(tipoUsuario))
-                {
-                    throw new Exception();
-                }
-                else unRol.addFunc(unaFuncionalidad);
-
+                unRol.addFunc(this.getFuncRol(unaFuncionalidad));
             }
             unRol.setNombreRol(nombreRol);
             unRol.addTipoUsuario(tipoUsuario);
+            unRol.setEstadoValido(true);
             return unRol;
         }
     }

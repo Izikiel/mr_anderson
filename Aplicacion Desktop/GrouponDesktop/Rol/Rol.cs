@@ -10,12 +10,17 @@ namespace GrouponDesktop.Rol
         String nombreRol;
         List<String> tiposUsuarios;
         List<FuncRol> funcionalidades;
+        Boolean estadoValido;
 
         public Rol(){
             this.funcionalidades = new List<FuncRol>();
             this.tiposUsuarios = new List<String>();
         }
 
+        public void setEstadoValido(Boolean bol)
+        {
+            this.estadoValido = bol;
+        }
         public void setNombreRol(String unNombre){
             nombreRol = unNombre;
         }
