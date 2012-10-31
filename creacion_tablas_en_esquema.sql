@@ -387,7 +387,7 @@ begin tran trn_inserts_tablas
 			
 		-- Insertamos el administrador a la tabla de Login (pass: gdadmin2012)	
 		insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,habilitado,Rol) 
-			VALUES('administrador','914B8A5A8AD525437A7723C688AED4E72E7F7893184BF087C6E91C93E102891B',NULL,1,0,'Admin')
+			VALUES('administrador','914B8A5A8AD525437A7723C688AED4E72E7F7893184BF087C6E91C93E102891B',NULL,1,0,'Administrador')
 		
 		-- Insertamos los datos de los clientes al Login
         insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,habilitado,Rol)
@@ -562,10 +562,10 @@ begin tran trn_inserts_tablas
 
                 group by master.Factura_Nro, master.Groupon_Codigo 
             
-/*commit tran trn_inserts_tablas
+commit tran trn_inserts_tablas
 
 
-begin tran trn_triggers
+/*begin tran trn_triggers
     
     create trigger  actualizar_habilitaciones on Roles
         after
