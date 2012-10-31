@@ -8,11 +8,12 @@ namespace GrouponDesktop.Rol
     class Rol
     {
         String nombreRol;
-        String tipoUsuario;
+        List<String> tiposUsuarios;
         List<FuncRol> funcionalidades;
 
         public Rol(){
             this.funcionalidades = new List<FuncRol>();
+            this.tiposUsuarios = new List<String>();
         }
 
         public void setNombreRol(String unNombre){
@@ -23,14 +24,14 @@ namespace GrouponDesktop.Rol
             return this.nombreRol;
         }
 
-        public void setTipoUsuario(String unTipoUsuario)
+        public void addTipoUsuario(String unTipoUsuario)
         {
-            this.tipoUsuario = unTipoUsuario;
+            this.tiposUsuarios.Add(unTipoUsuario);
         }
 
-        public String getTipoUsuario()
+        public List<String> getTiposUsuarios()
         {
-            return this.tipoUsuario;
+            return this.tiposUsuarios;
         }
 
         public void addFunc(FuncRol unaF){

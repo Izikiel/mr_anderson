@@ -7,12 +7,12 @@ namespace GrouponDesktop.Rol
 {
     class RolBuilder
     {
-        public Rol buildRol(String nombreRol, User.User unUsuario, List<FuncRol> funcionalidades)
+        public Rol buildRol(String nombreRol, String tipoUsuario, List<FuncRol> funcionalidades)
         {
             Rol unRol = new Rol();
             foreach (FuncRol unaFuncionalidad in funcionalidades)
             {
-                if (!unaFuncionalidad.esUsuarioValido(unUsuario))
+                if (!unaFuncionalidad.esUsuarioValido(tipoUsuario))
                 {
                     throw new Exception();
                 }
@@ -20,7 +20,7 @@ namespace GrouponDesktop.Rol
 
             }
             unRol.setNombreRol(nombreRol);
-            unRol.setTipoUsuario(unUsuario.getTipoUsuario());
+            unRol.addTipoUsuario(tipoUsuario);
             return unRol;
         }
     }

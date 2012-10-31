@@ -50,7 +50,8 @@
   <ItemGroup>
     <Compile Include="DataAccess\DBManager.cs" />
     <Compile Include="DataAccess\SPManager.cs" />
-    <Compile Include="UsersClass\Login.cs" />
+    <Compile Include="DataAdapter\Login.cs" />
+    <Compile Include="DataAdapter\RolAdapter.cs" />
     <Compile Include="LoginWindow.cs">
       <SubType>Form</SubType>
     </Compile>

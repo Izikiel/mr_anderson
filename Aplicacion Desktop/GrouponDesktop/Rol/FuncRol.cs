@@ -8,17 +8,17 @@ namespace GrouponDesktop.Rol
 {
     class FuncRol
     {
-        private String usuarioValido;
+        private List<String> usuariosValidos;
 
 
         public FuncRol(String unUsuarioValido)
         {
-            this.usuarioValido = unUsuarioValido;
+            this.usuariosValidos = new List<String>();
         }
 
-        public Boolean esUsuarioValido(User.User unUsuario)
+        public Boolean esUsuarioValido(String tipoUsuario)
         {
-            return unUsuario.getTipoUsuario() == this.usuarioValido;
+            return this.usuariosValidos.Contains(tipoUsuario);
         }
     }
 }
