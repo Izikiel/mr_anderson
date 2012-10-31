@@ -37,7 +37,7 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
         [user_password] NVARCHAR(255) ,
         [last_login] DATETIME ,
         [intentos_fallidos] NUMERIC(3) NOT NULL,
-        [inhabilitado] BIT NOT NULL,
+        [habilitado] BIT NOT NULL,
         [Rol] NVARCHAR(255) NOT NULL,
         CONSTRAINT [PK_Login] PRIMARY KEY ([username])
     )
@@ -208,7 +208,7 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
 
     CREATE TABLE [Ciudades] (
         [ciudad] NVARCHAR(255),
-        [dni] NUMERIC(18) NOT NULL,
+        [dni] NUMERIC(18) ,
         [codigo] NVARCHAR(50)
     )
     
@@ -377,7 +377,7 @@ GO
 begin tran trn_inserts_tablas
         
         insert into MR_ANDERSON.Roles(Rol,Habilitado)
-            values('Admin',1)
+            values('Administrador',1)
 
         insert into MR_ANDERSON.Roles(Rol,Habilitado)
             values('Cliente',1)
@@ -386,29 +386,30 @@ begin tran trn_inserts_tablas
             values('Proveedor',1)
 			
 		-- Insertamos el administrador a la tabla de Login (pass: gdadmin2012)	
-		insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,inhabilitado,Rol) 
-			VALUES('administrador','914B8A5A8AD525437A7723C688AED4E72E7F7893184BF087C6E91C93E102891B',NULL,0,0,'Admin')
+		insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,habilitado,Rol) 
+			VALUES('administrador','914B8A5A8AD525437A7723C688AED4E72E7F7893184BF087C6E91C93E102891B',NULL,1,0,'Admin')
 		
 		-- Insertamos los datos de los clientes al Login
-        insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,inhabilitado,Rol)
+        insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,habilitado,Rol)
 
-            select distinct master.Cli_Dni, NULL,NULL,0,0,'Cliente' 
+            select distinct master.Cli_Dni, NULL,NULL,1,0,'Cliente' 
                 from gd_esquema.Maestra master
 
 		-- Insertamos los datos de los proveedores al Login
-        insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,inhabilitado,Rol)
+        insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,habilitado,Rol)
 
-            select distinct master.Provee_CUIT,NULL,NULL,0,0,'Proveedor' 
+            select distinct master.Provee_CUIT,NULL,NULL,1,0,'Proveedor' 
                 from gd_esquema.Maestra master 
                 where master.Provee_CUIT is not NULL
 
-
+        --Insertamos los datos viejos de los clientes al modelo nuevo
         insert into MR_ANDERSON.Datos_Clientes (dni, nombre, apellido,  telefono, mail, fecha_nac, username )
         
             select distinct master.Cli_Dni, master.Cli_Nombre, master.Cli_Apellido,
                             master.Cli_Telefono, master.Cli_Mail, master.Cli_Fecha_Nac,cast(master.Cli_Dni as NVARCHAR)
                 from gd_esquema.Maestra master 
 
+        --Insertamos las direcciones de los clientes al modelo nuevo
         insert into MR_ANDERSON.Direccion(calle,nro_piso,depto,localidad,username)
 
             select master.Cli_Direccion,NULL,NULL,master.Cli_Ciudad, cast(Clientes.dni as NVARCHAR)
@@ -418,20 +419,21 @@ begin tran trn_inserts_tablas
                 
                 group by master.Cli_Direccion,master.Cli_Ciudad, Clientes.dni
 
-
+        --Insertamos los clientes que compraron alguna giftcard
         insert into MR_ANDERSON.Cliente_Origen(dni)
 
             select distinct master.Cli_Dni 
                 from gd_esquema.Maestra master
                 where master.Cli_Dni is not NULL
 
+        --Insertamos los clientes que recibieron alguna giftcard
         insert into MR_ANDERSON.Cliente_Destino(dni)
 
             select distinct master.Cli_Dest_Dni 
                 from gd_esquema.Maestra master
                 where master.Cli_Dest_Dni is not NULL
 
-
+        --Insertamos los datos de las giftcards
         insert into MR_ANDERSON.Giftcard(fecha,monto,cliente_origen,cliente_destino)
 
             select master.Giftcard_Fecha, master.Giftcard_Monto, master.Cli_Dni, master.Cli_Dest_Dni 
@@ -443,6 +445,7 @@ begin tran trn_inserts_tablas
                 join MR_ANDERSON.Cliente_Destino destino
                     on   master.Cli_Dest_Dni = destino.dni
 
+        --Insertamos los datos de las cargas de los clientes
         insert into MR_ANDERSON.Cargas(monto,fecha,dni,tipo_pago)
 
             select master.Carga_Credito, master.Carga_Fecha,master.Cli_Dni, master.Tipo_Pago_Desc 
@@ -454,7 +457,7 @@ begin tran trn_inserts_tablas
                 where master.Carga_Credito is not NULL and master.Carga_Fecha is not NULL 
                     and master.Tipo_Pago_Desc is not NULL
 
-
+        --Insertamos los datos de los proveedores
         insert into MR_ANDERSON.Datos_Proveedores(provee_cuit,provee_rs,provee_telefono,provee_rubro,username,nombre_contacto,provee_email)
 
             select master.Provee_CUIT,master.Provee_RS,master.Provee_Telefono,master.Provee_Rubro,
@@ -465,6 +468,7 @@ begin tran trn_inserts_tablas
 
                 having master.Provee_CUIT is not NULL and master.Provee_RS is not null
 
+        --Insertamos las direcciones de los proveedores
         insert into MR_ANDERSON.Direccion(calle,nro_piso,depto,localidad,username)
 
             select master.Provee_Dom, null,null,master.Provee_Ciudad, cast(master.Provee_CUIT as NVARCHAR)  
@@ -557,7 +561,54 @@ begin tran trn_inserts_tablas
                     on   master.Groupon_Codigo = Cupones.codigo
 
                 group by master.Factura_Nro, master.Groupon_Codigo 
-                
+            
+/*commit tran trn_inserts_tablas
 
 
-commit tran trn_inserts_tablas
+begin tran trn_triggers
+    
+    create trigger  actualizar_habilitaciones on Roles
+        after
+            update
+        as
+            begin
+                if update(Habilitado)
+                    begin
+
+                        declare @rol NVARCHAR(255)
+                        declare @habilitado BIT
+                        declare @my_fetch_status int
+                        
+                        declare roles_a_chequear cursor  
+                        
+                        for select Rol, Habilitado 
+                            from inserted
+                        
+                        open roles_a_chequear
+                        
+                        fetch roles_a_chequear into @rol, @habilitado
+
+                        set @my_fetch_status = @@FETCH_STATUS
+
+                        while (@my_fetch_status = 0)
+                        begin
+                            
+                            update MR_ANDERSON.Roles set Habilitado = @habilitado 
+                                where Rol = @rol
+
+                            update MR_ANDERSON.Login set 
+
+                            fetch next from roles_a_chequear into @rol, @habilitado
+                            set @my_fetch_status = @@FETCH_STATUS    
+                        end
+                        
+                        close roles_a_chequear
+                        deallocate roles_a_chequear
+
+                                                                 
+                    end
+            end
+    
+
+
+commit tran trn_triggers */   
