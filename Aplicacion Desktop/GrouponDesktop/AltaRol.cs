@@ -13,7 +13,6 @@ namespace GrouponDesktop
     public partial class AltaRol : Form
     {
         private List<String> funcionalidades;
-        String nombreRol;
         RolBuilder rolBuilder;
 
         public AltaRol()
@@ -26,7 +25,8 @@ namespace GrouponDesktop
         private void allCheckBoxes_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox chk = (CheckBox)sender;
-            if (chk.Checked == true) this.funcionalidades.Add(chk.Text);
+            if (chk.Checked == true)this.funcionalidades.Add(chk.Text);
+            if(chk.Checked == false) this.funcionalidades.Remove(chk.Text);
             
         }
 
@@ -80,19 +80,13 @@ namespace GrouponDesktop
 
         private void aceptar_Click(Object sender, EventArgs e)
         {
-            foreach (Object ctrl in this.Controls)
+                   
+            if (textBox1.Text == "")
             {
-                if (ctrl is TextBox)
-                {
-                    TextBox tb = (TextBox)ctrl;
-                    if (tb.Text == "")
-                    {
-                        MessageBox.Show("Debe ingresar un nombre de rol");
-                        return;
-                    }
-                    
-                }
+                MessageBox.Show("Debe ingresar un nombre de rol");
+                return;
             }
+            
             
             if (!funcionalidades.Any())
             {
@@ -100,8 +94,8 @@ namespace GrouponDesktop
                 return;
             }
 
-            rolBuilder.buildRol(nombreRol, cboBoxTipoUsr.SelectedItem.ToString(), funcionalidades);
-            MessageBox.Show("Se dio de alta al rol correctamente");
+            Rol.Rol unRol = rolBuilder.buildRol(textBox1.Text, cboBoxTipoUsr.SelectedItem.ToString(), funcionalidades);
+            MessageBox.Show("Se dio de alta al rol correctamente. Nombre de rol: "+ unRol.getNombreRol());
             //TODO: llamar a un objeto que persista al rol en la base
             //TODO: (menos importante) hacer la validacion en el rolBuilder de que no haya dos roles con el mismo nombre
             this.Close();
