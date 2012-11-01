@@ -37,7 +37,7 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
         [user_password] NVARCHAR(255) ,
         [last_login] DATETIME ,
         [intentos_fallidos] NUMERIC(3) NOT NULL,
-        [habilitado] BIT NOT NULL,
+        [Habilitado] BIT NOT NULL,
         [Rol] NVARCHAR(255) NOT NULL,
         CONSTRAINT [PK_Login] PRIMARY KEY ([username])
     )
@@ -386,17 +386,17 @@ begin tran trn_inserts_tablas
             values('Proveedor',1)
 			
 		-- Insertamos el administrador a la tabla de Login (pass: gdadmin2012)	
-		insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,habilitado,Rol) 
+		insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,Habilitado,Rol) 
 			VALUES('administrador','914B8A5A8AD525437A7723C688AED4E72E7F7893184BF087C6E91C93E102891B',NULL,1,0,'Administrador')
 		
 		-- Insertamos los datos de los clientes al Login
-        insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,habilitado,Rol)
+        insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,Habilitado,Rol)
 
             select distinct master.Cli_Dni, NULL,NULL,1,0,'Cliente' 
                 from gd_esquema.Maestra master
 
 		-- Insertamos los datos de los proveedores al Login
-        insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,habilitado,Rol)
+        insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,Habilitado,Rol)
 
             select distinct master.Provee_CUIT,NULL,NULL,1,0,'Proveedor' 
                 from gd_esquema.Maestra master 
@@ -564,51 +564,48 @@ begin tran trn_inserts_tablas
             
 commit tran trn_inserts_tablas
 
+GO
 
-/*begin tran trn_triggers
-    
-    create trigger  actualizar_habilitaciones on Roles
-        after
-            update
-        as
-            begin
-                if update(Habilitado)
+create trigger  actualizar_habilitaciones on MR_ANDERSON.Roles
+    after
+        update
+    as
+        begin
+            if update(Habilitado)
+                begin
+
+                    declare @rol NVARCHAR(255)
+                    declare @habilitado BIT
+                    declare @my_fetch_status int
+                    
+                    declare roles_a_chequear cursor  
+                    
+                    for select Rol, Habilitado 
+                        from inserted
+                    
+                    open roles_a_chequear
+                    
+                    fetch roles_a_chequear into @rol, @habilitado
+
+                    set @my_fetch_status = @@FETCH_STATUS
+
+                    while (@my_fetch_status = 0)
                     begin
-
-                        declare @rol NVARCHAR(255)
-                        declare @habilitado BIT
-                        declare @my_fetch_status int
                         
-                        declare roles_a_chequear cursor  
-                        
-                        for select Rol, Habilitado 
-                            from inserted
-                        
-                        open roles_a_chequear
-                        
-                        fetch roles_a_chequear into @rol, @habilitado
+                        update MR_ANDERSON.Roles set Habilitado = @habilitado 
+                            where Rol = @rol
 
-                        set @my_fetch_status = @@FETCH_STATUS
+                        update MR_ANDERSON.Login set Habilitado = @habilitado
+                            where Rol = @rol and Habilitado = 1
 
-                        while (@my_fetch_status = 0)
-                        begin
-                            
-                            update MR_ANDERSON.Roles set Habilitado = @habilitado 
-                                where Rol = @rol
-
-                            update MR_ANDERSON.Login set 
-
-                            fetch next from roles_a_chequear into @rol, @habilitado
-                            set @my_fetch_status = @@FETCH_STATUS    
-                        end
-                        
-                        close roles_a_chequear
-                        deallocate roles_a_chequear
-
-                                                                 
+                        fetch next from roles_a_chequear into @rol, @habilitado
+                        set @my_fetch_status = @@FETCH_STATUS    
                     end
-            end
-    
+                    
+                    close roles_a_chequear
+                    deallocate roles_a_chequear
 
-
-commit tran trn_triggers */   
+                                                             
+                end
+        end
+GO
