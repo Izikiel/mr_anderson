@@ -487,7 +487,7 @@ begin tran trn_inserts_tablas
                                         vencimiento_canje,fecha_publicacion)
 
             select master.Groupon_Codigo, master.Groupon_Precio, master.Groupon_Precio_Ficticio,
-                    master.Groupon_Cantidad, master.Groupon_Descripcion, 0,
+                    1, master.Groupon_Descripcion, master.Groupon_Cantidad,
                     master.Provee_CUIT, master.Provee_RS, master.Groupon_Fecha_Venc, NULL, master.Groupon_Fecha
                 from gd_esquema.Maestra master
 
@@ -502,7 +502,7 @@ begin tran trn_inserts_tablas
 
         insert into MR_ANDERSON.Devoluciones(fecha_devolucion,dni,codigo,motivo, cantidad)
 
-            select master.Groupon_Devolucion_Fecha, master.Cli_Dni, master.Groupon_Codigo, NULL, master.Groupon_Cantidad 
+            select master.Groupon_Devolucion_Fecha, master.Cli_Dni, master.Groupon_Codigo, NULL, 1 
                 from gd_esquema.Maestra master
 
             join MR_ANDERSON.Datos_Clientes Clientes
@@ -512,6 +512,22 @@ begin tran trn_inserts_tablas
                 on   master.Groupon_Codigo = Cupones.codigo
             
             where master.Groupon_Devolucion_Fecha is not null
+
+        insert into MR_ANDERSON.Compras(dni,cantidad,fecha,codigo)
+
+            select  master.Cli_Dni, 1, master.Groupon_Fecha_Compra, master.Groupon_Codigo
+                from gd_esquema.Maestra master
+                
+                join MR_ANDERSON.Datos_Clientes Clientes
+                    on   master.Cli_Dni = Clientes.dni
+                
+                join MR_ANDERSON.Cupones Cupones
+                    on   master.Groupon_Codigo = Cupones.codigo
+                
+                where master.Groupon_Fecha_Compra is not null
+
+                group by master.Cli_Dni, master.Groupon_Fecha_Compra,
+                    master.Groupon_Codigo
 
         GO
 
@@ -528,7 +544,25 @@ begin tran trn_inserts_tablas
                 on MR_ANDERSON.Cupones.codigo = source.codigo
            when matched then
                 update 
-                    set MR_ANDERSON.Cupones.stock_disponible = source.stock;
+                    set MR_ANDERSON.Cupones.stock_disponible = MR_ANDERSON.Cupones.stock_disponible + source.stock;
+
+        GO
+
+
+        Merge into MR_ANDERSON.Cupones
+            using(
+                    select Cupones.Codigo as codigo, sum(Compras.cantidad) as out    
+                from MR_ANDERSON.Compras
+
+                 join MR_ANDERSON.Cupones Cupones
+                    on   Compras.codigo = Cupones.codigo
+                    
+                 group by Cupones.codigo
+                 ) as source
+                on MR_ANDERSON.Cupones.codigo = source.codigo
+           when matched then
+                update 
+                    set MR_ANDERSON.Cupones.stock_disponible = MR_ANDERSON.Cupones.stock_disponible - source.out;
 
         GO
             
@@ -545,24 +579,6 @@ begin tran trn_inserts_tablas
                 
                 where master.Groupon_Entregado_Fecha is not null
 
-        insert into MR_ANDERSON.Compras(dni,cantidad,fecha,codigo)
-
-            select master.Cli_Dni, master.Groupon_Cantidad, master.Groupon_Fecha_Compra,
-                    master.Groupon_Codigo
-                from gd_esquema.Maestra master
-                
-                join MR_ANDERSON.Datos_Clientes Clientes
-                    on   master.Cli_Dni = Clientes.dni
-                
-                join MR_ANDERSON.Cupones Cupones
-                    on   master.Groupon_Codigo = Cupones.codigo
-                
-                where master.Groupon_Fecha_Compra is not null
-
-                group by master.Cli_Dni, master.Groupon_Cantidad, master.Groupon_Fecha_Compra,
-                    master.Groupon_Codigo
-
-
         insert into MR_ANDERSON.Factura(factura_nro,factura_fecha,provee_cuit)
 
             select master.Factura_Nro,master.Factura_Fecha, master.Provee_CUIT
@@ -573,14 +589,17 @@ begin tran trn_inserts_tablas
 
         insert into MR_ANDERSON.Factura_Renglon(cantidad,factura_nro,codigo)
 
-            select sum(master.Groupon_Cantidad), master.Factura_Nro, master.Groupon_Codigo 
+            select sum(Compras.cantidad), master.Factura_Nro, master.Groupon_Codigo 
                 from gd_esquema.Maestra master
 
                 join MR_ANDERSON.Factura Factura
                     on   master.Factura_Nro = Factura.factura_nro
                 
                 join MR_ANDERSON.Cupones Cupones
-                    on   master.Groupon_Codigo = Cupones.codigo
+                    on   master.Groupon_Codigo = Cupones.codigo 
+
+                join MR_ANDERSON.Compras Compras
+                    on   master.Groupon_Codigo = Compras.codigo
 
                 group by master.Factura_Nro, master.Groupon_Codigo 
             
