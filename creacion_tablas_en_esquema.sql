@@ -71,6 +71,7 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
         [mail] NVARCHAR(255) NOT NULL,
         [fecha_nac] DATETIME NOT NULL,
         [username] NVARCHAR(100) NOT NULL,
+        [saldo] NUMERIC(10,2) NOT NULL,
         CONSTRAINT [dni] PRIMARY KEY ([dni])
     )
     
@@ -165,7 +166,7 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
         [precio_fict] NUMERIC(18,2) NOT NULL,
         [cantidad_x_usuario] NUMERIC(18) NOT NULL,
         [descripcion] NVARCHAR(255) NOT NULL,
-        [stock_disponible] VARCHAR(40) NOT NULL,
+        [stock_disponible] NUMERIC(10) NOT NULL,
         [provee_cuit] NVARCHAR(20) NOT NULL,
         [provee_rs] NVARCHAR(100) NOT NULL,
         [vencimiento_oferta] DATETIME NOT NULL,
@@ -235,7 +236,8 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
         [fecha_devolucion] DATETIME NOT NULL,
         [dni] NUMERIC(18) NOT NULL,
         [codigo] NVARCHAR(50) NOT NULL,
-        [motivo] NVARCHAR(255) 
+        [motivo] NVARCHAR(255),
+        [cantidad] NUMERIC(10) NOT NULL
     )
     
 
@@ -370,7 +372,7 @@ GO
     ALTER TABLE [MR_ANDERSON].[Consumos] ADD CONSTRAINT [Datos_Clientes_Consumos] 
         FOREIGN KEY ([dni]) REFERENCES [MR_ANDERSON].[Datos_Clientes] ([dni])
     
-
+GO
 
 --Migracion de Datos 
 
@@ -403,10 +405,10 @@ begin tran trn_inserts_tablas
                 where master.Provee_CUIT is not NULL
 
         --Insertamos los datos viejos de los clientes al modelo nuevo
-        insert into MR_ANDERSON.Datos_Clientes (dni, nombre, apellido,  telefono, mail, fecha_nac, username )
+        insert into MR_ANDERSON.Datos_Clientes (dni, nombre, apellido,  telefono, mail, fecha_nac, username, saldo )
         
             select distinct master.Cli_Dni, master.Cli_Nombre, master.Cli_Apellido,
-                            master.Cli_Telefono, master.Cli_Mail, master.Cli_Fecha_Nac,cast(master.Cli_Dni as NVARCHAR)
+                            master.Cli_Telefono, master.Cli_Mail, master.Cli_Fecha_Nac,cast(master.Cli_Dni as NVARCHAR), 0
                 from gd_esquema.Maestra master 
 
         --Insertamos las direcciones de los clientes al modelo nuevo
@@ -485,7 +487,7 @@ begin tran trn_inserts_tablas
                                         vencimiento_canje,fecha_publicacion)
 
             select master.Groupon_Codigo, master.Groupon_Precio, master.Groupon_Precio_Ficticio,
-                    master.Groupon_Cantidad, master.Groupon_Descripcion, sum(master.Groupon_Cantidad),
+                    master.Groupon_Cantidad, master.Groupon_Descripcion, 0,
                     master.Provee_CUIT, master.Provee_RS, master.Groupon_Fecha_Venc, NULL, master.Groupon_Fecha
                 from gd_esquema.Maestra master
 
@@ -496,10 +498,11 @@ begin tran trn_inserts_tablas
                     master.Groupon_Cantidad, master.Groupon_Descripcion, master.Provee_CUIT, master.Provee_RS, 
                     master.Groupon_Fecha_Venc, master.Groupon_Fecha
 
+                having master.Groupon_Fecha is not null
 
-        insert into MR_ANDERSON.Devoluciones(fecha_devolucion,dni,codigo,motivo)
+        insert into MR_ANDERSON.Devoluciones(fecha_devolucion,dni,codigo,motivo, cantidad)
 
-            select master.Groupon_Devolucion_Fecha, master.Cli_Dni, master.Groupon_Codigo, NULL 
+            select master.Groupon_Devolucion_Fecha, master.Cli_Dni, master.Groupon_Codigo, NULL, master.Groupon_Cantidad 
                 from gd_esquema.Maestra master
 
             join MR_ANDERSON.Datos_Clientes Clientes
@@ -510,6 +513,25 @@ begin tran trn_inserts_tablas
             
             where master.Groupon_Devolucion_Fecha is not null
 
+        GO
+
+        Merge into MR_ANDERSON.Cupones
+            using(
+                    select Cupones.Codigo as codigo, sum(Devoluciones.cantidad) as stock    
+                from MR_ANDERSON.Devoluciones
+
+                 join MR_ANDERSON.Cupones Cupones
+                    on   Devoluciones.codigo = Cupones.codigo
+                    
+                 group by Cupones.codigo
+                 ) as source
+                on MR_ANDERSON.Cupones.codigo = source.codigo
+           when matched then
+                update 
+                    set MR_ANDERSON.Cupones.stock_disponible = source.stock;
+
+        GO
+            
         insert into MR_ANDERSON.Consumos(fecha_consumo, codigo, dni)
 
             select master.Groupon_Entregado_Fecha, master.Groupon_Codigo, master.Cli_Dni 
