@@ -721,9 +721,12 @@ create function MR_ANDERSON.func_login (@username_sended NVARCHAR(100) NOT NULL,
             -- Seleccionamos el hash 'posta'
             set @check_password = (select user_password 
                 from MR_ANDERSON.Login
-                where username = '@username_sended')
-            -- Comparamos
-            if (@check_password = @user_password_sended)
+                where username = @username_sended)
+            -- Comparamos (el exists es para anti sql-injection)
+            if (exists( select user_password 
+                from MR_ANDERSON.Login
+                where username = @username_sended) and @check_password = @user_password_sended)
+
                 begin
                     return 1
                 end
