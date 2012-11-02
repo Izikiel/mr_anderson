@@ -394,13 +394,13 @@ begin tran trn_inserts_tablas
 		-- Insertamos los datos de los clientes al Login
         insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,Habilitado,Rol)
 
-            select distinct master.Cli_Dni, NULL,NULL,1,0,'Cliente' 
+            select distinct master.Cli_Dni, NULL,NULL,0,1,'Cliente' 
                 from gd_esquema.Maestra master
 
 		-- Insertamos los datos de los proveedores al Login
         insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,Habilitado,Rol)
 
-            select distinct master.Provee_CUIT,NULL,NULL,1,0,'Proveedor' 
+            select distinct master.Provee_CUIT,NULL,NULL,0,1,'Proveedor' 
                 from gd_esquema.Maestra master 
                 where master.Provee_CUIT is not NULL
 
@@ -607,6 +607,7 @@ commit tran trn_inserts_tablas
 
 GO
 
+--ABM ROL !
 create trigger  actualizar_habilitaciones on MR_ANDERSON.Roles
     after
         update
@@ -650,3 +651,62 @@ create trigger  actualizar_habilitaciones on MR_ANDERSON.Roles
                 end
         end
 GO
+
+create procedure MR_ANDERSON.sp_new_rol (@nombre_rol NVARCHAR(255) , @Funcionalidad VARCHAR(40))
+    as
+        begin
+            if @nombre_rol not in (select Roles.Rol 
+                from MR_ANDERSON.Roles Roles)
+                begin
+                    insert into MR_ANDERSON.Roles(Rol,Habilitado)
+                        VALUES(@nombre_rol, 1)
+
+                    insert into MR_ANDERSON.Funcionalidades_Roles(Rol,Funcionalidad)
+                        VALUES(@nombre_rol, @Funcionalidad)
+                end
+            else 
+                begin
+                    raiserror('Este Rol ya existe!',1,1)
+                end
+
+        end
+GO
+
+create procedure MR_ANDERSON.sp_del_func_rol (@nombre_rol NVARCHAR(255), @Funcionalidad VARCHAR(40))        
+    as
+        begin
+            delete from MR_ANDERSON.Funcionalidades_Roles 
+                where Rol = @nombre_rol and Funcionalidad = @Funcionalidad
+        end
+GO
+
+create procedure MR_ANDERSON.sp_add_func_rol (@nombre_rol NVARCHAR(255), @Funcionalidad VARCHAR(40))    
+    as
+        begin
+            if not exists(select Rol,Funcionalidad 
+                from MR_ANDERSON.Funcionalidades_Roles 
+                where Rol = @nombre_rol and Funcionalidad = @Funcionalidad)
+                
+                begin
+                    insert into MR_ANDERSON.Funcionalidades_Roles(Rol, Funcionalidad)
+                        VALUES(@nombre_rol, @Funcionalidad)
+                end
+
+        end
+GO
+
+create procedure MR_ANDERSON.sp_change_status_rol (@nombre_rol NVARCHAR(255), @status BIT) --Usar para borrar/inhabilitar, habilitar
+    as
+        begin
+            update MR_ANDERSON.Roles
+                set Habilitado = @status
+                where Rol = @nombre_rol
+        end
+GO
+
+
+
+
+--Fin ABM ROL!
+
+

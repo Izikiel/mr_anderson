@@ -9,6 +9,31 @@
 /* ---------------------------------------------------------------------- */
 
 
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_add_func_rol]    Script Date: 11/02/2012 17:15:24 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_add_func_rol]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_add_func_rol]
+GO
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_change_status_rol]    Script Date: 11/02/2012 17:15:53 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_change_status_rol]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_change_status_rol]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_del_func_rol]    Script Date: 11/02/2012 17:16:11 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_del_func_rol]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_del_func_rol]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_new_rol]    Script Date: 11/02/2012 17:16:23 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_new_rol]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_new_rol]
+GO
+
+
 /* ---------------------------------------------------------------------- */
 /* Drop foreign key constraints                                           */
 /* ---------------------------------------------------------------------- */
