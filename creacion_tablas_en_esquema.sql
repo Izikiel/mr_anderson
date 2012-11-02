@@ -711,16 +711,18 @@ GO
 
 -- Login !
 
-create function MR_ANDERSON.func_login (@username_sended NVARCHAR(100) NOT NULL, @user_password_sended NVARCHAR(255))
+create function MR_ANDERSON.func_login (@username_sended NVARCHAR(100) NOT NULL, @user_password_sended NVARCHAR(255)) -- Con el NOT NULL nos aseguramos que no puedan enviar un usuario vacio
 
     returns bit
 
     as
         begin
             declare @check_password nvarchar(255)
+            -- Seleccionamos el hash 'posta'
             set @check_password = (select user_password 
                 from MR_ANDERSON.Login
                 where username = '@username_sended')
+            -- Comparamos
             if (@check_password = @user_password_sended)
                 begin
                     return 1
