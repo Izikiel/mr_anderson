@@ -608,6 +608,7 @@ commit tran trn_inserts_tablas
 GO
 
 --ABM ROL !
+/*
 create trigger  actualizar_habilitaciones on MR_ANDERSON.Roles
     after
         update
@@ -651,7 +652,7 @@ create trigger  actualizar_habilitaciones on MR_ANDERSON.Roles
                 end
         end
 GO
-
+*/
 create procedure MR_ANDERSON.sp_new_rol (@nombre_rol NVARCHAR(255) , @Funcionalidad VARCHAR(40))
     as
         begin
@@ -701,6 +702,9 @@ create procedure MR_ANDERSON.sp_change_status_rol (@nombre_rol NVARCHAR(255), @s
             update MR_ANDERSON.Roles
                 set Habilitado = @status
                 where Rol = @nombre_rol
+
+            update MR_ANDERSON.Login set Habilitado = @status
+                where Rol = @nombre_rol and Habilitado = 1
         end
 GO
 
@@ -725,7 +729,7 @@ create function MR_ANDERSON.func_login (@username_sended NVARCHAR(100) NOT NULL,
             -- Comparamos (el exists es para anti sql-injection)
             if (exists( select user_password 
                 from MR_ANDERSON.Login
-                where username = @username_sended) and @check_password = @user_password_sended)
+                where username = @username_sended and @check_password = @user_password_sended)
 
                 begin
                     return 1
