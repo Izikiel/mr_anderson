@@ -717,26 +717,39 @@ GO
 
 create function MR_ANDERSON.func_login (@username_sended NVARCHAR(100) NOT NULL, @user_password_sended NVARCHAR(255)) -- Con el NOT NULL nos aseguramos que no puedan enviar un usuario vacio
 
-    returns bit
+    returns NVARCHAR(11)
 
     as
         begin
             declare @check_password nvarchar(255)
+
             -- Seleccionamos el hash 'posta'
             set @check_password = (select user_password 
                 from MR_ANDERSON.Login
                 where username = @username_sended)
-            -- Comparamos (el exists es para anti sql-injection)
-            if (exists( select user_password 
+
+            -- Nos fijamos si es el primer login
+            if (exists(select user_password 
+                from MR_ANDERSON.Login
+                where username = @username_sended) and @check_password is null)
+
+                begin
+                    return 'LOGIN_FIRST'
+                end
+
+            -- Comparamos
+            if (exists(select user_password 
                 from MR_ANDERSON.Login
                 where username = @username_sended) and @check_password = @user_password_sended)
 
                 begin
-                    return 1
+                    return 'LOGIN_OK'
                 end
+                
+            -- Si no se cumple ninguna de las condiciones anteriores, retornar error
             else 
                 begin
-                    return 0
+                    return 'LOGIN_ERROR'
                 end
         end
 
