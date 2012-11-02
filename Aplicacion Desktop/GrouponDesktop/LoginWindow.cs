@@ -24,7 +24,7 @@ namespace GrouponDesktop
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Login login = new Login();
+            DataAdapter login = new DataAdapter();
             login.validateUser();
         }
 

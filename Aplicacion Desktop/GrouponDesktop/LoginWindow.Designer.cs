@@ -107,7 +107,7 @@
             // 
             // loginBindingSource
             // 
-            this.loginBindingSource.DataSource = typeof(GrouponDesktop.Login);
+            this.loginBindingSource.DataSource = typeof(GrouponDesktop.DataAdapter);
             // 
             // LoginWindow
             // 
