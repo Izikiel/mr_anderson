@@ -709,4 +709,29 @@ GO
 
 --Fin ABM ROL!
 
+-- Login !
+
+create function MR_ANDERSON.func_login (@username_sended NVARCHAR(100) NOT NULL, @user_password_sended NVARCHAR(255))
+
+    returns bit
+
+    as
+        begin
+            declare @check_password nvarchar(255)
+            set @check_password = (select user_password 
+                from MR_ANDERSON.Login
+                where username = '@username_sended')
+            if (@check_password = @user_password_sended)
+                begin
+                    return 1
+                end
+            else 
+                begin
+                    return 0
+                end
+        end
+
+GO
+
+-- Listo Login !
 
