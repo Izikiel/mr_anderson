@@ -787,12 +787,67 @@ create function MR_ANDERSON.func_insert_login (@username_sended NVARCHAR(100) NO
                 end
             else
                 begin
-                    insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,Habilitado,Rol) 
-                        VALUES(@username_sended,@user_password_sended,NULL,0,1,@rol_sended)
+                    insert into MR_ANDERSON.Login(username, user_password, last_login, intentos_fallidos, Habilitado, Rol) 
+                        VALUES(@username_sended, @user_password_sended, NULL, 0, 1, @rol_sended)
                     return 'LOGIN_REG_OK'
                 end
         end
 
 GO
 
--- Listo insert nuevo login>>>>>>> .r51
+-- Listo insert nuevo login
+
+
+-- Insert nuevo cliente
+
+create function MR_ANDERSON.func_insert_cliente (@nombre_sended NVARCHAR(255) NOT NULL, @dni_sended NUMERIC(18) NOT NULL, @apellido_sended NVARCHAR(255) NOT NULL,
+                    @telefono_sended NUMERIC(18) unique NOT NULL, @mail_sended NVARCHAR(255) NOT NULL, @fecha_nac_sended DATETIME NOT NULL, @username_sended NVARCHAR(100) NOT NULL)
+
+    returns NVARCHAR(19)
+
+    as
+        begin
+            if exists(select dni from MR_ANDERSON.Datos_Clientes where dni = @dni_sended)
+                begin
+                    return 'CLIENT_EXISTENT'
+                end
+            if exists(select telefono from MR_ANDERSON.Datos_Clientes where telefono = @telefono_sended)
+                begin 
+                    return 'CLIENT_TEL_EXISTENT'
+            else
+                begin
+                    insert into MR_ANDERSON.Datos_Clientes (dni, nombre, apellido, telefono, mail, fecha_nac, username, saldo) 
+                        VALUES(@dni_sended, @nombre_sended, @apellido_sended, @telefono_sended, @mail_sended, @fecha_nac_sended, @username_sended, 10)
+                    return 'CLIENT_REG_OK'
+                end
+        end
+
+GO
+
+-- Listo insert nuevo cliente
+
+
+-- Insert nuevo proveedor
+
+create function MR_ANDERSON.func_insert_proveedor (@provee_cuit_sended NVARCHAR(20) NOT NULL, @provee_rs_sended NVARCHAR(100) NOT NULL, @provee_telefono_sended NUMERIC(18) NOT NULL,
+                    @provee_rubro_sended NVARCHAR(100) NOT NULL, @username_sended NVARCHAR(100) NOT NULL, @nombre_contacto_sended VARCHAR(40), @provee_email_sended NVARCHAR(255))
+
+    returns NVARCHAR(19)
+
+    as
+        begin
+            if exists(select provee_cuit from MR_ANDERSON.Datos_Proveedores where provee_cuit = @provee_cuit_sended)
+                begin
+                    return 'PROV_EXISTENT'
+                end
+            else
+                begin
+                    insert into MR_ANDERSON.Datos_Proveedores (provee_cuit, provee_rs, provee_telefono, provee_rubro, username, nombre_contacto, provee_email) 
+                        VALUES(@provee_cuit_sended, @provee_rs_sended, @provee_telefono_sended, @provee_rubro_sended, @username_sended, @nombre_contacto_sended, @provee_email_sended)
+                    return 'PROV_REG_OK'
+                end
+        end
+
+GO
+
+-- Listo insert nuevo proveedor
