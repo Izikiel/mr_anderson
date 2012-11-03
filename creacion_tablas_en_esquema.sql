@@ -389,7 +389,7 @@ begin tran trn_inserts_tablas
 			
 		-- Insertamos el administrador a la tabla de Login (pass: gdadmin2012)	
 		insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,Habilitado,Rol) 
-			VALUES('administrador','914B8A5A8AD525437A7723C688AED4E72E7F7893184BF087C6E91C93E102891B',NULL,1,0,'Administrador')
+			VALUES('administrador','914B8A5A8AD525437A7723C688AED4E72E7F7893184BF087C6E91C93E102891B',NULL,0,1,'Administrador')
 		
 		-- Insertamos los datos de los clientes al Login
         insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,Habilitado,Rol)
@@ -757,3 +757,26 @@ GO
 
 -- Listo Login !
 
+-- Insert nuevo login
+
+create function MR_ANDERSON.func_insert_login (@username_sended NVARCHAR(100) NOT NULL, @user_password_sended NVARCHAR(255), @rol_sended NVARCHAR(255) NOT NULL)
+
+    returns NVARCHAR(14)
+
+    as
+        begin
+            if exists(select username from MR_ANDERSON.Login where username = @username_sended)
+                begin
+                    return 'LOGIN_EXISTENT'
+                end
+            else
+                begin
+                    insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,Habilitado,Rol) 
+                        VALUES(@username_sended,@user_password_sended,NULL,0,1,@rol_sended)
+                    return 'LOGIN_REG_OK'
+                end
+        end
+
+GO
+
+-- Listo insert nuevo login
