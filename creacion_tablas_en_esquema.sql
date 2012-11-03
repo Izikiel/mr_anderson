@@ -885,3 +885,30 @@ create procedure MR_ANDERSON.sp_insert_proveedor (@provee_cuit_sended NVARCHAR(2
 GO
 
 -- Listo insert nuevo proveedor
+
+--Insert Direccion
+create procedure MR_ANDERSON.sp_insert_direccion (@calle NVARCHAR(100), @localidad NVARCHAR(100), 
+                                @username NVARCHAR(100), @nro_piso NUMERIC(3), @depto NVARCHAR(40), @result NVARCHAR(20) output)
+    as
+        begin
+            if @calle is null or @localidad is null or @username is null
+                begin
+                    set @result = 'SENT_VALUE_NULL'
+                    return 1
+                end
+
+            if not exists(select username 
+                from MR_ANDERSON.Login where username = @username)
+                begin
+                    set @result = 'INEXISTENT_USER'
+                    return 1
+                end
+
+            insert into MR_ANDERSON.Direccion(calle, localidad, username, nro_piso, depto)
+                VALUES(@calle,@localidad,@username,@nro_piso,@depto)
+
+            set @result = 'OK'
+            return 0
+        end
+GO
+--Listo insert direccion
