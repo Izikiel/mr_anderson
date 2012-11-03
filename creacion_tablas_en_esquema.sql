@@ -72,7 +72,8 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
         [fecha_nac] DATETIME NOT NULL,
         [username] NVARCHAR(100) NOT NULL,
         [saldo] NUMERIC(10,2) NOT NULL,
-        CONSTRAINT [dni] PRIMARY KEY ([dni])
+        CONSTRAINT [dni] PRIMARY KEY ([dni]),
+        UNIQUE ([telefono])
     )
     
 
@@ -708,19 +709,36 @@ create procedure MR_ANDERSON.sp_change_status_rol (@nombre_rol NVARCHAR(255), @s
         end
 GO
 
+create procedure MR_ANDERSON.sp_change_rol_name (@nombre_rol NVARCHAR(255), @nuevo_nombre_rol NVARCHAR(255))
+    as
+        begin
+            update MR_ANDERSON.Roles
+                set Rol = @nuevo_nombre_rol
+                where Rol = @nombre_rol
 
+            update MR_ANDERSON.Login 
+                set Rol = @nuevo_nombre_rol
+                where Rol = @nombre_rol
+        end
+GO
 
 
 --Fin ABM ROL!
 
 -- Login !
 
-create function MR_ANDERSON.func_login (@username_sended NVARCHAR(100) NOT NULL, @user_password_sended NVARCHAR(255)) -- Con el NOT NULL nos aseguramos que no puedan enviar un usuario vacio
+create function MR_ANDERSON.func_login (@username_sended NVARCHAR(100) , @user_password_sended NVARCHAR(255)) -- Con el NOT NULL nos aseguramos que no puedan enviar un usuario vacio
 
     returns NVARCHAR(11)
 
     as
         begin
+
+            if @username_sended is null
+                begin
+                    return 'LOGIN_ERROR'
+                end
+
             declare @check_password nvarchar(255)
 
             -- Seleccionamos el hash 'posta'
@@ -747,10 +765,8 @@ create function MR_ANDERSON.func_login (@username_sended NVARCHAR(100) NOT NULL,
                 end
                 
             -- Si no se cumple ninguna de las condiciones anteriores, retornar error
-            else 
-                begin
-                    return 'LOGIN_ERROR'
-                end
+            return 'LOGIN_ERROR'
+            
         end
 
 GO
@@ -779,4 +795,4 @@ create function MR_ANDERSON.func_insert_login (@username_sended NVARCHAR(100) NO
 
 GO
 
--- Listo insert nuevo login
+-- Listo insert nuevo login>>>>>>> .r51

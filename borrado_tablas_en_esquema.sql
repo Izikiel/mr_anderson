@@ -33,6 +33,17 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON
 DROP PROCEDURE [MR_ANDERSON].[sp_new_rol]
 GO
 
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_change_rol_name]    Script Date: 11/02/2012 22:58:17 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_change_rol_name]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_change_rol_name]
+GO
+
+/****** Object:  UserDefinedFunction [MR_ANDERSON].[func_login]    Script Date: 11/02/2012 23:02:25 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[func_login]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [MR_ANDERSON].[func_login]
+GO
+
+
 
 /* ---------------------------------------------------------------------- */
 /* Drop foreign key constraints                                           */
