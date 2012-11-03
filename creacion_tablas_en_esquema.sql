@@ -775,22 +775,27 @@ GO
 
 -- Insert nuevo login
 
-create function MR_ANDERSON.func_insert_login (@username_sended NVARCHAR(100) NOT NULL, @user_password_sended NVARCHAR(255), @rol_sended NVARCHAR(255) NOT NULL)
-
-    returns NVARCHAR(14)
-
+create procedure MR_ANDERSON.sp_insert_login (@username_sended NVARCHAR(100), @user_password_sended NVARCHAR(255), @rol_sended NVARCHAR(255), 
+                                                @result NVARCHAR(14) output)
     as
         begin
+            if @username_sended is null or @rol_sended is null
+                    begin
+                        set @result = 'LOGIN_ERROR'
+                        return 2
+                    end    
+
             if exists(select username from MR_ANDERSON.Login where username = @username_sended)
                 begin
-                    return 'LOGIN_EXISTENT'
+                    set @result = 'LOGIN_EXISTS'
+                    return 1
                 end
-            else
-                begin
-                    insert into MR_ANDERSON.Login(username, user_password, last_login, intentos_fallidos, Habilitado, Rol) 
-                        VALUES(@username_sended, @user_password_sended, NULL, 0, 1, @rol_sended)
-                    return 'LOGIN_REG_OK'
-                end
+
+            insert into MR_ANDERSON.Login(username, user_password, last_login, intentos_fallidos, Habilitado, Rol) 
+                VALUES(@username_sended, @user_password_sended, NULL, 0, 1, @rol_sended)
+            
+            set @result = 'LOGIN_REG_OK'
+            return 0
         end
 
 GO
@@ -800,28 +805,44 @@ GO
 
 -- Insert nuevo cliente
 
-create function MR_ANDERSON.func_insert_cliente (@nombre_sended NVARCHAR(255) NOT NULL, @dni_sended NUMERIC(18) NOT NULL, @apellido_sended NVARCHAR(255) NOT NULL,
-                    @telefono_sended NUMERIC(18) unique NOT NULL, @mail_sended NVARCHAR(255) NOT NULL, @fecha_nac_sended DATETIME NOT NULL, @username_sended NVARCHAR(100) NOT NULL)
-
-    returns NVARCHAR(19)
-
+create procedure MR_ANDERSON.sp_insert_cliente (@nombre_sended NVARCHAR(255), @dni_sended NUMERIC(18), @apellido_sended NVARCHAR(255),
+                    @telefono_sended NUMERIC(18) , @mail_sended NVARCHAR(255), @fecha_nac_sended DATETIME,
+                    @username_sended NVARCHAR(100), @result NVARCHAR(19) output)
     as
         begin
-            if exists(select dni from MR_ANDERSON.Datos_Clientes where dni = @dni_sended)
+
+            if @nombre_sended is null 
+                or @dni_sended is null 
+                or @apellido_sended is null 
+                or @telefono_sended is null 
+                or @mail_sended is null 
+                or @fecha_nac_sended is null
+                or @username_sended is null
                 begin
-                    return 'CLIENT_EXISTENT'
+                    set @result = 'SENT_VALUE_NULL'
+                    return 2
+                end
+
+            if exists(select dni from MR_ANDERSON.Datos_Clientes where dni = @dni_sended)
+                or exists(select username from MR_ANDERSON.Datos_Clientes where username = @username_sended)
+
+                begin
+                    set @result = 'CLIENT_EXISTENT'
+                    return 1 
                 end
             if exists(select telefono from MR_ANDERSON.Datos_Clientes where telefono = @telefono_sended)
                 begin 
-                    return 'CLIENT_TEL_EXISTENT'
-            else
-                begin
-                    insert into MR_ANDERSON.Datos_Clientes (dni, nombre, apellido, telefono, mail, fecha_nac, username, saldo) 
-                        VALUES(@dni_sended, @nombre_sended, @apellido_sended, @telefono_sended, @mail_sended, @fecha_nac_sended, @username_sended, 10)
-                    return 'CLIENT_REG_OK'
+                    set @result = 'CLIENT_TEL_EXISTENT'
+                    return 1
                 end
-        end
 
+            insert into MR_ANDERSON.Datos_Clientes (dni, nombre, apellido, telefono, mail, fecha_nac, username, saldo) 
+                VALUES(@dni_sended, @nombre_sended, @apellido_sended, @telefono_sended, @mail_sended, @fecha_nac_sended, @username_sended, 10)
+      
+            set @result = 'CLIENT_REG_OK'
+            return 0 
+        
+        end
 GO
 
 -- Listo insert nuevo cliente
@@ -829,23 +850,36 @@ GO
 
 -- Insert nuevo proveedor
 
-create function MR_ANDERSON.func_insert_proveedor (@provee_cuit_sended NVARCHAR(20) NOT NULL, @provee_rs_sended NVARCHAR(100) NOT NULL, @provee_telefono_sended NUMERIC(18) NOT NULL,
-                    @provee_rubro_sended NVARCHAR(100) NOT NULL, @username_sended NVARCHAR(100) NOT NULL, @nombre_contacto_sended VARCHAR(40), @provee_email_sended NVARCHAR(255))
-
-    returns NVARCHAR(19)
-
+create procedure MR_ANDERSON.sp_insert_proveedor (@provee_cuit_sended NVARCHAR(20), @provee_rs_sended NVARCHAR(100), @provee_telefono_sended NUMERIC(18),
+                            @provee_rubro_sended NVARCHAR(100), @username_sended NVARCHAR(100), @nombre_contacto_sended VARCHAR(40), 
+                            @provee_email_sended NVARCHAR(255), @result NVARCHAR(20) output)
     as
         begin
+
+            if @provee_cuit_sended is null
+                or @provee_rs_sended is null
+                or @provee_telefono_sended is null
+                or @provee_rubro_sended is null 
+                or @username_sended is null
+                or @nombre_contacto_sended is null
+                or @provee_email_sended is null
+                begin
+                    set @result = 'SENT_VALUE_NULL'
+                    return 1
+                end
+
             if exists(select provee_cuit from MR_ANDERSON.Datos_Proveedores where provee_cuit = @provee_cuit_sended)
+                or exists(select username from MR_ANDERSON.Datos_Proveedores where username = @username_sended)
+
                 begin
-                    return 'PROV_EXISTENT'
+                    set @result = 'PROV_EXISTENT'
+                    return 1
                 end
-            else
-                begin
-                    insert into MR_ANDERSON.Datos_Proveedores (provee_cuit, provee_rs, provee_telefono, provee_rubro, username, nombre_contacto, provee_email) 
-                        VALUES(@provee_cuit_sended, @provee_rs_sended, @provee_telefono_sended, @provee_rubro_sended, @username_sended, @nombre_contacto_sended, @provee_email_sended)
-                    return 'PROV_REG_OK'
-                end
+            
+            insert into MR_ANDERSON.Datos_Proveedores (provee_cuit, provee_rs, provee_telefono, provee_rubro, username, nombre_contacto, provee_email) 
+                VALUES(@provee_cuit_sended, @provee_rs_sended, @provee_telefono_sended, @provee_rubro_sended, @username_sended, @nombre_contacto_sended, @provee_email_sended)
+            return 'PROV_REG_OK'
+                
         end
 
 GO

@@ -8,8 +8,21 @@
 /* Created on:            2012-10-26 16:56                                */
 /* ---------------------------------------------------------------------- */
 
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_insert_proveedor]    Script Date: 11/03/2012 16:26:04 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_insert_proveedor]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_insert_proveedor]
+GO
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_insert_cliente]    Script Date: 11/03/2012 15:54:38 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_insert_cliente]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_insert_cliente]
+GO
 
 
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_insert_login]    Script Date: 11/03/2012 15:39:53 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_insert_login]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_insert_login]
+GO
 
 /****** Object:  StoredProcedure [MR_ANDERSON].[sp_add_func_rol]    Script Date: 11/02/2012 17:15:24 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_add_func_rol]') AND type in (N'P', N'PC'))
