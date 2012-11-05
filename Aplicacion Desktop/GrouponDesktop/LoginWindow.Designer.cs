@@ -30,13 +30,13 @@
         {
             this.components = new System.ComponentModel.Container();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.loginBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.lblRegistrar = new System.Windows.Forms.Label();
             this.lnkRegister = new System.Windows.Forms.LinkLabel();
-            this.loginBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.loginBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -49,6 +49,10 @@
             this.textBox1.Size = new System.Drawing.Size(171, 20);
             this.textBox1.TabIndex = 1;
             // 
+            // loginBindingSource
+            // 
+            this.loginBindingSource.DataSource = typeof(GrouponDesktop.DataAdapter.DataAdapter);
+            // 
             // textBox2
             // 
             this.textBox2.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.loginBindingSource, "UserName", true));
@@ -57,6 +61,7 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(171, 20);
             this.textBox2.TabIndex = 2;
+            
             // 
             // button1
             // 
@@ -73,18 +78,18 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(13, 43);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.Size = new System.Drawing.Size(42, 13);
             this.label1.TabIndex = 4;
-            this.label1.Text = "label1";
+            this.label1.Text = "nombre";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(12, 92);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
+            this.label2.Size = new System.Drawing.Size(60, 13);
             this.label2.TabIndex = 5;
-            this.label2.Text = "label2";
+            this.label2.Text = "contraseña";
             // 
             // lblRegistrar
             // 
@@ -104,10 +109,6 @@
             this.lnkRegister.TabIndex = 7;
             this.lnkRegister.TabStop = true;
             this.lnkRegister.Text = "Click Aquí";
-            // 
-            // loginBindingSource
-            // 
-            this.loginBindingSource.DataSource = typeof(GrouponDesktop.DataAdapter);
             // 
             // LoginWindow
             // 

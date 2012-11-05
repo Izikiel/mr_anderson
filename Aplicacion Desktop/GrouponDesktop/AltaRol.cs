@@ -97,7 +97,7 @@ namespace GrouponDesktop
             Rol.Rol unRol = rolBuilder.buildRol(textBox1.Text, cboBoxTipoUsr.SelectedItem.ToString(), funcionalidades);
             MessageBox.Show("Se dio de alta al rol correctamente. Nombre de rol: "+ unRol.getNombreRol());
             //TODO: llamar a un objeto que persista al rol en la base
-            //TODO: (menos importante) hacer la validacion en el rolBuilder de que no haya dos roles con el mismo nombre
+            
             this.Close();
             
         }

@@ -11,22 +11,25 @@ namespace GrouponDesktop
 {
     public partial class LoginWindow : Form
     {
+        String nombre;
+        String pass;
+
         public LoginWindow()
         {
             InitializeComponent();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+       
         
 
         private void button1_Click(object sender, EventArgs e)
         {
-            DataAdapter login = new DataAdapter();
+            Login login = new Login();
+            login.UserName = textBox2.Text;
+            login.Password = textBox1.Text;
             login.validateUser();
         }
 
+        
     }
 }

@@ -54,9 +54,17 @@
     <Compile Include="ABM.Designer.cs">
       <DependentUpon>ABM.cs</DependentUpon>
     </Compile>
+    <Compile Include="AltaRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AltaRol.Designer.cs">
+      <DependentUpon>AltaRol.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\DBManager.cs" />
     <Compile Include="DataAccess\SPManager.cs" />
     <Compile Include="DataAdapter\DataAdapter.cs" />
+    <Compile Include="DataAdapter\Login.cs" />
+    <Compile Include="DataAdapter\RolAdapter.cs" />
     <Compile Include="LoginWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +75,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ABM.resx">
       <DependentUpon>ABM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AltaRol.resx">
+      <DependentUpon>AltaRol.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoginWindow.resx">
       <DependentUpon>LoginWindow.cs</DependentUpon>
