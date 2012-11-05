@@ -922,8 +922,6 @@ GO
 
 --Modificar cliente
 
-
-
 create procedure MR_ANDERSON.sp_modify_client (@nombre_sended NVARCHAR(255), @dni_sended NUMERIC(18), @apellido_sended NVARCHAR(255),
                     @telefono_sended NUMERIC(18) , @mail_sended NVARCHAR(255), @fecha_nac_sended DATETIME,
                     @username_sended NVARCHAR(100), @result NVARCHAR(19) output)
@@ -961,3 +959,25 @@ create procedure MR_ANDERSON.sp_modify_client (@nombre_sended NVARCHAR(255), @dn
         end
 GO
 --Listo Modificar cliente
+
+--Calcular total factura
+
+create function MR_ANDERSON.fn_total_factura (@factura_nro NUMERIC(18))
+
+    returns NUMERIC(18,2)
+
+    as
+        begin
+            return (select sum(FR.cantidad * Cupones.precio)
+                from MR_ANDERSON.Factura_Renglon FR
+
+            join MR_ANDERSON.Factura Factura
+                on   FR.factura_nro = Factura.factura_nro and Factura.factura_nro = @factura_nro
+
+            join MR_ANDERSON.Cupones Cupones
+                on   FR.codigo = Cupones.codigo)
+            
+            
+        end
+GO
+

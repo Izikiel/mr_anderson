@@ -9,6 +9,11 @@
 /* ---------------------------------------------------------------------- */
 
 
+/****** Object:  UserDefinedFunction [MR_ANDERSON].[fn_total_factura]    Script Date: 11/05/2012 19:00:23 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[fn_total_factura]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [MR_ANDERSON].[fn_total_factura]
+GO
+
 /****** Object:  StoredProcedure [MR_ANDERSON].[sp_modify_client]    Script Date: 11/05/2012 18:50:35 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_modify_client]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [MR_ANDERSON].[sp_modify_client]
