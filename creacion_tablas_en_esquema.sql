@@ -789,8 +789,6 @@ create procedure MR_ANDERSON.sp_login (@username_sended NVARCHAR(100) , @user_pa
                                 return 1
                         end                  
 
-
-
                     -- Login Correcto deberia entrar aca
                     if (@check_habilitado = 1 and @check_password = @user_password_sended)
                         begin
