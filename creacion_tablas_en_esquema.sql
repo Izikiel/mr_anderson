@@ -923,7 +923,7 @@ GO
 --Modificar cliente
 
 
-/*
+
 create procedure MR_ANDERSON.sp_modify_client (@nombre_sended NVARCHAR(255), @dni_sended NUMERIC(18), @apellido_sended NVARCHAR(255),
                     @telefono_sended NUMERIC(18) , @mail_sended NVARCHAR(255), @fecha_nac_sended DATETIME,
                     @username_sended NVARCHAR(100), @result NVARCHAR(19) output)
@@ -947,31 +947,17 @@ create procedure MR_ANDERSON.sp_modify_client (@nombre_sended NVARCHAR(255), @dn
                     return 1
                 end
 
-            declare @old_dni NUMERIC(18)
-            set @old_dni = (select dni from MR_ANDERSON.Datos_Clientes where username = @username_sended)
-            
-            update MR_ANDERSON.Cliente_Destino
-                set dni = @dni_sended
-                where dni = @old_dni
-            
-            update MR_ANDERSON.Cliente_Origen
-                set dni = @dni_sended
-                where dni = @old_dni         
-
-            update MR_ANDERSON.Giftcard
-                set        
 
             update MR_ANDERSON.Datos_Clientes
                 set nombre = @nombre_sended
-                set dni = @dni_sended
-                set apellido = @apellido 
-                set telefono = @telefono_sended
-                set mail = @mail_sended
-                set fecha_nac = @fecha_nac_sended
+                ,dni = @dni_sended
+                ,apellido = @apellido_sended
+                ,telefono = @telefono_sended
+                ,mail = @mail_sended
+                ,fecha_nac = @fecha_nac_sended
 
                 where username = @username_sended
 
         end
 GO
 --Listo Modificar cliente
-*/
