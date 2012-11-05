@@ -727,45 +727,85 @@ GO
 
 -- Login !
 
-create function MR_ANDERSON.func_login (@username_sended NVARCHAR(100) , @user_password_sended NVARCHAR(255)) -- Con el NOT NULL nos aseguramos que no puedan enviar un usuario vacio
-
-    returns NVARCHAR(11)
+create procedure MR_ANDERSON.sp_login (@username_sended NVARCHAR(100) , @user_password_sended NVARCHAR(255), @result NVARCHAR(20) output)
 
     as
         begin
 
             if @username_sended is null
                 begin
-                    return 'LOGIN_ERROR'
+                    set @result = 'LOGIN_ERROR'
+                    return 1
                 end
 
             declare @check_password nvarchar(255)
+            declare @check_habilitado bit
+            declare @check_fallidos numeric(10)
 
-            -- Seleccionamos el hash 'posta'
-            set @check_password = (select user_password 
-                from MR_ANDERSON.Login
-                where username = @username_sended)
-
-            -- Nos fijamos si es el primer login
-            if (exists(select user_password 
-                from MR_ANDERSON.Login
-                where username = @username_sended) and @check_password is null)
+            if (exists(select user_password from MR_ANDERSON.Login where username = @username_sended)
 
                 begin
-                    return 'LOGIN_FIRST'
-                end
+                    -- Seleccionamos el hash 'posta'
+                    set @check_password = (select user_password from MR_ANDERSON.Login where username = @username_sended)
 
-            -- Comparamos
-            if (exists(select user_password 
-                from MR_ANDERSON.Login
-                where username = @username_sended) and @check_password = @user_password_sended)
+                    -- Nos fijamos si es el primer login
+                    if (@check_password is null)
 
-                begin
-                    return 'LOGIN_OK'
+                        begin
+                            set @result = 'LOGIN_FIRST'
+                            return 0
+                        end
+
+                    -- Seleccionamos la cantidad de intentos fallidos que tiene
+                    set @check_habilitado = (select Habilitado from MR_ANDERSON.Login where username = @username_sended)
+                    if (@check_habilitado = 0)
+
+                        begin
+                            set @result = 'LOGIN_OFF'
+                            return 1
+                        end
+
+                    -- Usuario correcto pero contraseña incorrecta
+                    if (@check_password <> @user_password_sended)
+                        
+                        begin
+                                update MR_ANDERSON.Datos_Clientes
+                                    set intentos_fallidos = intentos_fallidos + 1
+                                    where username = @username_sended
+
+                                set @result = 'LOGIN_PASS_ERR'
+                                return 1
+                        end
+
+                    -- Si intentos_fallidos = 3, deshabilitar usuario
+                    set @check_fallidos = (select intentos_fallidos from MR_ANDERSON.Login where username = @username_sended)
+                    if (@check_fallidos = 3)
+                        begin
+                                update MR_ANDERSON.Datos_Clientes
+                                    set Habilitado = 0
+                                    where username = @username_sended
+
+                                set @result = 'LOGIN_TOO_MANY_TIMES'
+                                return 1
+                        end                  
+
+
+
+                    -- Login Correcto deberia entrar aca
+                    if (@check_habilitado = 1 and @check_password = @user_password_sended)
+                        begin
+                            update MR_ANDERSON.Datos_Clientes
+                                set intentos_fallidos = 0
+                                where username = @username_sended
+
+                            set @result = 'LOGIN_OK'
+                            return 0
+                        end
                 end
                 
-            -- Si no se cumple ninguna de las condiciones anteriores, retornar error
-            return 'LOGIN_ERROR'
+            -- Si no se cumple ninguna de las condiciones anteriores, (usuario inexistente, otro error, etc) retornar error
+            set @result = 'LOGIN_ERROR'
+            return 1
             
         end
 
