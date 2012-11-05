@@ -769,7 +769,7 @@ create procedure MR_ANDERSON.sp_login (@username_sended NVARCHAR(100) , @user_pa
                     if (@check_password <> @user_password_sended)
                         
                         begin
-                                update MR_ANDERSON.Datos_Clientes
+                                update MR_ANDERSON.Login
                                     set intentos_fallidos = intentos_fallidos + 1
                                     where username = @username_sended
 
@@ -781,7 +781,7 @@ create procedure MR_ANDERSON.sp_login (@username_sended NVARCHAR(100) , @user_pa
                     set @check_fallidos = (select intentos_fallidos from MR_ANDERSON.Login where username = @username_sended)
                     if (@check_fallidos = 3)
                         begin
-                                update MR_ANDERSON.Datos_Clientes
+                                update MR_ANDERSON.Login
                                     set Habilitado = 0
                                     where username = @username_sended
 
@@ -792,7 +792,7 @@ create procedure MR_ANDERSON.sp_login (@username_sended NVARCHAR(100) , @user_pa
                     -- Login Correcto deberia entrar aca
                     if (@check_habilitado = 1 and @check_password = @user_password_sended)
                         begin
-                            update MR_ANDERSON.Datos_Clientes
+                            update MR_ANDERSON.Login
                                 set intentos_fallidos = 0
                                 where username = @username_sended
 
