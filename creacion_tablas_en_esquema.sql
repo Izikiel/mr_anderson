@@ -742,7 +742,7 @@ create procedure MR_ANDERSON.sp_login (@username_sended NVARCHAR(100) , @user_pa
             declare @check_habilitado bit
             declare @check_fallidos numeric(10)
 
-            if (exists(select user_password from MR_ANDERSON.Login where username = @username_sended)
+            if (exists(select user_password from MR_ANDERSON.Login where username = @username_sended))
 
                 begin
                     -- Seleccionamos el hash 'posta'
