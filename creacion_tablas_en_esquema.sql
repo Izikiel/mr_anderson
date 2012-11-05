@@ -54,6 +54,7 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
         [depto] NVARCHAR(40),
         [localidad] NVARCHAR(100) NOT NULL,
         [username] NVARCHAR(100) NOT NULL,
+        [codigo_postal] NUMERIC(5),
         CONSTRAINT [PK_Direccion] PRIMARY KEY ([calle], [localidad],[username])
     )
     
@@ -84,7 +85,8 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
 
     CREATE TABLE [Cliente_Origen] (
         [dni] NUMERIC(18) NOT NULL,
-        CONSTRAINT [PK_Cliente_Origen] PRIMARY KEY ([dni])
+        [id_origen] NUMERIC IDENTITY(0,1) NOT NULL,
+        CONSTRAINT [PK_Cliente_Origen] PRIMARY KEY ([id_origen])
     )
     
 
@@ -95,8 +97,10 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
 
     CREATE TABLE [Cliente_Destino] (
         [dni] NUMERIC(18) NOT NULL,
-        CONSTRAINT [PK_Cliente_Destino] PRIMARY KEY ([dni])
+        [id_destino] NUMERIC IDENTITY(0,1) NOT NULL,
+        CONSTRAINT [PK_Cliente_Destino] PRIMARY KEY ([id_destino])
     )
+
     
 
 
@@ -185,8 +189,8 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
     CREATE TABLE [Giftcard] (
         [fecha] DATETIME NOT NULL,
         [monto] NUMERIC(18,2) NOT NULL,
-        [cliente_origen] NUMERIC(18) NOT NULL,
-        [cliente_destino] NUMERIC(18) NOT NULL
+        [id_origen] NUMERIC NOT NULL,
+        [id_destino] NUMERIC NOT NULL
     )
     
 
@@ -262,117 +266,113 @@ GO
 
     ALTER TABLE [MR_ANDERSON].[Datos_Clientes] ADD CONSTRAINT [Login_Datos_Clientes] 
         FOREIGN KEY ([username]) REFERENCES [MR_ANDERSON].[Login] ([username])
-    
+    GO
 
 
     ALTER TABLE [MR_ANDERSON].[Cupones] ADD CONSTRAINT [Datos_Proveedores_Cupones] 
-        FOREIGN KEY ([provee_cuit]) REFERENCES [MR_ANDERSON].[Datos_Proveedores] ([provee_cuit])
-    
-
-
-    ALTER TABLE [MR_ANDERSON].[Giftcard] ADD CONSTRAINT [Cliente_Destino_Giftcard] 
-        FOREIGN KEY ([cliente_destino]) REFERENCES [MR_ANDERSON].[Cliente_Destino] ([dni])
-    
-
-
-    ALTER TABLE [MR_ANDERSON].[Giftcard] ADD CONSTRAINT [Cliente_Origen_Giftcard] 
-        FOREIGN KEY ([cliente_origen]) REFERENCES [MR_ANDERSON].[Cliente_Origen] ([dni])
-    
+        FOREIGN KEY ([provee_cuit]) REFERENCES [MR_ANDERSON].[Datos_Proveedores] ([provee_cuit]) on update cascade;
+    GO
 
 
     ALTER TABLE [MR_ANDERSON].[Cliente_Origen] ADD CONSTRAINT [Datos_Clientes_Cliente_Origen] 
-        FOREIGN KEY ([dni]) REFERENCES [MR_ANDERSON].[Datos_Clientes] ([dni])
-    
-
+        FOREIGN KEY ([dni]) REFERENCES [MR_ANDERSON].[Datos_Clientes] ([dni]) on update cascade;
+    GO
 
     ALTER TABLE [MR_ANDERSON].[Cliente_Destino] ADD CONSTRAINT [Datos_Clientes_Cliente_Destino] 
-        FOREIGN KEY ([dni]) REFERENCES [MR_ANDERSON].[Datos_Clientes] ([dni])
-    
+        FOREIGN KEY ([dni]) REFERENCES [MR_ANDERSON].[Datos_Clientes] ([dni]) on update cascade; 
+    GO
 
+    ALTER TABLE [MR_ANDERSON].[Giftcard] ADD CONSTRAINT [Cliente_Destino_Giftcard] 
+        FOREIGN KEY ([id_destino]) REFERENCES [MR_ANDERSON].[Cliente_Destino] ([id_destino])
+    GO
+
+    ALTER TABLE [MR_ANDERSON].[Giftcard] ADD CONSTRAINT [Cliente_Origen_Giftcard] 
+        FOREIGN KEY ([id_origen]) REFERENCES  [MR_ANDERSON].[Cliente_Origen] ([id_origen])
+    GO
 
     ALTER TABLE [MR_ANDERSON].[Cargas] ADD CONSTRAINT [Datos_Clientes_Cargas] 
-        FOREIGN KEY ([dni]) REFERENCES [MR_ANDERSON].[Datos_Clientes] ([dni])
-    
+        FOREIGN KEY ([dni]) REFERENCES [MR_ANDERSON].[Datos_Clientes] ([dni]) on update cascade;
+    GO
 
 
     ALTER TABLE [MR_ANDERSON].[Datos_Proveedores] ADD CONSTRAINT [Login_Datos_Proveedores] 
         FOREIGN KEY ([username]) REFERENCES [MR_ANDERSON].[Login] ([username])
-    
+    GO
 
 
     ALTER TABLE [MR_ANDERSON].[Factura] ADD CONSTRAINT [Datos_Proveedores_Factura] 
-        FOREIGN KEY ([provee_cuit]) REFERENCES [MR_ANDERSON].[Datos_Proveedores] ([provee_cuit])
-    
+        FOREIGN KEY ([provee_cuit]) REFERENCES [MR_ANDERSON].[Datos_Proveedores] ([provee_cuit]) on update cascade;
+    GO
 
 
     ALTER TABLE [MR_ANDERSON].[Factura_Renglon] ADD CONSTRAINT [Factura_Factura_Renglon] 
         FOREIGN KEY ([factura_nro]) REFERENCES [MR_ANDERSON].[Factura] ([factura_nro])
-    
+    GO
 
 
     ALTER TABLE [MR_ANDERSON].[Factura_Renglon] ADD CONSTRAINT [Cupones_Factura_Renglon] 
         FOREIGN KEY ([codigo]) REFERENCES [MR_ANDERSON].[Cupones] ([codigo])
-    
+    GO
 
 
     ALTER TABLE [MR_ANDERSON].[Funcionalidades_Roles] ADD CONSTRAINT [Roles_Funcionalidades_Roles] 
         FOREIGN KEY ([Rol]) REFERENCES [MR_ANDERSON].[Roles] ([Rol])
-    
+    GO
 
 
     ALTER TABLE [MR_ANDERSON].[Login] ADD CONSTRAINT [Roles_Login] 
         FOREIGN KEY ([Rol]) REFERENCES [MR_ANDERSON].[Roles] ([Rol])
-    
+    GO
 
 
     ALTER TABLE [MR_ANDERSON].[Ciudades] ADD CONSTRAINT [Datos_Clientes_Ciudades] 
-        FOREIGN KEY ([dni]) REFERENCES [MR_ANDERSON].[Datos_Clientes] ([dni])
-    
+        FOREIGN KEY ([dni]) REFERENCES [MR_ANDERSON].[Datos_Clientes] ([dni]) on update cascade;
+    GO
 
 
     ALTER TABLE [MR_ANDERSON].[Ciudades] ADD CONSTRAINT [Cupones_Ciudades] 
         FOREIGN KEY ([codigo]) REFERENCES [MR_ANDERSON].[Cupones] ([codigo])
-    
+    GO
 
 
     ALTER TABLE [MR_ANDERSON].[Direccion] ADD CONSTRAINT [Login_Direccion] 
         FOREIGN KEY ([username]) REFERENCES [MR_ANDERSON].[Login] ([username])
-    
+    GO
 
 
     ALTER TABLE [MR_ANDERSON].[Datos_Tarjeta] ADD CONSTRAINT [Datos_Clientes_Datos_Tarjeta] 
-        FOREIGN KEY ([dni]) REFERENCES [MR_ANDERSON].[Datos_Clientes] ([dni])
-    
+        FOREIGN KEY ([dni]) REFERENCES [MR_ANDERSON].[Datos_Clientes] ([dni]) on update cascade;
+    GO
 
 
     ALTER TABLE [MR_ANDERSON].[Compras] ADD CONSTRAINT [Datos_Clientes_Compras] 
-        FOREIGN KEY ([dni]) REFERENCES [MR_ANDERSON].[Datos_Clientes] ([dni])
-    
+        FOREIGN KEY ([dni]) REFERENCES [MR_ANDERSON].[Datos_Clientes] ([dni]) on update cascade;
+    GO
 
 
     ALTER TABLE [MR_ANDERSON].[Compras] ADD CONSTRAINT [Cupones_Compras] 
         FOREIGN KEY ([codigo]) REFERENCES [MR_ANDERSON].[Cupones] ([codigo])
-    
+    GO
 
 
     ALTER TABLE [MR_ANDERSON].[Devoluciones] ADD CONSTRAINT [Datos_Clientes_Devoluciones] 
-        FOREIGN KEY ([dni]) REFERENCES [MR_ANDERSON].[Datos_Clientes] ([dni])
-    
+        FOREIGN KEY ([dni]) REFERENCES [MR_ANDERSON].[Datos_Clientes] ([dni]) on update cascade;
+    GO
 
 
     ALTER TABLE [MR_ANDERSON].[Devoluciones] ADD CONSTRAINT [Cupones_Devoluciones] 
         FOREIGN KEY ([codigo]) REFERENCES [MR_ANDERSON].[Cupones] ([codigo])
-    
+    GO
 
 
     ALTER TABLE [MR_ANDERSON].[Consumos] ADD CONSTRAINT [Cupones_Consumos] 
         FOREIGN KEY ([codigo]) REFERENCES [MR_ANDERSON].[Cupones] ([codigo])
-    
+    GO
 
 
     ALTER TABLE [MR_ANDERSON].[Consumos] ADD CONSTRAINT [Datos_Clientes_Consumos] 
-        FOREIGN KEY ([dni]) REFERENCES [MR_ANDERSON].[Datos_Clientes] ([dni])
-    
+        FOREIGN KEY ([dni]) REFERENCES [MR_ANDERSON].[Datos_Clientes] ([dni]) on update cascade;
+    GO
 GO
 
 --Migracion de Datos 
@@ -437,9 +437,9 @@ begin tran trn_inserts_tablas
                 where master.Cli_Dest_Dni is not NULL
 
         --Insertamos los datos de las giftcards
-        insert into MR_ANDERSON.Giftcard(fecha,monto,cliente_origen,cliente_destino)
+        insert into MR_ANDERSON.Giftcard(fecha,monto,id_origen,id_destino)
 
-            select master.Giftcard_Fecha, master.Giftcard_Monto, master.Cli_Dni, master.Cli_Dest_Dni 
+            select master.Giftcard_Fecha, master.Giftcard_Monto, origen.id_origen, destino.id_destino 
                 from gd_esquema.Maestra master
 
                 join MR_ANDERSON.Cliente_Origen origen
@@ -888,7 +888,8 @@ GO
 
 --Insert Direccion
 create procedure MR_ANDERSON.sp_insert_direccion (@calle NVARCHAR(100), @localidad NVARCHAR(100), 
-                                @username NVARCHAR(100), @nro_piso NUMERIC(3), @depto NVARCHAR(40), @result NVARCHAR(20) output)
+                                @username NVARCHAR(100), @nro_piso NUMERIC(3), @depto NVARCHAR(40),
+                                @codigo_postal NUMERIC(5), @result NVARCHAR(30) output)
     as
         begin
             if @calle is null or @localidad is null or @username is null
@@ -903,12 +904,74 @@ create procedure MR_ANDERSON.sp_insert_direccion (@calle NVARCHAR(100), @localid
                     set @result = 'INEXISTENT_USER'
                     return 1
                 end
+            if @username in (select username from MR_ANDERSON.Direccion where username = @username)
+                begin
+                    set @result = 'EXISTENT_USER'
+                    return 1
+                end
 
-            insert into MR_ANDERSON.Direccion(calle, localidad, username, nro_piso, depto)
-                VALUES(@calle,@localidad,@username,@nro_piso,@depto)
+            insert into MR_ANDERSON.Direccion(calle, localidad, username, nro_piso, depto, codigo_postal)
+                VALUES(@calle,@localidad,@username,@nro_piso,@depto, @codigo_postal)
 
             set @result = 'OK'
             return 0
         end
 GO
 --Listo insert direccion
+
+
+--Modificar cliente
+
+
+/*
+create procedure MR_ANDERSON.sp_modify_client (@nombre_sended NVARCHAR(255), @dni_sended NUMERIC(18), @apellido_sended NVARCHAR(255),
+                    @telefono_sended NUMERIC(18) , @mail_sended NVARCHAR(255), @fecha_nac_sended DATETIME,
+                    @username_sended NVARCHAR(100), @result NVARCHAR(19) output)
+    as
+        begin
+            if @nombre_sended is null 
+                or @dni_sended is null 
+                or @apellido_sended is null 
+                or @telefono_sended is null 
+                or @mail_sended is null 
+                or @fecha_nac_sended is null
+                or @username_sended is null
+                begin
+                    set @result = 'SENT_VALUE_NULL'
+                    return 2
+                end
+
+            if @telefono_sended in (select telefono from MR_ANDERSON.Datos_Clientes where username != @username_sended)
+                begin 
+                    set @result = 'CLIENT_TEL_EXISTENT'
+                    return 1
+                end
+
+            declare @old_dni NUMERIC(18)
+            set @old_dni = (select dni from MR_ANDERSON.Datos_Clientes where username = @username_sended)
+            
+            update MR_ANDERSON.Cliente_Destino
+                set dni = @dni_sended
+                where dni = @old_dni
+            
+            update MR_ANDERSON.Cliente_Origen
+                set dni = @dni_sended
+                where dni = @old_dni         
+
+            update MR_ANDERSON.Giftcard
+                set        
+
+            update MR_ANDERSON.Datos_Clientes
+                set nombre = @nombre_sended
+                set dni = @dni_sended
+                set apellido = @apellido 
+                set telefono = @telefono_sended
+                set mail = @mail_sended
+                set fecha_nac = @fecha_nac_sended
+
+                where username = @username_sended
+
+        end
+GO
+--Listo Modificar cliente
+*/

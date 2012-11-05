@@ -8,6 +8,12 @@
 /* Created on:            2012-10-26 16:56                                */
 /* ---------------------------------------------------------------------- */
 
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_insert_direccion]    Script Date: 11/03/2012 17:23:27 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_insert_direccion]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_insert_direccion]
+GO
+
 /****** Object:  StoredProcedure [MR_ANDERSON].[sp_insert_proveedor]    Script Date: 11/03/2012 16:26:04 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_insert_proveedor]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [MR_ANDERSON].[sp_insert_proveedor]
