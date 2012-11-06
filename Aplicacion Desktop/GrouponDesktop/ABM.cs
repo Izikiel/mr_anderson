@@ -53,6 +53,7 @@ namespace GrouponDesktop
             ProveedorPanel.Visible = true;
             ClientPanel.Visible = false;
         }
-        
+
+
     }
 }

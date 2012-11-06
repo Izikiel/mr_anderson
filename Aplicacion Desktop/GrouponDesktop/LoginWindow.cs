@@ -13,10 +13,14 @@ namespace GrouponDesktop
     {
         String nombre;
         String pass;
+        DataAccess.SPManager spManager = new GrouponDesktop.DataAccess.SPManager();
 
         public LoginWindow()
         {
             InitializeComponent();
+            DataAdapter da = new DataAdapter();
+            da.getUsers(spManager);
+            da.insertUser(spManager);
         }
 
        

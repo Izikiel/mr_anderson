@@ -42,26 +42,18 @@
             // 
             // textBox1
             // 
-            this.textBox1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.loginBindingSource, "Password", true));
-            this.textBox1.DataBindings.Add(new System.Windows.Forms.Binding("Tag", this.loginBindingSource, "Password", true));
             this.textBox1.Location = new System.Drawing.Point(101, 85);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(171, 20);
             this.textBox1.TabIndex = 1;
             // 
-            // loginBindingSource
-            // 
-            this.loginBindingSource.DataSource = typeof(GrouponDesktop.DataAdapter.DataAdapter);
-            // 
             // textBox2
             // 
             this.textBox2.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.loginBindingSource, "UserName", true));
-            this.textBox2.DataBindings.Add(new System.Windows.Forms.Binding("Tag", this.loginBindingSource, "UserName", true));
             this.textBox2.Location = new System.Drawing.Point(101, 37);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(171, 20);
             this.textBox2.TabIndex = 2;
-            
             // 
             // button1
             // 
