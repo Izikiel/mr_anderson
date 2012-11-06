@@ -18,7 +18,7 @@ namespace GrouponDesktop
         public LoginWindow()
         {
             InitializeComponent();
-            DataAdapter da = new DataAdapter();
+            DataAdapter.DataTester da = new DataAdapter.DataTester();
             da.getUsers(spManager);
             da.insertUser(spManager);
         }
@@ -28,10 +28,10 @@ namespace GrouponDesktop
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Login login = new Login();
+            /*Login login = new Login();
             login.UserName = textBox2.Text;
             login.Password = textBox1.Text;
-            login.validateUser();
+            login.validateUser();*/
         }
 
         

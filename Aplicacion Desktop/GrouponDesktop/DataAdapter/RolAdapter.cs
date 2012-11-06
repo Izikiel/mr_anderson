@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using GrouponDesktop.Rol;
 
-namespace GrouponDesktop
+namespace GrouponDesktop.DataAdapter
 {
     class RolAdapter
     {
