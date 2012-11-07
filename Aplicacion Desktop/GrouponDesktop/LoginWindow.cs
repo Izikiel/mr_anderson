@@ -41,7 +41,8 @@ namespace GrouponDesktop
 
         private void lnkRegister_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-
+            RegistroUsuario registroWindow = new RegistroUsuario();
+            registroWindow.Show();
         }
 
         private Form crearMenuWindow(Rol.Rol unRol)
