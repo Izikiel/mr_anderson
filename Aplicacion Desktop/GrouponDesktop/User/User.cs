@@ -22,6 +22,15 @@ namespace GrouponDesktop.User
         {
             return this.tipoUsuario;
         }
-        
+
+        public void setRol(Rol.Rol rol)
+        {
+            this.unRol = rol;
+        }
+
+        public Rol.Rol getRol()
+        {
+            return this.unRol;
+        }
     }
 }

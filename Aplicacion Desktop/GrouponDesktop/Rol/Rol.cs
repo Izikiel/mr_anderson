@@ -81,6 +81,11 @@ namespace GrouponDesktop.Rol
             this.funcionalidades.Remove(unaF);
         }
 
+        public List<String> getFuncionalidades()
+        {
+            return funcionalidades;
+        }
+
         public void do_f(String unaF)
         {
             switch (unaF)

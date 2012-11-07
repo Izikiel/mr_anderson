@@ -101,9 +101,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Rol\Rol.cs" />
-    <Compile Include="User\Admin.cs" />
-    <Compile Include="User\Client.cs" />
-    <Compile Include="User\Provider.cs" />
     <Compile Include="User\User.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
