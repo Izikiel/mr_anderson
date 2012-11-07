@@ -16,10 +16,10 @@ namespace GrouponDesktop
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.Run(new LoginWindow());
-            //Application.Run(new AltaRol());
             //Application.Run(new LoginWindow());
-            Application.Run(new ABM());
+            Application.Run(new AltaRol());
+            //Application.Run(new LoginWindow());
+            //Application.Run(new ABM());
         }
 
     }

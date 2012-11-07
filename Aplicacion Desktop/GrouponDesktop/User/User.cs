@@ -9,7 +9,7 @@ namespace GrouponDesktop.User
     class User
     {
         String tipoUsuario;
-        List<FuncRol> funcionalidades;
+        Rol.Rol unRol;
         public User()
         {
 

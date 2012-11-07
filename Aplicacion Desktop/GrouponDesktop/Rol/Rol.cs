@@ -7,42 +7,91 @@ namespace GrouponDesktop.Rol
 {
     class Rol
     {
-        String nombreRol;
-        List<String> tiposUsuarios;
-        List<FuncRol> funcionalidades;
+        String nombre;
+        String tipoUsuario;
+        List<String> funcionalidades;
         Boolean estadoValido;
 
         public Rol(){
-            this.funcionalidades = new List<FuncRol>();
-            this.tiposUsuarios = new List<String>();
+            this.funcionalidades = new List<String>();
         }
 
+        public Rol cargar()
+        {
+            cargarDatosRol();
+            cargarFuncionalidades();
+
+            return this;
+        }
+
+        public void cargarDatosRol()
+        {
+            //llamar a sp q cargue los datos
+        }
+
+        public void cargarFuncionalidades()
+        {
+            //llamar a sp q cargue las func
+        }
+
+        public void crear(String nombreRol, String tipoUsr, List<String> funcs)
+        {
+            foreach (String unaFuncionalidad in funcs)
+            {
+                this.addFunc(unaFuncionalidad);
+            }
+
+            this.nombre = nombreRol;
+            this.tipoUsuario = tipoUsr;
+            this.setEstadoValido(true);
+
+
+            this.persistir();
+        }
+
+        public void persistir()
+        {
+            //llamar a sp q persista en bd
+        }
+
+       
         public void setEstadoValido(Boolean bol)
         {
             this.estadoValido = bol;
         }
         public void setNombreRol(String unNombre){
-            nombreRol = unNombre;
+            nombre = unNombre;
         }
 
         public String getNombreRol(){
-            return this.nombreRol;
+            return this.nombre;
         }
 
-        public void addTipoUsuario(String unTipoUsuario)
+
+        public String getTipoUsuario()
         {
-            this.tiposUsuarios.Add(unTipoUsuario);
+            return this.tipoUsuario;
         }
 
-        public List<String> getTiposUsuarios()
-        {
-            return this.tiposUsuarios;
-        }
-
-        public void addFunc(FuncRol unaF){
+        public void addFunc(String unaF){
             this.funcionalidades.Add(unaF);       
         }
         
+        public void delFunc(String unaF){
+            this.funcionalidades.Remove(unaF);
+        }
+
+        public void do_f(String unaF)
+        {
+            switch (unaF)
+            {
+                //case "ALTA_ROL" :
+
+                //  break;
+
+
+            }
+        }
 
     }
 }

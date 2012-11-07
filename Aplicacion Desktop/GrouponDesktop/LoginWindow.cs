@@ -34,6 +34,11 @@ namespace GrouponDesktop
             login.validateUser();*/
         }
 
+        private void lnkRegister_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+
+        }
+
         
     }
 }

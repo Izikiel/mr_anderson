@@ -13,13 +13,13 @@ namespace GrouponDesktop
     public partial class AltaRol : Form
     {
         private List<String> funcionalidades;
-        RolBuilder rolBuilder;
+        
 
         public AltaRol()
         {
             InitializeComponent();
             funcionalidades = new List<String>();
-            rolBuilder = new RolBuilder();
+           
         }
 
         private void allCheckBoxes_CheckedChanged(object sender, EventArgs e)
@@ -94,7 +94,9 @@ namespace GrouponDesktop
                 return;
             }
 
-            Rol.Rol unRol = rolBuilder.buildRol(textBox1.Text, cboBoxTipoUsr.SelectedItem.ToString(), funcionalidades);
+            
+            Rol.Rol unRol = new Rol.Rol();
+            unRol.crear(textBox1.Text, cboBoxTipoUsr.SelectedItem.ToString(), funcionalidades);
             MessageBox.Show("Se dio de alta al rol correctamente. Nombre de rol: "+ unRol.getNombreRol());
             //TODO: llamar a un objeto que persista al rol en la base
             
