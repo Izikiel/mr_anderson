@@ -84,7 +84,7 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
     /* ---------------------------------------------------------------------- */
 
     CREATE TABLE [Cliente_Origen] (
-        [dni] NUMERIC(18) NOT NULL,
+        [dni] NUMERIC(18) NOT NULL unique,
         [id_origen] NUMERIC IDENTITY(0,1) NOT NULL,
         CONSTRAINT [PK_Cliente_Origen] PRIMARY KEY ([id_origen])
     )
@@ -96,7 +96,7 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
     /* ---------------------------------------------------------------------- */
 
     CREATE TABLE [Cliente_Destino] (
-        [dni] NUMERIC(18) NOT NULL,
+        [dni] NUMERIC(18) NOT NULL unique,
         [id_destino] NUMERIC IDENTITY(0,1) NOT NULL,
         CONSTRAINT [PK_Cliente_Destino] PRIMARY KEY ([id_destino])
     )
@@ -109,10 +109,10 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
     /* ---------------------------------------------------------------------- */
 
     CREATE TABLE [Cargas] (
-        [monto] NUMERIC(18,2) NOT NULL,
+        [monto] int NOT NULL,
         [fecha] DATETIME NOT NULL,
         [dni] NUMERIC(18) NOT NULL,
-        [tipo_pago] VARCHAR(40) NOT NULL
+        [tipo_pago] VARCHAR(40) NOT NULL -- EFECTIVO CREDITO DEBITO
     )
     
 
@@ -123,7 +123,7 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
 
     CREATE TABLE [Datos_Proveedores] (
         [provee_cuit] NVARCHAR(20) NOT NULL,
-        [provee_rs] NVARCHAR(100) NOT NULL,
+        [provee_rs] NVARCHAR(100) NOT NULL unique,
         [provee_telefono] NUMERIC(18) NOT NULL,
         [provee_rubro] NVARCHAR(100) NOT NULL,
         [username] NVARCHAR(100) NOT NULL,
@@ -155,8 +155,9 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
         [nro_tarjeta] NUMERIC(30) NOT NULL,
         [fecha_emision] DATETIME NOT NULL,
         [fecha_vencimiento] DATETIME NOT NULL,
-        [dni] NUMERIC(18),
-        PRIMARY KEY ([nro_tarjeta])
+        [dni] NUMERIC(18) NOT NULL,
+        [tipo] NVARCHAR(10) NOT NULL, --CREDITO DEBITO
+        PRIMARY KEY ([nro_tarjeta], [tipo])
     )
     
 
@@ -173,7 +174,6 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
         [descripcion] NVARCHAR(255) NOT NULL,
         [stock_disponible] NUMERIC(10) NOT NULL,
         [provee_cuit] NVARCHAR(20) NOT NULL,
-        [provee_rs] NVARCHAR(100) NOT NULL,
         [vencimiento_oferta] DATETIME NOT NULL,
         [vencimiento_canje] VARCHAR(40),
         [fecha_publicacion] DATETIME NOT NULL,
@@ -214,8 +214,7 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
 
     CREATE TABLE [Ciudades] (
         [ciudad] NVARCHAR(255),
-        [dni] NUMERIC(18) ,
-        [codigo] NVARCHAR(50)
+        [dni] NUMERIC(18) 
     )
     
 
@@ -328,12 +327,6 @@ GO
     ALTER TABLE [MR_ANDERSON].[Ciudades] ADD CONSTRAINT [Datos_Clientes_Ciudades] 
         FOREIGN KEY ([dni]) REFERENCES [MR_ANDERSON].[Datos_Clientes] ([dni]) on update cascade;
     GO
-
-
-    ALTER TABLE [MR_ANDERSON].[Ciudades] ADD CONSTRAINT [Cupones_Ciudades] 
-        FOREIGN KEY ([codigo]) REFERENCES [MR_ANDERSON].[Cupones] ([codigo])
-    GO
-
 
     ALTER TABLE [MR_ANDERSON].[Direccion] ADD CONSTRAINT [Login_Direccion] 
         FOREIGN KEY ([username]) REFERENCES [MR_ANDERSON].[Login] ([username])
@@ -484,19 +477,19 @@ begin tran trn_inserts_tablas
 
 
         insert into MR_ANDERSON.Cupones(codigo,precio,precio_fict,cantidad_x_usuario,descripcion,
-                                        stock_disponible,provee_cuit,provee_rs,vencimiento_oferta,
+                                        stock_disponible,provee_cuit,vencimiento_oferta,
                                         vencimiento_canje,fecha_publicacion)
 
             select master.Groupon_Codigo, master.Groupon_Precio, master.Groupon_Precio_Ficticio,
                     1, master.Groupon_Descripcion, master.Groupon_Cantidad,
-                    master.Provee_CUIT, master.Provee_RS, master.Groupon_Fecha_Venc, NULL, master.Groupon_Fecha
+                    master.Provee_CUIT,master.Groupon_Fecha_Venc, NULL, master.Groupon_Fecha
                 from gd_esquema.Maestra master
 
                 join MR_ANDERSON.Datos_Proveedores Proveedores
                     on   master.Provee_CUIT = Proveedores.provee_cuit
                 
                 group by master.Groupon_Codigo, master.Groupon_Precio, master.Groupon_Precio_Ficticio,
-                    master.Groupon_Cantidad, master.Groupon_Descripcion, master.Provee_CUIT, master.Provee_RS, 
+                    master.Groupon_Cantidad, master.Groupon_Descripcion, master.Provee_CUIT,
                     master.Groupon_Fecha_Venc, master.Groupon_Fecha
 
                 having master.Groupon_Fecha is not null
@@ -994,6 +987,8 @@ create procedure MR_ANDERSON.sp_modify_client (@nombre_sended NVARCHAR(255), @dn
 
                 where username = @username_sended
 
+            set @result = 'OK'
+
         end
 GO
 --Listo Modificar cliente
@@ -1019,6 +1014,169 @@ create function MR_ANDERSON.fn_total_factura (@factura_nro NUMERIC(18))
         end
 GO
 
+--Listo Calcular total factura
+
+--Agregar ciudad-dni
+
+create procedure MR_ANDERSON.sp_agregar_ciudad (@ciudad NVARCHAR(255), @dni NUMERIC(18), 
+                                @result NVARCHAR(20) output)
+    as
+        begin
+            if not exists(select ciudad, dni from MR_ANDERSON.Ciudades where ciudad = @ciudad and dni = @dni)
+            begin
+                insert into MR_ANDERSON.Ciudades(ciudad,dni)
+                    VALUES(@ciudad,@dni)
+                set @result = 'OK'
+                return
+            end
+
+            set @result = 'Dupla_Existente'
+        end
+GO
+
+--Listo Agregar ciudad-dni
+
+-- Generar vistas para que muestre clientes y proveedores habilitados, ademas de generar sp para buscadores
+
+-- Cargar credito
+
+create procedure MR_ANDERSON.sp_cargar_credito (@monto int, @dni NUMERIC(18), 
+                                @fecha DATETIME, @tipo_pago NVARCHAR(10), @nro_tarjeta NUMERIC(30),
+                                @fecha_emision DATETIME, @fecha_vencimiento DATETIME,
+                                @tipo_tarjeta NVARCHAR(10), @result NVARCHAR(20))
+    as
+        begin
+            if @monto >= 15 --Monto minimo  
+                begin
+                    if @dni in (select dni from Datos_Clientes)
+                        begin
+                            if @tipo_pago != 'EFECTIVO'
+                                begin
+                                    declare @res BIT
+                                    
+                                    set @res = MR_ANDERSON.sp_agregar_tarjeta(@dni,@nro_tarjeta,@fecha_emision,@fecha_vencimiento,
+                                                                    @tipo_tarjeta)
+                                    if @res is null
+                                        begin
+                                            set @result = 'Datos_Tarjeta_Invalidos'
+                                            return
+                                        end
+                                end
+
+                            begin tran actualizar_carga
+                                
+                                insert into MR_ANDERSON.Cargas(monto, fecha, dni, tipo_pago)
+                                    VALUES(@monto, @fecha, @dni, @tipo_pago)
+
+                                update MR_ANDERSON.Datos_Clientes
+                                    set saldo = saldo + @monto
+                                    where dni = @dni
+
+                            commit tran actualizar_carga
+
+                            set @result = 'OK'
+                            return
+                        end
+                    else 
+                        begin
+                            set @result = 'DNI_ERROR'
+                            return
+                        end
+                end
+            else 
+                begin
+                    set @result = 'Monto_Minimo_15'
+                    return
+                end
+        end
+GO
+
+--Agrega tarjeta!
+create procedure MR_ANDERSON.sp_agregar_tarjeta (@dni NUMERIC(18),@nro_tarjeta NUMERIC(30),
+                                @fecha_emision DATETIME, @fecha_vencimiento DATETIME,
+                                @tipo_tarjeta NVARCHAR(10))
+    as
+        begin
+            if @fecha_emision is not null and
+               @fecha_vencimiento is not null and
+               @fecha_emision < @fecha_vencimiento 
+                begin
+                    if not exists(select nro_tarjeta, tipo from MR_ANDERSON.Datos_Tarjeta
+                                                where nro_tarjeta = @nro_tarjeta
+                                                and tipo = @tipo_tarjeta)
+                        begin
+                            insert into MR_ANDERSON.Datos_Tarjeta(nro_tarjeta, fecha_emision, fecha_vencimiento,
+                                                                  dni, tipo)
+                                VALUES(@nro_tarjeta,@fecha_emision,@fecha_vencimiento,@dni,@tipo_tarjeta)
+                            return 1
+                        end
+                    return 0
+                end
+            return null
+        end
+GO
+
+create procedure MR_ANDERSON.sp_compra_giftcard (@cliente_origen NUMERIC(18), @cliente_destino NUMERIC(18),  
+                                @monto int, @fecha DATETIME, @result NVARCHAR(20))
+    as
+        begin
+            
+            if @cliente_origen = @cliente_destino
+                begin
+                    set @result = 'origen=destino'
+                    return 
+                end
+
+            if @cliente_destino not in (select dni from MR_ANDERSON.Datos_Clientes where dni = @cliente_destino)
+                or @cliente_origen not in (select dni from MR_ANDERSON.Datos_Clientes where dni = @cliente_origen)
+                begin
+                    set @result = 'NOT_EXISTS_CLIENT'
+                    return
+                end
+
+            if (select Habilitado 
+                from MR_ANDERSON.Login Login
+                join MR_ANDERSON.Datos_Clientes Clientes
+                    on   Login.username = Clientes.username and Clientes.dni = @cliente_destino
+                ) != 1
+                begin
+                    set @result = 'CLIENTE_INHABILITADO'
+                    return
+                end
+
+            update MR_ANDERSON.Datos_Clientes
+                set saldo = saldo + @monto
+                where dni = @cliente_destino
+
+            if @cliente_origen not in (select dni 
+                from MR_ANDERSON.Cliente_Origen
+                where dni = @cliente_origen)
+                begin
+                    
+                    insert into MR_ANDERSON.Cliente_Origen(dni)
+                        VALUES(@cliente_origen)
+
+                end
+
+            if @cliente_destino not in (select dni 
+                from MR_ANDERSON.Cliente_Destino
+                where dni = @cliente_destino)
+                begin
+                    
+                    insert into MR_ANDERSON.Cliente_Destino(dni)
+                        VALUES(@cliente_destino)
+
+                end
+
+            insert into MR_ANDERSON.Giftcard(fecha,monto, id_origen,id_destino)
+                VALUES(@fecha, @monto, (select top 1 id_origen from MR_ANDERSON.Cliente_Origen where dni = @cliente_origen),
+                        (select top 1 id_destino from MR_ANDERSON.Cliente_Destino where dni = @cliente_destino))
+
+            set @result = 'OK'
+            return
+
+        end
+GO
 
 -- Update saldos (cargas +)
 
