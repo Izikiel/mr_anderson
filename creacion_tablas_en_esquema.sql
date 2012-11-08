@@ -1019,3 +1019,31 @@ create function MR_ANDERSON.fn_total_factura (@factura_nro NUMERIC(18))
         end
 GO
 
+
+-- Update saldos (cargas +)
+
+update MR_ANDERSON.Datos_Clientes 
+    set saldo = saldo + C.monto
+    from MR_ANDERSON.Datos_Clientes DC
+    join MR_ANDERSON.Cargas C
+        on   DC.dni = C.dni
+
+-- Update saldos (- giftcard credito en los de origen)
+
+update MR_ANDERSON.Datos_Clientes 
+    set saldo = saldo - G.monto
+    from MR_ANDERSON.Datos_Clientes DC
+    join MR_ANDERSON.Cliente_Origen CO
+        on   DC.dni = CO.dni
+    join MR_ANDERSON.Giftcard G
+        on   CO.id_origen = G.id_origen
+
+-- Update saldos (+ giftcard credito en los de destino)
+
+update MR_ANDERSON.Datos_Clientes 
+    set saldo = saldo + G.monto
+    from MR_ANDERSON.Datos_Clientes DC
+    join MR_ANDERSON.Cliente_Destino CD
+        on   DC.dni = CD.dni
+    join MR_ANDERSON.Giftcard G
+        on   CD.id_destino = G.id_destino
