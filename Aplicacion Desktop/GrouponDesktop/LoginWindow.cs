@@ -35,14 +35,26 @@ namespace GrouponDesktop
             login.Password = textBox1.Text;
             login.validateUser();*/
             //this.usuarioActivo = login.getUser();
-            //Form menu = this.crearMenuWindow(usuarioActivo.getRol());
-            //menu.Show();
+            Rol.Rol unRol = new Rol.Rol();
+            unRol.setEstadoValido(true);
+            unRol.setNombreRol("elrol");
+
+            unRol.addFunc("Hola");
+            unRol.addFunc("Soy un boton");
+            unRol.addFunc("lalala");
+            
+            User.User usuarioActivo = new User.User();
+            usuarioActivo.setTipoUsuario("Admin");
+            usuarioActivo.setRol(unRol);
+
+            Form menu = this.crearMenuWindow(usuarioActivo.getRol());
+            menu.Show();
         }
 
         private void lnkRegister_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            RegistroUsuario registroWindow = new RegistroUsuario();
-            registroWindow.Show();
+           // RegistroUsuario registroWindow = new RegistroUsuario();
+           // registroWindow.Show();
         }
 
         private Form crearMenuWindow(Rol.Rol unRol)
@@ -53,6 +65,7 @@ namespace GrouponDesktop
             foreach(String func in unRol.getFuncionalidades()){
                 Button boton = new Button();
                 boton.Text = func;
+                boton.AutoSize = true;
                 boton.Location = new System.Drawing.Point(20+j,20+i);
                 boton.Click += new EventHandler(this.buttonClicked);
                 menu.Controls.Add(boton);

@@ -99,7 +99,7 @@
             this.cboBoxTipoUsr.Items.AddRange(new object[] {
             "Cliente",
             "Proveedor",
-            "Admin"});
+            "Administrador"});
             this.cboBoxTipoUsr.Location = new System.Drawing.Point(128, 22);
             this.cboBoxTipoUsr.Name = "cboBoxTipoUsr";
             this.cboBoxTipoUsr.Size = new System.Drawing.Size(121, 21);
@@ -235,7 +235,6 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 20);
             this.textBox1.TabIndex = 16;
-            
             // 
             // label3
             // 
