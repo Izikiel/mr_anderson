@@ -320,7 +320,7 @@ GO
 
 
     ALTER TABLE [MR_ANDERSON].[Login] ADD CONSTRAINT [Roles_Login] 
-        FOREIGN KEY ([Rol]) REFERENCES [MR_ANDERSON].[Roles] ([Rol])
+        FOREIGN KEY ([Rol]) REFERENCES [MR_ANDERSON].[Roles] ([Rol]) on update cascade;
     GO
 
 
@@ -647,7 +647,7 @@ create trigger  actualizar_habilitaciones on MR_ANDERSON.Roles
         end
 GO
 */
-create procedure MR_ANDERSON.sp_new_rol (@nombre_rol NVARCHAR(255) , @Funcionalidad VARCHAR(40))
+create procedure MR_ANDERSON.sp_new_rol (@nombre_rol NVARCHAR(255))
     as
         begin
             if @nombre_rol not in (select Roles.Rol 
@@ -655,9 +655,6 @@ create procedure MR_ANDERSON.sp_new_rol (@nombre_rol NVARCHAR(255) , @Funcionali
                 begin
                     insert into MR_ANDERSON.Roles(Rol,Habilitado)
                         VALUES(@nombre_rol, 1)
-
-                    insert into MR_ANDERSON.Funcionalidades_Roles(Rol,Funcionalidad)
-                        VALUES(@nombre_rol, @Funcionalidad)
                 end
             else 
                 begin
@@ -706,10 +703,6 @@ create procedure MR_ANDERSON.sp_change_rol_name (@nombre_rol NVARCHAR(255), @nue
     as
         begin
             update MR_ANDERSON.Roles
-                set Rol = @nuevo_nombre_rol
-                where Rol = @nombre_rol
-
-            update MR_ANDERSON.Login 
                 set Rol = @nuevo_nombre_rol
                 where Rol = @nombre_rol
         end
