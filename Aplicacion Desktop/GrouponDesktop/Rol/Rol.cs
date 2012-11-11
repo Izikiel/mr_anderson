@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using GrouponDesktop.DataAdapter;
+using GrouponDesktop.DataAccess;
+
 namespace GrouponDesktop.Rol
 {
     class Rol
@@ -51,7 +54,39 @@ namespace GrouponDesktop.Rol
 
         public void persistir()
         {
-            //llamar a sp q persista en bd
+           
+
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+
+            Dictionary<String, Object> param = new Dictionary<string, object>();
+            param.Add("nombre_rol", this.nombre);
+            try
+            {
+
+                spManager.executeSPWithParameters("MR_ANDERSON.sp_new_rol", param);
+            }
+            catch (Exception e)
+            {   
+                spManager.Close();
+                throw new Exception("No se pudo dar de alta al rol. Motivo: " + e.ToString()); 
+                //ver : no me tira error si quiero crear un rol q ya existe (con el mismo nombre)
+            }
+            spManager.Close();
+            
+            foreach(String func in this.funcionalidades){
+
+                spManager = new DataAccess.SPManager();
+
+                param.Add("funcionalidad", func);
+
+                   spManager.executeSPWithParameters("MR_ANDERSON.sp_add_func_rol", param);
+
+                spManager.Close();
+
+                param.Remove("funcionalidad");
+            }
+            
+
         }
 
        
