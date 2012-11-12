@@ -13,3 +13,13 @@ create procedure mostrar_cupones_proveedores (@fecha_inicio DATETIME, @fecha_fin
 		end
 
 
+-- rol
+
+create procedure MR_ANDERSON.get_datos_rol (@nombre_rol NVARCHAR(255))
+	as
+		begin
+		select r.Rol, Habilitado,Funcionalidad
+			from MR_ANDERSON.Roles r
+			join MR_ANDERSON.Funcionalidades_Roles f on r.Rol = f.Rol
+			
+		end
