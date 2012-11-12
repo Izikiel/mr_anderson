@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using GrouponDesktop.Rol;
-
+//Test
 namespace GrouponDesktop
 {
     public partial class AltaRol : Form
