@@ -63,7 +63,7 @@
     <Compile Include="DataAccess\DBManager.cs" />
     <Compile Include="DataAccess\SPManager.cs" />
     <Compile Include="DataAdapter\DataTester.cs" />
-    <Compile Include="DataAdapter\LoginAdapter.cs" />
+    <Compile Include="DataAdapter\Login.cs" />
     <Compile Include="LoginWindow.cs">
       <SubType>Form</SubType>
     </Compile>

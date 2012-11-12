@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data.SqlClient;
+
 
 using GrouponDesktop.DataAdapter;
 using GrouponDesktop.DataAccess;
@@ -19,22 +21,30 @@ namespace GrouponDesktop.Rol
             this.funcionalidades = new List<String>();
         }
 
-        public Rol cargar()
+        public Rol cargar(String nombre_rol)
         {
-            cargarDatosRol();
-            cargarFuncionalidades();
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
 
+            Dictionary<String, Object> param = new Dictionary<String, Object>();
+            param.Add("nombre", nombre_rol);
+            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.get_datos_rol", param))
+            {
+                reader.Read();
+                if ((int)reader["Habilitado"] == 1)
+                {
+                    this.setEstadoValido(true);
+                }
+                else this.setEstadoValido(false);
+
+                this.addFunc((String)reader["Funcionalidad"]);
+
+                while (reader.Read())
+                {
+                    this.addFunc((String)reader["Funcionalidad"]);
+                }
+                reader.Close();
+            }
             return this;
-        }
-
-        public void cargarDatosRol()
-        {
-            //llamar a sp q cargue los datos
-        }
-
-        public void cargarFuncionalidades()
-        {
-            //llamar a sp q cargue las func
         }
 
         public void crear(String nombreRol, String tipoUsr, List<String> funcs)
@@ -54,7 +64,7 @@ namespace GrouponDesktop.Rol
 
         public void persistir()
         {
-           
+
 
             DataAccess.SPManager spManager = new DataAccess.SPManager();
 
@@ -63,28 +73,30 @@ namespace GrouponDesktop.Rol
             try
             {
 
-                spManager.executeSPWithParameters("MR_ANDERSON.sp_new_rol", param);
+                spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_new_rol", param);
             }
             catch (Exception e)
-            {   
+            {
                 spManager.Close();
-                throw new Exception("No se pudo dar de alta al rol. Motivo: " + e.ToString()); 
+                throw new Exception("No se pudo dar de alta al rol. Motivo: " + e.ToString());
                 //ver : no me tira error si quiero crear un rol q ya existe (con el mismo nombre)
             }
             spManager.Close();
-            
-            foreach(String func in this.funcionalidades){
+
+            foreach (String func in this.funcionalidades)
+            {
 
                 spManager = new DataAccess.SPManager();
 
                 param.Add("funcionalidad", func);
 
-                   spManager.executeSPWithParameters("MR_ANDERSON.sp_add_func_rol", param);
+                spManager.executeSPWithParameters("MR_ANDERSON.sp_add_func_rol", param);
 
                 spManager.Close();
 
                 param.Remove("funcionalidad");
             }
+            
             
 
         }

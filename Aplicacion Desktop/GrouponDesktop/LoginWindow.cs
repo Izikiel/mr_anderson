@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using GrouponDesktop.User;
+using GrouponDesktop.DataAdapter;
 
 namespace GrouponDesktop
 {
@@ -20,9 +21,7 @@ namespace GrouponDesktop
         public LoginWindow()
         {
             InitializeComponent();
-            DataAdapter.DataTester da = new DataAdapter.DataTester();
-            da.getUsers(spManager);
-            da.insertUser(spManager);
+           
         }
 
        
@@ -30,12 +29,19 @@ namespace GrouponDesktop
 
         private void button1_Click(object sender, EventArgs e)
         {
-            /*Login login = new Login();
+            Login login = new Login();
             login.UserName = textBox2.Text;
             login.Password = textBox1.Text;
-            login.validateUser();*/
+            try
+            {
+                login.validateUser();
+            }
+            catch (Exception excep)
+            {
+                MessageBox.Show(excep.ToString());
+            }
             //this.usuarioActivo = login.getUser();
-            Rol.Rol unRol = new Rol.Rol();
+            /*Rol.Rol unRol = new Rol.Rol();
             unRol.setEstadoValido(true);
             unRol.setNombreRol("elrol");
 
@@ -45,10 +51,10 @@ namespace GrouponDesktop
             
             User.User usuarioActivo = new User.User();
             usuarioActivo.setTipoUsuario("Admin");
-            usuarioActivo.setRol(unRol);
+            usuarioActivo.setRol(unRol);*/
 
-            Form menu = this.crearMenuWindow(usuarioActivo.getRol());
-            menu.Show();
+            //Form menu = this.crearMenuWindow(usuarioActivo.getRol());
+            //menu.Show();
         }
 
         private void lnkRegister_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
