@@ -30,7 +30,7 @@ namespace GrouponDesktop.Rol
             using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.get_datos_rol", param))
             {
                 reader.Read();
-                if ((int)reader["Habilitado"] == 1)
+                if ((Boolean)reader["Habilitado"] == true)
                 {
                     this.setEstadoValido(true);
                 }

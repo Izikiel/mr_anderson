@@ -46,22 +46,10 @@ namespace GrouponDesktop
             usuarioActivo.DatosLogin = login;
             usuarioActivo.cargar();
 
-            MessageBox.Show("Bienvenido!"+ usuarioActivo.DatosLogin.UserName);
-            //this.usuarioActivo = login.getUser();
-            /*Rol.Rol unRol = new Rol.Rol();
-            unRol.setEstadoValido(true);
-            unRol.setNombreRol("elrol");
+            MessageBox.Show("Bienvenid@ "+usuarioActivo.DatosLogin.UserName+"!");
 
-            unRol.addFunc("Hola");
-            unRol.addFunc("Soy un boton");
-            unRol.addFunc("lalala");
-            
-            User.User usuarioActivo = new User.User();
-            usuarioActivo.setTipoUsuario("Admin");
-            usuarioActivo.setRol(unRol);*/
-
-            //Form menu = this.crearMenuWindow(usuarioActivo.getRol());
-            //menu.Show();
+            Form menu = this.crearMenuWindow(usuarioActivo.Rol);
+            menu.Show();
         }
 
         private void lnkRegister_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -82,11 +70,11 @@ namespace GrouponDesktop
                 boton.Location = new System.Drawing.Point(20+j,20+i);
                 boton.Click += new EventHandler(this.buttonClicked);
                 menu.Controls.Add(boton);
-                i = i + 25;
-                if (i > 25 * 7)
+                i = i + 35;
+                if (i > 35 * 5)
                 {
                     i = 0;
-                    j = j + 90;
+                    j = j + 110;
                 }
                 
             }
