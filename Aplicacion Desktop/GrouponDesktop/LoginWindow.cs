@@ -39,7 +39,14 @@ namespace GrouponDesktop
             catch (Exception excep)
             {
                 MessageBox.Show(excep.ToString());
+                return;
             }
+
+            this.usuarioActivo = new User.User();
+            usuarioActivo.DatosLogin = login;
+            usuarioActivo.cargar();
+
+            MessageBox.Show("Bienvenido!"+ usuarioActivo.DatosLogin.UserName);
             //this.usuarioActivo = login.getUser();
             /*Rol.Rol unRol = new Rol.Rol();
             unRol.setEstadoValido(true);
@@ -89,7 +96,7 @@ namespace GrouponDesktop
         private void buttonClicked(Object sender, EventArgs e)
         {   
             Button boton = (Button)sender;
-            this.usuarioActivo.getRol().do_f(boton.Text);
+            this.usuarioActivo.Rol.do_f(boton.Text);
         }
     }
 }

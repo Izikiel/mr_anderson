@@ -27,9 +27,7 @@ namespace GrouponDesktop.DataAdapter
             {
                 throw new Exception(resultado);
             }
-
-
-
+            
         }
 
 

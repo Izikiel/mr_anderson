@@ -3,34 +3,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GrouponDesktop.Rol;
+using GrouponDesktop.DataAdapter;
+using System.Data.SqlClient;
 
 namespace GrouponDesktop.User
 {
     class User
     {
-        String tipoUsuario;
-        Rol.Rol unRol;
+
+        private Login datosLogin;
+        public Login DatosLogin
+        {
+            get{return datosLogin;}
+            set{datosLogin = value;}
+        }
+
+        private Rol.Rol rol;
+        public Rol.Rol Rol
+        {
+            get{return rol;}
+            set{rol = value;}
+        }
+
         public User()
         {
 
         }
-        public void setTipoUsuario(String unTipo)
+        
+        public void cargar()
         {
-            this.tipoUsuario = unTipo;
-        }
-        public String getTipoUsuario()
-        {
-            return this.tipoUsuario;
-        }
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
 
-        public void setRol(Rol.Rol rol)
-        {
-            this.unRol = rol;
-        }
+            Dictionary<String, Object> param = new Dictionary<String, Object>();
+            param.Add("nombre_usuario", this.datosLogin.UserName);
+            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.get_nombre_rol_de_usuario", param))
+            {
+                reader.Read();
+                this.Rol = new Rol.Rol();
+                this.rol.cargar((String) reader["rol"]);
+            }
 
-        public Rol.Rol getRol()
-        {
-            return this.unRol;
+            spManager.Close();
         }
     }
 }

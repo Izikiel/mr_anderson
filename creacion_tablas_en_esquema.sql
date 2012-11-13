@@ -687,6 +687,7 @@ create procedure MR_ANDERSON.sp_add_func_rol (@nombre_rol NVARCHAR(255), @Funcio
         end
 GO
 
+
 create procedure MR_ANDERSON.sp_change_status_rol (@nombre_rol NVARCHAR(255), @status BIT) --Usar para borrar/inhabilitar, habilitar
     as
         begin

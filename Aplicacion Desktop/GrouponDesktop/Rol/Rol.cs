@@ -26,7 +26,7 @@ namespace GrouponDesktop.Rol
             DataAccess.SPManager spManager = new DataAccess.SPManager();
 
             Dictionary<String, Object> param = new Dictionary<String, Object>();
-            param.Add("nombre", nombre_rol);
+            param.Add("nombre_rol", nombre_rol);
             using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.get_datos_rol", param))
             {
                 reader.Read();
