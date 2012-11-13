@@ -157,6 +157,7 @@
             this.checkBoxVerCupones.TabIndex = 9;
             this.checkBoxVerCupones.Text = "Ver Cupones";
             this.checkBoxVerCupones.UseVisualStyleBackColor = true;
+            this.checkBoxHistorial.CheckedChanged += new System.EventHandler(this.allCheckBoxes_CheckedChanged);
             // 
             // checkBoxPedirDevolucion
             // 
@@ -168,6 +169,7 @@
             this.checkBoxPedirDevolucion.TabIndex = 10;
             this.checkBoxPedirDevolucion.Text = "Pedir Devolucion";
             this.checkBoxPedirDevolucion.UseVisualStyleBackColor = true;
+            this.checkBoxHistorial.CheckedChanged += new System.EventHandler(this.allCheckBoxes_CheckedChanged);
             // 
             // checkBoxHistorial
             // 
