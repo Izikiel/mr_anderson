@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using GrouponDesktop.Rol;
-//Test
+
 namespace GrouponDesktop
 {
     public partial class AltaRol : Form
@@ -36,7 +36,7 @@ namespace GrouponDesktop
             String selectedItem = cboBoxTipoUsr.SelectedItem.ToString();
             if (selectedItem == "Cliente") enableCliCheckBoxes();
             if (selectedItem == "Proveedor") enableProvCheckBoxes();
-            if (selectedItem == "Admin") enableAdminCheckBoxes();
+            if (selectedItem == "Administrador") enableAdminCheckBoxes();
             
         }
 
