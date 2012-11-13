@@ -108,6 +108,13 @@ namespace GrouponDesktop
             this.Close();
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            clearAll();
+            textBox1.Clear();
+            cboBoxTipoUsr.ResetText();
+        }
+
         
 
     }

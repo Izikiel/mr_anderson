@@ -48,8 +48,8 @@ namespace GrouponDesktop
 
             MessageBox.Show("Bienvenid@ "+usuarioActivo.DatosLogin.UserName+"!");
 
-            Form menu = this.crearMenuWindow(usuarioActivo.Rol);
-            menu.Show();
+            Menu menu = this.crearMenuWindow(usuarioActivo.Rol);
+            menu.ShowDialog();
         }
 
         private void lnkRegister_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -58,9 +58,9 @@ namespace GrouponDesktop
            // registroWindow.Show();
         }
 
-        private Form crearMenuWindow(Rol.Rol unRol)
+        private Menu crearMenuWindow(Rol.Rol unRol)
         {
-            Form menu = new Form();
+            Menu menu = new Menu();
             int i = 0;
             int j = 0;
             foreach(String func in unRol.getFuncionalidades()){
