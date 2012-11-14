@@ -39,8 +39,8 @@ namespace GrouponDesktop.User
             using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.get_nombre_rol_de_usuario", param))
             {
                 reader.Read();
-                this.Rol = new Rol.Rol();
-                this.rol.cargar((String) reader["rol"]);
+                HomeRoles home = new HomeRoles();
+                this.rol = home.cargar((String) reader["rol"]);
             }
 
             spManager.Close();

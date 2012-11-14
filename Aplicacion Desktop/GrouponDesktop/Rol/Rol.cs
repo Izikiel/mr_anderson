@@ -21,32 +21,23 @@ namespace GrouponDesktop.Rol
             this.funcionalidades = new List<String>();
         }
 
-        public Rol cargar(String nombre_rol)
+        public Rol cargar(Boolean habilitado, List<String> funcs, String nombre_rol)
         {
-            DataAccess.SPManager spManager = new DataAccess.SPManager();
-
-            Dictionary<String, Object> param = new Dictionary<String, Object>();
-            param.Add("nombre_rol", nombre_rol);
-            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.get_datos_rol", param))
-            {
-                reader.Read();
-                if ((Boolean)reader["Habilitado"] == true)
-                {
-                    this.setEstadoValido(true);
-                }
-                else this.setEstadoValido(false);
-
-                this.addFunc((String)reader["Funcionalidad"]);
-
-                while (reader.Read())
-                {
-                    this.addFunc((String)reader["Funcionalidad"]);
-                }
-                reader.Close();
-            }
+            this.setEstadoValido(habilitado);
+            this.addAllFuncs(funcs);
+            this.setNombreRol(nombre_rol);
             return this;
         }
 
+        public void addAllFuncs(List<String> funcs)
+        {   
+            foreach (String f in funcs)
+            {
+                this.addFunc(f);
+            }
+        }
+
+        
         public void crear(String nombreRol, String tipoUsr, List<String> funcs)
         {
             foreach (String unaFuncionalidad in funcs)
@@ -58,47 +49,8 @@ namespace GrouponDesktop.Rol
             this.tipoUsuario = tipoUsr;
             this.setEstadoValido(true);
 
-
-            this.persistir();
-        }
-
-        public void persistir()
-        {
-
-
-            DataAccess.SPManager spManager = new DataAccess.SPManager();
-
-            Dictionary<String, Object> param = new Dictionary<string, object>();
-            param.Add("nombre_rol", this.nombre);
-            try
-            {
-
-                spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_new_rol", param);
-            }
-            catch (Exception e)
-            {
-                spManager.Close();
-                throw new Exception("No se pudo dar de alta al rol. Motivo: " + e.ToString());
-                //ver : no me tira error si quiero crear un rol q ya existe (con el mismo nombre)
-            }
-            spManager.Close();
-
-            foreach (String func in this.funcionalidades)
-            {
-
-                spManager = new DataAccess.SPManager();
-
-                param.Add("funcionalidad", func);
-
-                spManager.executeSPWithParameters("MR_ANDERSON.sp_add_func_rol", param);
-
-                spManager.Close();
-
-                param.Remove("funcionalidad");
-            }
-            
-            
-
+            HomeRoles home= new HomeRoles();
+            home.persistir(this);
         }
 
        
@@ -131,18 +83,6 @@ namespace GrouponDesktop.Rol
         public List<String> getFuncionalidades()
         {
             return funcionalidades;
-        }
-
-        public void do_f(String unaF)
-        {
-            switch (unaF)
-            {
-                //case "ALTA_ROL" :
-
-                //  break;
-
-
-            }
         }
 
     }

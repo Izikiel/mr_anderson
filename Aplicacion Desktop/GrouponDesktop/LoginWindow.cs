@@ -13,6 +13,7 @@ namespace GrouponDesktop
 {
     public partial class LoginWindow : Form
     {
+        Menu menu;
         String nombre;
         String pass;
         User.User usuarioActivo;
@@ -78,13 +79,16 @@ namespace GrouponDesktop
                 }
                 
             }
+            this.menu = menu;
             return menu;
         }
 
         private void buttonClicked(Object sender, EventArgs e)
-        {   
+        {
             Button boton = (Button)sender;
-            this.usuarioActivo.Rol.do_f(boton.Text);
+            this.menu.do_f(boton.Text);
         }
+       
+
     }
 }

@@ -23,7 +23,15 @@ create procedure MR_ANDERSON.get_datos_rol (@nombre_rol NVARCHAR(255))
 			join MR_ANDERSON.Funcionalidades_Roles f on r.Rol = f.Rol
 			
 		end
-		
+
+--get nombre all roles
+
+create procedure MR_ANDERSON.get_all_roles
+as
+begin
+select rol from MR_ANDERSON.Roles
+end
+
 --cargar usuario
 
 create procedure MR_ANDERSON.get_nombre_rol_de_usuario(@nombre_usuario NVARCHAR(255))
