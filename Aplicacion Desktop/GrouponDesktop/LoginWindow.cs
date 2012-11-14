@@ -51,6 +51,7 @@ namespace GrouponDesktop
 
             Menu menu = this.crearMenuWindow(usuarioActivo.Rol);
             menu.ShowDialog();
+            
         }
 
         private void lnkRegister_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
