@@ -1200,7 +1200,7 @@ update MR_ANDERSON.Datos_Clientes
     join MR_ANDERSON.Giftcard G
         on   CD.id_destino = G.id_destino
 
--- Update saludos (+ devoluciones)
+-- Update saldos (+ devoluciones)
 
 create procedure MR_ANDERSON.sp_ajusta_saldo_devoluciones
     as
@@ -1229,6 +1229,42 @@ create procedure MR_ANDERSON.sp_ajusta_saldo_devoluciones
 
             close recorre_devoluciones
             deallocate recorre_devoluciones
+
+        end
+
+
+exec MR_ANDERSON.sp_ajusta_saldo_devoluciones
+
+
+-- Update saldos (- compras)
+
+create procedure MR_ANDERSON.sp_ajusta_saldo_compras
+    as
+        begin
+            declare recorre_compras cursor
+ 
+            for (select dni,sum(precio) from MR_ANDERSON.Cupones C
+                        join MR_ANDERSON.Compras CD
+                            on   C.codigo = CD.codigo
+                        group by dni)
+
+            open recorre_compras
+
+            declare @dni numeric(18,0)
+            declare @precio numeric(18,2)
+
+            fetch recorre_compras into @dni, @precio
+
+            while @@FETCH_STATUS = 0
+            begin
+                update MR_ANDERSON.Datos_Clientes set saldo = saldo - @precio
+                        where dni = @dni
+                fetch recorre_compras into @dni, @precio
+            end
+
+
+            close recorre_compras
+            deallocate recorre_compras
 
         end
 
