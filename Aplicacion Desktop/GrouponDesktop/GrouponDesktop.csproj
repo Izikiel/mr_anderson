@@ -80,6 +80,12 @@
     <Compile Include="ModificacionRol.Designer.cs">
       <DependentUpon>ModificacionRol.cs</DependentUpon>
     </Compile>
+    <Compile Include="RegistroWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegistroWindow.Designer.cs">
+      <DependentUpon>RegistroWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Rol\DataTester.cs" />
     <Compile Include="DataAdapter\Login.cs" />
     <Compile Include="LoginWindow.cs">
@@ -125,6 +131,9 @@
     <EmbeddedResource Include="ListadoRoles.resx">
       <DependentUpon>ListadoRoles.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="RegistroWindow.resx">
+      <DependentUpon>RegistroWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -147,6 +156,7 @@
     <Compile Include="ListadoRoles.Designer.cs">
       <DependentUpon>ListadoRoles.cs</DependentUpon>
     </Compile>
+    <Compile Include="User\HomeUsuarios.cs" />
     <Compile Include="User\User.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

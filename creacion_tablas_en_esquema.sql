@@ -1289,3 +1289,23 @@ create procedure MR_ANDERSON.sp_ajusta_saldo_compras
 
 
 exec MR_ANDERSON.sp_ajusta_saldo_devoluciones
+
+-- nuevo usuario
+
+create procedure MR_ANDERSON.sp_new_usr (@nombre_usuario NVARCHAR(100), @password NVARCHAR(255),@nombre_rol NVARCHAR(255))
+    as
+        begin
+            insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,Habilitado,Rol)
+                VALUES(@nombre_usuario,@password,null,0,1,@nombre_rol)
+        end
+
+--confirmar nombre usuario no existente
+
+create procedure MR_ANDERSON.sp_nombre_usuario_no_existente (@nombre_usuario NVARCHAR(100),@result output)
+    
+    as
+        begin
+            declare @result int
+            if(exists(select * from MR_ANDERSON.Login l where l.username = @nombre_usuario)) set @result =  0
+            else set @result =  1
+        end

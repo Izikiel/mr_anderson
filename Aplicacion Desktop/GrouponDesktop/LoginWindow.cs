@@ -92,7 +92,8 @@ namespace GrouponDesktop
 
         private void lnkRegister_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
         {
-
+            RegistroWindow w = new RegistroWindow();
+            w.Show();
         }
        
 

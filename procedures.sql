@@ -33,7 +33,7 @@ begin
 select rol from MR_ANDERSON.Roles
 end
 
---cargar usuario
+--cargar rol con nombre de usuario
 
 create procedure MR_ANDERSON.get_nombre_rol_de_usuario(@nombre_usuario NVARCHAR(255))
 as 
