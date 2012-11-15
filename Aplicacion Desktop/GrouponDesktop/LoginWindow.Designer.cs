@@ -44,9 +44,9 @@
             // 
             this.textBox1.Location = new System.Drawing.Point(101, 85);
             this.textBox1.Name = "textBox1";
+            this.textBox1.PasswordChar = '•';
             this.textBox1.Size = new System.Drawing.Size(171, 20);
             this.textBox1.TabIndex = 1;
-            this.textBox1.PasswordChar = '•';
             // 
             // textBox2
             // 
@@ -102,6 +102,7 @@
             this.lnkRegister.TabIndex = 7;
             this.lnkRegister.TabStop = true;
             this.lnkRegister.Text = "Click Aquí";
+            this.lnkRegister.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkRegister_LinkClicked_1);
             // 
             // LoginWindow
             // 

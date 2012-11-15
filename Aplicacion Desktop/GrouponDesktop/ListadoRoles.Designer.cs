@@ -1,6 +1,6 @@
 ﻿namespace GrouponDesktop
 {
-    partial class Listado
+    partial class ListadoRoles
     {
         /// <summary>
         /// Required designer variable.
@@ -49,7 +49,7 @@
             // 
             // Nombre
             // 
-            this.Nombre.DataPropertyName = "s_value";
+            this.Nombre.DataPropertyName = "nombre";
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Nombre.DefaultCellStyle = dataGridViewCellStyle1;
             this.Nombre.HeaderText = "Nombre";

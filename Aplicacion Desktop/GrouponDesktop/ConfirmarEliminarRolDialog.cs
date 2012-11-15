@@ -6,26 +6,33 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using GrouponDesktop.Rol;
 
 namespace GrouponDesktop
 {
     public partial class ConfirmarEliminarRolDialog : Form
     {
-        public ConfirmarEliminarRolDialog()
+        String nombre_rol;
+
+        public ConfirmarEliminarRolDialog(String nombre)
         {
             InitializeComponent();
+            this.nombre_rol = nombre;
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //llamar a home que elimine el rol
+            HomeRoles home = new HomeRoles();
+            home.eliminar(this.nombre_rol);
+            MessageBox.Show("Se elimino correctamente");
+            this.Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-
-
+    
     }
 }

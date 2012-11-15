@@ -380,10 +380,14 @@ begin tran trn_inserts_tablas
 
         insert into MR_ANDERSON.Roles(Rol,Habilitado)
             values('Proveedor',1)
+
+        insert into MR_ANDERSON.Roles (Rol,Habilitado)
+            values('Administrador General',1)
+
 			
 		-- Insertamos el administrador a la tabla de Login (pass: gdadmin2012)	
 		insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,Habilitado,Rol) 
-			VALUES('administrador','914B8A5A8AD525437A7723C688AED4E72E7F7893184BF087C6E91C93E102891B',NULL,0,1,'Administrador')
+			VALUES('administrador','914B8A5A8AD525437A7723C688AED4E72E7F7893184BF087C6E91C93E102891B',NULL,0,1,'Administrador General')
 		
 		-- Insertamos los datos de los clientes al Login
         insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,Habilitado,Rol)
@@ -703,10 +707,25 @@ GO
 create procedure MR_ANDERSON.sp_change_rol_name (@nombre_rol NVARCHAR(255), @nuevo_nombre_rol NVARCHAR(255))
     as
         begin
+            update MR_ANDERSON.Funcionalidades_Roles
+                set rol = @nuevo_nombre_rol
+                where rol = @nombre_rol
             update MR_ANDERSON.Roles
                 set Rol = @nuevo_nombre_rol
                 where Rol = @nombre_rol
         end
+GO
+
+
+create procedure MR_ANDERSON.sp_eliminar_rol (@nombre_rol NVARCHAR(255))
+    as
+    begin
+        delete from MR_ANDERSON.Funcionalidades_Roles
+            where rol = @nombre_rol
+
+        delete from MR_ANDERSON.Roles
+            where rol = @nombre_rol
+    end
 GO
 
 

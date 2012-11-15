@@ -24,13 +24,44 @@ namespace GrouponDesktop.Rol
             {
                 while (reader.Read())
                 {
-                    Rol unRol =   this.cargar((String)reader["rol"]);
+                    Rol unRol =   this.getRol((String)reader["rol"]);
                     roles.Add(unRol);
                 }
                 reader.Close();
             }
             spManager.Close();
             return roles;
+        }
+
+        public Rol getRol(String nombre_rol)
+        {
+            Boolean estado;
+            List<String> funcs = new List<String>();
+
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+
+            Dictionary<String, Object> param = new Dictionary<String, Object>();
+            param.Add("nombre_rol", nombre_rol);
+            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.get_datos_rol", param))
+            {
+                reader.Read();
+                if ((Boolean)reader["Habilitado"] == true)
+                {
+                    estado = true;
+                }
+                else estado = false;
+
+                funcs.Add((String)reader["Funcionalidad"]);
+
+                while (reader.Read())
+                {
+                    funcs.Add((String)reader["Funcionalidad"]);
+                }
+                reader.Close();
+            }
+
+            Rol rol = new Rol();
+            return rol.cargar(estado, funcs, nombre_rol);
         }
 
         ////// PERSISTENCIA /////////
@@ -68,48 +99,70 @@ namespace GrouponDesktop.Rol
             }
         }
 
-        public Rol cargar(String nombre_rol)
+        public void addFuncionalidad(String nombreRol, String f) 
         {
-            Boolean estado;
-            List<String> funcs = new List<String>();
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+
+            Dictionary<String, Object> param = new Dictionary<string, object>();
+            param.Add("nombre_rol", nombreRol);
+            param.Add("Funcionalidad", f);
+
+            spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_add_func_rol", param);
+            spManager.Close();
+                    
+        }
+
+        public void deleteFuncionalidad(String nombreRol, String f)
+        {
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+
+            Dictionary<String, Object> param = new Dictionary<string, object>();
+            param.Add("nombre_rol", nombreRol);
+            param.Add("Funcionalidad", f);
+
+            spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_del_func_rol", param);
+            spManager.Close();
+
+        }
+
+        public void modificarNombre(String nombreViejo,String nombreNuevo)
+        {
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+
+            Dictionary<String, Object> param = new Dictionary<string, object>();
+            param.Add("nombre_rol", nombreViejo);
+            param.Add("nuevo_nombre_rol", nombreNuevo);
+
+            spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_change_rol_name", param);
+            spManager.Close();
+         
+        }
+
+        public void modificarStatus(String nombreRol, Boolean status)
+        {
 
             DataAccess.SPManager spManager = new DataAccess.SPManager();
 
-            Dictionary<String, Object> param = new Dictionary<String, Object>();
-            param.Add("nombre_rol", nombre_rol);
-            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.get_datos_rol", param))
-            {
-                reader.Read();
-                if ((Boolean)reader["Habilitado"] == true)
-                {
-                    estado = true;
-                }
-                else estado = false;
+            Dictionary<String, Object> param = new Dictionary<string, object>();
+            param.Add("nombre_rol", nombreRol);
+            if (status) param.Add("status", 1);
+            else param.Add("status", 0);
 
-                funcs.Add((String)reader["Funcionalidad"]);
+            spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_change_status_rol", param);
+            spManager.Close();
 
-                while (reader.Read())
-                {
-                    funcs.Add((String)reader["Funcionalidad"]);
-                }
-                reader.Close();
-            }
-
-            Rol rol = new Rol();
-            return rol.cargar(estado, funcs, nombre_rol);
-        }
-
-        public void modificar(String nombreRol)
-        {
-
-            //comunicarse con la base y modificar 
-            //modificacion de nombre, de status (habilitado o no) y de funcionalidades (agregar, eliminar)
         }
 
         public void eliminar(String nombreRol)
         {
 
-            //eliminar de la base
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+
+            Dictionary<String, Object> param = new Dictionary<string, object>();
+            param.Add("nombre_rol", nombreRol);
+
+            spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_eliminar_rol", param);
+            spManager.Close();
         }
 
     }

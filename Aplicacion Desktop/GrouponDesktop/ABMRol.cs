@@ -30,7 +30,7 @@ namespace GrouponDesktop
         private void buttonBajaModifCliecked(object sender, EventArgs e)
         {
             Button boton = (Button)sender;
-            Listado w = new Listado();
+            ListadoRoles w = new ListadoRoles();
             w.setF(boton.Text + " Rol");
             w.ShowDialog();
             

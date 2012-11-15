@@ -89,6 +89,11 @@ namespace GrouponDesktop
             Button boton = (Button)sender;
             this.menu.do_f(boton.Text);
         }
+
+        private void lnkRegister_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+
+        }
        
 
     }

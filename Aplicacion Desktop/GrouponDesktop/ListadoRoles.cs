@@ -10,17 +10,14 @@ using GrouponDesktop.Rol;
 
 namespace GrouponDesktop
 {
-    public partial class Listado : Form
+    public partial class ListadoRoles : Form
     {
         String f;
-        BindingList<StringValue> componentes;
+        String selectedRolName;
 
-        public Listado()
+        public ListadoRoles()
         {
             InitializeComponent();
-            componentes = new BindingList<StringValue>();
-          
-            this.dataGridView1.DataSource = componentes;
             this.fillGrid();
         }
 
@@ -30,15 +27,9 @@ namespace GrouponDesktop
         }
 
         private void fillGrid() {
-            if(true){
                 HomeRoles home_roles = new HomeRoles();
                 List<Rol.Rol> listaRoles = home_roles.getRoles();
-                foreach (Rol.Rol unRol in listaRoles)
-                {
-                    this.componentes.Add(new StringValue(unRol.getNombreRol()));
-                }
-            }
-            dataGridView1.DataSource = this.componentes;
+                dataGridView1.DataSource = listaRoles;
         }
 
 
@@ -47,17 +38,19 @@ namespace GrouponDesktop
             if (e.RowIndex < 0 || e.ColumnIndex !=
             dataGridView1.Columns["Seleccionar"].Index) return;
 
+            this.selectedRolName = this.dataGridView1.Rows[e.RowIndex].Cells[1].Value as string;
+            
             switch (f)
             {
                 case "Baja Rol":
-                    ConfirmarEliminarRolDialog w = new ConfirmarEliminarRolDialog();
-                    //w.setNombreRol
+                    ConfirmarEliminarRolDialog w = new ConfirmarEliminarRolDialog(this.selectedRolName);
                     w.ShowDialog();
+                    this.fillGrid();
                     break;
-                case "Alta Rol":
-                    ModificarRol wModif = new ModificarRol();
-                    //wModif.setNombreRol
+                case "Modificacion Rol":
+                    ModificacionRol wModif = new ModificacionRol(this.selectedRolName);  
                     wModif.ShowDialog();
+                    this.fillGrid();
                     break;
 
             }

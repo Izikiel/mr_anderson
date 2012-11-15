@@ -40,7 +40,7 @@ namespace GrouponDesktop.User
             {
                 reader.Read();
                 HomeRoles home = new HomeRoles();
-                this.rol = home.cargar((String) reader["rol"]);
+                this.rol = home.getRol((String) reader["rol"]);
             }
 
             spManager.Close();

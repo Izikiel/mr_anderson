@@ -21,6 +21,7 @@ create procedure MR_ANDERSON.get_datos_rol (@nombre_rol NVARCHAR(255))
 		select Habilitado,Funcionalidad
 			from MR_ANDERSON.Roles r
 			join MR_ANDERSON.Funcionalidades_Roles f on r.Rol = f.Rol
+		where r.rol = @nombre_rol
 			
 		end
 

@@ -10,9 +10,8 @@ using GrouponDesktop.DataAccess;
 
 namespace GrouponDesktop.Rol
 {
-    class Rol
+    public class Rol
     {
-        String nombre;
         String tipoUsuario;
         List<String> funcionalidades;
         Boolean estadoValido;
@@ -20,6 +19,14 @@ namespace GrouponDesktop.Rol
         public Rol(){
             this.funcionalidades = new List<String>();
         }
+
+        private String nombre;
+        public String Nombre
+        {
+            get { return nombre; }
+            set { nombre = value; }
+        }
+
 
         public Rol cargar(Boolean habilitado, List<String> funcs, String nombre_rol)
         {
@@ -51,6 +58,10 @@ namespace GrouponDesktop.Rol
 
             HomeRoles home= new HomeRoles();
             home.persistir(this);
+        }
+
+        public Boolean estaHabilitado() {
+            return this.estadoValido;
         }
 
        
