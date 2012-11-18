@@ -86,6 +86,12 @@
     <Compile Include="RegistroWindow.Designer.cs">
       <DependentUpon>RegistroWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="RegistroWindow_2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegistroWindow_2.Designer.cs">
+      <DependentUpon>RegistroWindow_2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Rol\DataTester.cs" />
     <Compile Include="DataAdapter\Login.cs" />
     <Compile Include="LoginWindow.cs">
@@ -133,6 +139,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RegistroWindow.resx">
       <DependentUpon>RegistroWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RegistroWindow_2.resx">
+      <DependentUpon>RegistroWindow_2.cs</DependentUpon>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

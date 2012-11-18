@@ -73,9 +73,6 @@
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Cliente",
-            "Proveedor"});
             this.comboBox1.Location = new System.Drawing.Point(113, 24);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
@@ -84,11 +81,11 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(36, 27);
+            this.label3.Location = new System.Drawing.Point(66, 24);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(67, 13);
+            this.label3.Size = new System.Drawing.Size(23, 13);
             this.label3.TabIndex = 5;
-            this.label3.Text = "Tipo Usuario";
+            this.label3.Text = "Rol";
             // 
             // button1
             // 

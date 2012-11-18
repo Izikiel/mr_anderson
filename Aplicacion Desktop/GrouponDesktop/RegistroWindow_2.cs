@@ -14,13 +14,14 @@ namespace GrouponDesktop
         String nombreUsr;
         String pass;
         String tipo;
+        Form WParent;
 
-        public RegistroWindow_2(String nombre,String password,String tipoUsr)
+        public RegistroWindow_2(Form parent)
         {
             InitializeComponent();
-            this.nombreUsr = nombre;
-            this.pass = password;
-            this.tipo = tipoUsr;
+            this.WParent = parent;
         }
+
+
     }
 }

@@ -14,8 +14,6 @@ namespace GrouponDesktop
     public partial class LoginWindow : Form
     {
         Menu menu;
-        String nombre;
-        String pass;
         User.User usuarioActivo;
         DataAccess.SPManager spManager = new GrouponDesktop.DataAccess.SPManager();
 
@@ -52,12 +50,6 @@ namespace GrouponDesktop
             Menu menu = this.crearMenuWindow(usuarioActivo.Rol);
             menu.ShowDialog();
             
-        }
-
-        private void lnkRegister_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-           // RegistroUsuario registroWindow = new RegistroUsuario();
-           // registroWindow.Show();
         }
 
         private Menu crearMenuWindow(Rol.Rol unRol)
