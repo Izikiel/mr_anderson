@@ -37,7 +37,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.lblRegistrar = new System.Windows.Forms.Label();
             this.lnkRegister = new System.Windows.Forms.LinkLabel();
-            ((System.ComponentModel.ISupportInitialize)(this.loginBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // textBox1
@@ -118,7 +117,6 @@
             this.Controls.Add(this.textBox1);
             this.Name = "LoginWindow";
             this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.loginBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

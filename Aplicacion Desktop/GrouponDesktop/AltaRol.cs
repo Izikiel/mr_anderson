@@ -34,9 +34,6 @@ namespace GrouponDesktop
         {
             clearAll();
             String selectedItem = cboBoxTipoUsr.SelectedItem.ToString();
-            if (selectedItem == "Cliente") enableCliCheckBoxes();
-            if (selectedItem == "Proveedor") enableProvCheckBoxes();
-            if (selectedItem == "Administrador") enableAdminCheckBoxes();
             
         }
 
@@ -46,7 +43,7 @@ namespace GrouponDesktop
                 if (ctrl is CheckBox)
                 {
                     CheckBox chk = (CheckBox)ctrl;
-                    chk.Enabled = false;
+                    chk.Enabled = true;
                     chk.Checked = false;
                 }
 
@@ -54,29 +51,6 @@ namespace GrouponDesktop
             
         }
 
-        private void enableCliCheckBoxes()
-        {
-            checkBoxComprarGC.Enabled = true;
-            checkBoxCargarCredito.Enabled = true;
-            checkBoxHistorial.Enabled = true;
-            checkBoxListadoEstadistico.Enabled = true;
-            checkBoxPedirDevolucion.Enabled = true;
-            checkBoxVerCupones.Enabled = true;
-        }
-
-        private void enableProvCheckBoxes()
-        {
-            checkBoxArmarCupon.Enabled = true;
-            
-        }
-
-        private void enableAdminCheckBoxes()
-        {
-            checkBoxABMUsr.Enabled = true;
-            checkBoxPublicarCupones.Enabled = true;
-            checkBoxFacturarProv.Enabled = true;
-            checkBoxABMRol.Enabled = true;
-        }
 
         private void aceptar_Click(Object sender, EventArgs e)
         {
@@ -96,7 +70,16 @@ namespace GrouponDesktop
 
             
             Rol.Rol unRol = new Rol.Rol();
-            unRol.crear(textBox1.Text, cboBoxTipoUsr.SelectedItem.ToString(), funcionalidades);
+            try
+            {
+
+                unRol.crear(textBox1.Text, cboBoxTipoUsr.SelectedItem.ToString(), funcionalidades);
+            }
+            catch (Exception )
+            {
+                MessageBox.Show("El nombre de rol ya existe");
+                return;
+            }
             MessageBox.Show("Se dio de alta al rol correctamente. Nombre de rol: "+ unRol.getNombreRol());
             
             this.Close();

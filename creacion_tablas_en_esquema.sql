@@ -701,17 +701,9 @@ GO
 create procedure MR_ANDERSON.sp_new_rol (@nombre_rol NVARCHAR(255))
     as
         begin
-            if @nombre_rol not in (select Roles.Rol 
-                from MR_ANDERSON.Roles Roles)
                 begin
                     insert into MR_ANDERSON.Roles(Rol,Habilitado)
-                        VALUES(@nombre_rol, 1)
-                end
-            else 
-                begin
-                    raiserror('Este Rol ya existe!',1,1)
-                end
-
+                        VALUES(@nombre_rol, 1) 
         end
 GO
 

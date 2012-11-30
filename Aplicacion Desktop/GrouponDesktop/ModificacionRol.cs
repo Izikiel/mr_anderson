@@ -55,12 +55,8 @@ namespace GrouponDesktop
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Rol.Rol nuevoRol = new Rol.Rol();
-            nuevoRol.setNombreRol(this.textBox1.Text.ToString());
-            nuevoRol.addAllFuncs(this.funcionalidadesRol);
-            this.home.persistir(nuevoRol);
-            this.home.eliminar(this.selectedRolName);
-            this.selectedRolName = nuevoRol.getNombreRol();
+            this.home.modificarNombre(selectedRolName, this.textBox1.Text);
+            selectedRolName = this.textBox1.Text;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
