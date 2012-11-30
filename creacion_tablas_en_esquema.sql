@@ -1220,7 +1220,7 @@ update MR_ANDERSON.Datos_Clientes
         on   CD.id_destino = G.id_destino
 
 -- Update saldos (+ devoluciones)
-
+GO
 create procedure MR_ANDERSON.sp_ajusta_saldo_devoluciones
     as
         begin
@@ -1250,13 +1250,13 @@ create procedure MR_ANDERSON.sp_ajusta_saldo_devoluciones
             deallocate recorre_devoluciones
 
         end
-
+GO
 
 exec MR_ANDERSON.sp_ajusta_saldo_devoluciones
 
 
 -- Update saldos (- compras)
-
+GO
 create procedure MR_ANDERSON.sp_ajusta_saldo_compras
     as
         begin
@@ -1286,20 +1286,20 @@ create procedure MR_ANDERSON.sp_ajusta_saldo_compras
             deallocate recorre_compras
 
         end
-
+GO
 
 exec MR_ANDERSON.sp_ajusta_saldo_devoluciones
 
 --confirmar nombre usuario no existente
-
-create procedure MR_ANDERSON.sp_nombre_usuario_no_existente (@nombre_usuario NVARCHAR(100),@result output)
+GO
+create procedure MR_ANDERSON.sp_nombre_usuario_no_existente (@nombre_usuario NVARCHAR(100),@result int output)
     
     as
         begin
-            declare @result int
             if(exists(select * from MR_ANDERSON.Login l where l.username = @nombre_usuario)) set @result =  0
             else set @result =  1
         end
+GO
 
 -- Punto 10
 
@@ -1315,5 +1315,4 @@ create procedure MR_ANDERSON.historial_compra (@dni numeric(18,0), @fecha_inicio
                 where D.dni = @dni and D.fecha_devolucion >= @fecha_inicio and D.fecha_devolucion <= @fecha_final
             order by Estado
         end
-
-
+GO
