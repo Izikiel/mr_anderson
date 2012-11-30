@@ -7,6 +7,43 @@
 /* Script type:           Database drop script                            */
 /* Created on:            2012-10-26 16:56                                */
 /* ---------------------------------------------------------------------- */
+USE [GD2C2012]
+GO
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[historial_compra]    Script Date: 11/29/2012 23:30:07 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[historial_compra]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[historial_compra]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_nombre_usuario_no_existente]    Script Date: 11/28/2012 20:56:24 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_nombre_usuario_no_existente]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_nombre_usuario_no_existente]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_ajusta_saldo_compras]    Script Date: 11/28/2012 20:54:32 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_ajusta_saldo_compras]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_ajusta_saldo_compras]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_ajusta_saldo_devoluciones]    Script Date: 11/28/2012 20:54:19 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_ajusta_saldo_devoluciones]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_ajusta_saldo_devoluciones]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_login]    Script Date: 11/28/2012 20:50:30 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_login]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_login]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_eliminar_rol]    Script Date: 11/28/2012 20:50:17 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_eliminar_rol]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_eliminar_rol]
+GO
 
 /****** Object:  StoredProcedure [MR_ANDERSON].[sp_compra_giftcard]    Script Date: 11/07/2012 16:49:29 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_compra_giftcard]') AND type in (N'P', N'PC'))
@@ -97,6 +134,15 @@ GO
 /* Drop foreign key constraints                                           */
 /* ---------------------------------------------------------------------- */
 
+ALTER TABLE [MR_ANDERSON].[Login] DROP CONSTRAINT [Tipo_Login]
+GO
+
+ALTER TABLE [MR_ANDERSON].[Rol_Tipo] DROP  CONSTRAINT [FK_ROL]
+GO
+
+ALTER TABLE [MR_ANDERSON].[Rol_Tipo]  DROP CONSTRAINT [FK_TIPO]
+GO
+
 ALTER TABLE [MR_ANDERSON].[Datos_Clientes] DROP CONSTRAINT [Login_Datos_Clientes]
 GO
 
@@ -127,7 +173,6 @@ GO
 
 ALTER TABLE [MR_ANDERSON].[Datos_Proveedores] DROP CONSTRAINT [Login_Datos_Proveedores]
 GO
-
 
 ALTER TABLE [MR_ANDERSON].[Factura] DROP CONSTRAINT [Datos_Proveedores_Factura]
 GO
@@ -196,6 +241,11 @@ GO
 DROP TABLE [MR_ANDERSON].[Consumos]
 GO
 
+DROP TABLE [MR_ANDERSON].[Tipo_Usuario]
+GO
+
+DROP TABLE [MR_ANDERSON].[Rol_Tipo]
+GO
 
 /* ---------------------------------------------------------------------- */
 /* Drop table "Devoluciones"                                              */

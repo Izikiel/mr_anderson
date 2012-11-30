@@ -7,6 +7,9 @@
 /* ---------------------------------------------------------------------- */
 /* Add table "Roles"                                                      */
 /* ---------------------------------------------------------------------- */
+USE [GD2C2012]
+GO
+
 CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
 
     CREATE TABLE [Roles] (
@@ -15,6 +18,16 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
         CONSTRAINT [PK_Roles] PRIMARY KEY ([Rol])
     )
     
+    CREATE TABLE [Tipo_Usuario](
+        [Tipo] NVARCHAR(100) NOT NULL,
+        CONSTRAINT [PK_Tipo] PRIMARY KEY ([Tipo])
+    )
+
+    CREATE TABLE [Rol_Tipo](
+        [Tipo] NVARCHAR(100) NOT NULL,
+        [Rol] NVARCHAR(255) NOT NULL,
+        CONSTRAINT [PK_Tipo_Rol] PRIMARY KEY ([Rol],[Tipo])
+    )
 
 
     /* ---------------------------------------------------------------------- */
@@ -38,6 +51,7 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
         [last_login] DATETIME ,
         [intentos_fallidos] NUMERIC(3) NOT NULL,
         [Habilitado] BIT NOT NULL,
+        [Tipo] NVARCHAR(100) NOT NULL,
         [Rol] NVARCHAR(255) NOT NULL,
         CONSTRAINT [PK_Login] PRIMARY KEY ([username])
     )
@@ -267,6 +281,18 @@ GO
         FOREIGN KEY ([username]) REFERENCES [MR_ANDERSON].[Login] ([username])
     GO
 
+    ALTER TABLE [MR_ANDERSON].[Rol_Tipo] ADD CONSTRAINT [FK_ROL]
+        FOREIGN KEY ([Rol]) REFERENCES [MR_ANDERSON].[Roles] ([Rol])
+    GO
+
+    ALTER TABLE [MR_ANDERSON].[Rol_Tipo] ADD CONSTRAINT [FK_TIPO]
+        FOREIGN KEY ([Tipo]) REFERENCES [MR_ANDERSON].[Tipo_Usuario] ([Tipo])
+    GO
+
+    
+    ALTER TABLE [MR_ANDERSON].[Login] ADD CONSTRAINT [Tipo_Login]
+        FOREIGN KEY ([Tipo]) REFERENCES [MR_ANDERSON].[Tipo_Usuario] ([Tipo])
+    GO 
 
     ALTER TABLE [MR_ANDERSON].[Cupones] ADD CONSTRAINT [Datos_Proveedores_Cupones] 
         FOREIGN KEY ([provee_cuit]) REFERENCES [MR_ANDERSON].[Datos_Proveedores] ([provee_cuit]) on update cascade;
@@ -384,21 +410,42 @@ begin tran trn_inserts_tablas
         insert into MR_ANDERSON.Roles (Rol,Habilitado)
             values('Administrador General',1)
 
+        insert into MR_ANDERSON.Tipo_Usuario (Tipo)
+            values('Cliente')
+
+        insert into MR_ANDERSON.Tipo_Usuario (Tipo)
+            values('Proveedor')
+
+        insert into MR_ANDERSON.Tipo_Usuario (Tipo)
+            values('Administrador')
+
+        insert into MR_ANDERSON.Rol_Tipo (Tipo, Rol)
+            values('Cliente', 'Cliente')
+
+        insert into MR_ANDERSON.Rol_Tipo (Tipo, Rol)
+            values('Proveedor', 'Proveedor')
+
+        insert into MR_ANDERSON.Rol_Tipo (Tipo, Rol)
+            values('Administrador', 'Administrador')
+
+        insert into MR_ANDERSON.Rol_Tipo (Tipo, Rol)
+            values('Administrador', 'Administrador General')
+
 			
 		-- Insertamos el administrador a la tabla de Login (pass: gdadmin2012)	
-		insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,Habilitado,Rol) 
-			VALUES('administrador','914B8A5A8AD525437A7723C688AED4E72E7F7893184BF087C6E91C93E102891B',NULL,0,1,'Administrador General')
+		insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,Habilitado,Rol,Tipo) 
+			VALUES('administrador','914B8A5A8AD525437A7723C688AED4E72E7F7893184BF087C6E91C93E102891B',NULL,0,1,'Administrador General','Administrador')
 		
 		-- Insertamos los datos de los clientes al Login
-        insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,Habilitado,Rol)
+        insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,Habilitado,Rol,Tipo)
 
-            select distinct master.Cli_Dni, NULL,NULL,0,1,'Cliente' 
+            select distinct master.Cli_Dni, NULL,NULL,0,1,'Cliente','Cliente'
                 from gd_esquema.Maestra master
 
 		-- Insertamos los datos de los proveedores al Login
-        insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,Habilitado,Rol)
+        insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,Habilitado,Rol,Tipo)
 
-            select distinct master.Provee_CUIT,NULL,NULL,0,1,'Proveedor' 
+            select distinct master.Provee_CUIT,NULL,NULL,0,1,'Proveedor','Proveedor' 
                 from gd_esquema.Maestra master 
                 where master.Provee_CUIT is not NULL
 
