@@ -1301,3 +1301,19 @@ create procedure MR_ANDERSON.sp_nombre_usuario_no_existente (@nombre_usuario NVA
             else set @result =  1
         end
 
+-- Punto 10
+
+create procedure MR_ANDERSON.historial_compra (@dni numeric(18,0), @fecha_inicio DATETIME, 
+                                @fecha_final DATETIME)
+    as
+        begin
+            select codigo,'COMPRADO' as Estado 
+                from MR_ANDERSON.Compras C 
+                where C.dni = @dni and C.fecha >= @fecha_inicio and C.fecha <= @fecha_final
+            union select codigo,'DEVUELTO' as Estado 
+                from MR_ANDERSON.Devoluciones D 
+                where D.dni = @dni and D.fecha_devolucion >= @fecha_inicio and D.fecha_devolucion <= @fecha_final
+            order by Estado
+        end
+
+
