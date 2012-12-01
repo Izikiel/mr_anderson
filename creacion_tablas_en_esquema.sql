@@ -702,9 +702,8 @@ GO
 create procedure MR_ANDERSON.sp_new_rol (@nombre_rol NVARCHAR(255))
     as
         begin
-                begin
-                    insert into MR_ANDERSON.Roles(Rol,Habilitado)
-                        VALUES(@nombre_rol, 1) 
+            insert into MR_ANDERSON.Roles(Rol,Habilitado)
+                VALUES(@nombre_rol, 1)
         end
 GO
 
@@ -1358,15 +1357,35 @@ create procedure MR_ANDERSON.historial_compra (@dni numeric(18,0), @fecha_inicio
 GO
 
 --Punto 8
-/*
-create procedure MR_ANDERSON.sp_comprar_cupon (@variable_name variable_type, @variable_name1 variable_type1, 
-                                @variable_name2 variable_type2 output)
+
+create procedure MR_ANDERSON.sp_comprar_cupon (@dni numeric(18), @codigo NVARCHAR(50), 
+                                @cantidad numeric(10,0),@fecha_compra DATETIME)
     as
         begin
-            
+            if (select stock_disponible from MR_ANDERSON.Cupones where codigo = @codigo) < @cantidad
+                begin
+                    RAISERROR('No hay stock para la cantidad pedida',10,1)
+                end
+
+            if (select saldo from MR_ANDERSON.Datos_Clientes where dni = @dni) <
+                (select precio * @cantidad from MR_ANDERSON.Cupones where codigo = @codigo)
+                begin
+                    RAISERROR('Saldo insuficiente',10,1)
+                end
+
+            if (select cantidad_x_usuario from MR_ANDERSON.Cupones where codigo = @codigo) < @cantidad
+                begin
+                    RAISERROR('Excede cantidad maxima para el usuario',10,1)
+                end
+
+            insert into MR_ANDERSON.Compras(dni,cantidad,fecha,codigo)
+                VALUES(@dni,@cantidad,@fecha_compra,@codigo)
+
+            update MR_ANDERSON.Cupones
+                set stock_disponible = stock_disponible - @cantidad
+                where codigo = @codigo
         end
 GO
-*/
 
 --Punto 9
 create procedure MR_ANDERSON.sp_chequear_pertenencia (@dni numeric(18), @codigo NVARCHAR(50), 
