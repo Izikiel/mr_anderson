@@ -10,6 +10,18 @@
 USE [GD2C2012]
 GO
 
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_chequear_pertenencia]    Script Date: 12/01/2012 20:15:29 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_chequear_pertenencia]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_chequear_pertenencia]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_pedir_devolucion]    Script Date: 12/01/2012 20:15:13 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_pedir_devolucion]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_pedir_devolucion]
+GO
+
+
 /****** Object:  StoredProcedure [MR_ANDERSON].[historial_compra]    Script Date: 11/29/2012 23:30:07 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[historial_compra]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [MR_ANDERSON].[historial_compra]

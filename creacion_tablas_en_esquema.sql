@@ -191,6 +191,7 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
         [vencimiento_oferta] DATETIME NOT NULL,
         [vencimiento_canje] VARCHAR(40),
         [fecha_publicacion] DATETIME NOT NULL,
+       -- [ciudad] NVARCHAR(255) NOT NULL,
         CONSTRAINT [codigo] PRIMARY KEY ([codigo])
     )
     
@@ -1355,3 +1356,57 @@ create procedure MR_ANDERSON.historial_compra (@dni numeric(18,0), @fecha_inicio
             order by Estado
         end
 GO
+
+--Punto 8
+/*
+create procedure MR_ANDERSON.sp_comprar_cupon (@variable_name variable_type, @variable_name1 variable_type1, 
+                                @variable_name2 variable_type2 output)
+    as
+        begin
+            
+        end
+GO
+*/
+
+--Punto 9
+create procedure MR_ANDERSON.sp_chequear_pertenencia (@dni numeric(18), @codigo NVARCHAR(50), 
+                                @result bit output)
+    as
+        begin
+                if exists (select dni, Compras.codigo from MR_ANDERSON.Compras Compras 
+                            join MR_ANDERSON.Cupones Cupones on   Compras.codigo = Cupones.codigo
+                            where dni = @dni and Compras.codigo = @codigo )
+                    begin
+                        set @result = 1
+                    end
+                
+            set @result = 0
+
+        end
+
+GO
+
+create procedure MR_ANDERSON.sp_pedir_devolucion (@dni numeric(18), @codigo nvarchar(50), @fecha_devolucion DATETIME,
+                                @motivo NVARCHAR(255) )
+    as
+        begin
+            if @fecha_devolucion > (select vencimiento_canje from MR_ANDERSON.Cupones where codigo = @codigo)
+                begin
+                    RAISERROR('No se puede devolver',10,1)
+                    return
+                end
+
+            update MR_ANDERSON.Datos_Clientes
+                set saldo = saldo + (select precio from MR_ANDERSON.Cupones where codigo = @codigo)
+                where dni = @dni
+
+            update MR_ANDERSON.Cupones
+                set stock_disponible = stock_disponible + (select cantidad from MR_ANDERSON.Compras where dni = @dni and codigo = @codigo)
+                where codigo = @codigo
+
+            insert into MR_ANDERSON.Devoluciones(fecha_devolucion,dni,codigo,motivo,cantidad)
+                values(@fecha_devolucion,@dni,@codigo,@motivo, 
+                        (select cantidad from MR_ANDERSON.Compras where dni = @dni and codigo = @codigo))
+
+        end
+GO 
