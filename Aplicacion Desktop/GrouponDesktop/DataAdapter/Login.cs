@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace GrouponDesktop.DataAdapter
 {
-    class Login
+   public class Login
     {
         public void validateUser()
         {

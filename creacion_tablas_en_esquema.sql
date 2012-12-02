@@ -859,7 +859,7 @@ GO
 -- Insert nuevo login
 
 create procedure MR_ANDERSON.sp_insert_login (@username_sended NVARCHAR(100), @user_password_sended NVARCHAR(255), @rol_sended NVARCHAR(255), 
-                                                @result NVARCHAR(14) output)
+                                                @tipo NVARCHAR(100), @result NVARCHAR(14) output)
     as
         begin
             if @username_sended is null or @rol_sended is null
@@ -874,8 +874,8 @@ create procedure MR_ANDERSON.sp_insert_login (@username_sended NVARCHAR(100), @u
                     return 1
                 end
 
-            insert into MR_ANDERSON.Login(username, user_password, last_login, intentos_fallidos, Habilitado, Rol) 
-                VALUES(@username_sended, @user_password_sended, NULL, 0, 1, @rol_sended)
+            insert into MR_ANDERSON.Login(username, user_password, last_login, intentos_fallidos, Habilitado, Rol,Tipo) 
+                VALUES(@username_sended, @user_password_sended, NULL, 0, 1, @rol_sended,@tipo)
             
             set @result = 'LOGIN_REG_OK'
             return 0

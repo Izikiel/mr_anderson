@@ -64,6 +64,28 @@ namespace GrouponDesktop.Rol
             return rol.cargar(estado, funcs, nombre_rol);
         }
 
+        public List<String> getRolesParaTipo(String tipo)
+        {
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+
+            Dictionary<String, Object> param = new Dictionary<string, object>();
+            param.Add("tipo", tipo);
+            List<String> listaRoles = new List<string>();
+
+            SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_get_roles_para_tipo", param);
+            using (reader)
+            {
+
+                while (reader.Read())
+                {
+                    listaRoles.Add((string)reader["Rol"]);
+                }
+            }
+
+            spManager.Close();
+            return listaRoles;
+        }
+
         ////// PERSISTENCIA /////////
         public void persistir(Rol unRol)
         {
@@ -71,6 +93,8 @@ namespace GrouponDesktop.Rol
 
             Dictionary<String, Object> param = new Dictionary<string, object>();
             param.Add("nombre_rol", unRol.getNombreRol());
+            param.Add("tipo", unRol.TipoUsuario);
+
             try
             {
 
@@ -80,8 +104,8 @@ namespace GrouponDesktop.Rol
             {
                 spManager.Close();
                 throw new Exception("No se pudo dar de alta al rol. Motivo: " + e.ToString());
-                //ver : no me tira error si quiero crear un rol q ya existe (con el mismo nombre)
             }
+
             spManager.Close();
 
             foreach (String func in unRol.getFuncionalidades())

@@ -80,17 +80,23 @@
     <Compile Include="ModificacionRol.Designer.cs">
       <DependentUpon>ModificacionRol.cs</DependentUpon>
     </Compile>
+    <Compile Include="RegistroCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegistroCliente.Designer.cs">
+      <DependentUpon>RegistroCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RegistroProveedor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegistroProveedor.Designer.cs">
+      <DependentUpon>RegistroProveedor.cs</DependentUpon>
+    </Compile>
     <Compile Include="RegistroWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="RegistroWindow.Designer.cs">
       <DependentUpon>RegistroWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="RegistroWindow_2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="RegistroWindow_2.Designer.cs">
-      <DependentUpon>RegistroWindow_2.cs</DependentUpon>
     </Compile>
     <Compile Include="Rol\DataTester.cs" />
     <Compile Include="DataAdapter\Login.cs" />
@@ -137,11 +143,11 @@
     <EmbeddedResource Include="ListadoRoles.resx">
       <DependentUpon>ListadoRoles.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="RegistroCliente.resx">
+      <DependentUpon>RegistroCliente.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RegistroWindow.resx">
       <DependentUpon>RegistroWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RegistroWindow_2.resx">
-      <DependentUpon>RegistroWindow_2.cs</DependentUpon>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -165,6 +171,8 @@
     <Compile Include="ListadoRoles.Designer.cs">
       <DependentUpon>ListadoRoles.cs</DependentUpon>
     </Compile>
+    <Compile Include="User\DatosCliente.cs" />
+    <Compile Include="User\DatosProveedor.cs" />
     <Compile Include="User\HomeUsuarios.cs" />
     <Compile Include="User\User.cs" />
   </ItemGroup>

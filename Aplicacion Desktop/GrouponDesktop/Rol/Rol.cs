@@ -12,7 +12,12 @@ namespace GrouponDesktop.Rol
 {
     public class Rol
     {
-        String tipoUsuario;
+        private String tipoUsuario;
+        public String TipoUsuario
+        {
+            get { return tipoUsuario; }
+            set { tipoUsuario = value; }
+        }
         List<String> funcionalidades;
         Boolean estadoValido;
 
@@ -75,12 +80,6 @@ namespace GrouponDesktop.Rol
 
         public String getNombreRol(){
             return this.nombre;
-        }
-
-
-        public String getTipoUsuario()
-        {
-            return this.tipoUsuario;
         }
 
         public void addFunc(String unaF){

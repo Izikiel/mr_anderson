@@ -15,11 +15,14 @@ namespace GrouponDesktop
     {
         Menu menu;
         User.User usuarioActivo;
+        HomeUsuarios homeUsr;
         DataAccess.SPManager spManager = new GrouponDesktop.DataAccess.SPManager();
 
         public LoginWindow()
         {
             InitializeComponent();
+            this.homeUsr = new HomeUsuarios();
+            this.usuarioActivo = new User.User();
            
         }
 
@@ -41,9 +44,7 @@ namespace GrouponDesktop
                 return;
             }
 
-            this.usuarioActivo = new User.User();
-            usuarioActivo.DatosLogin = login;
-            usuarioActivo.cargar();
+            this.usuarioActivo = homeUsr.getUsuario(login);
 
             MessageBox.Show("Bienvenid@ "+usuarioActivo.DatosLogin.UserName+"!");
 

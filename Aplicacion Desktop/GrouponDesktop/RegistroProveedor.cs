@@ -9,19 +9,11 @@ using System.Windows.Forms;
 
 namespace GrouponDesktop
 {
-    public partial class RegistroWindow_2 : Form
+    public partial class RegistroProveedor : Form
     {
-        String nombreUsr;
-        String pass;
-        String tipo;
-        Form WParent;
-
-        public RegistroWindow_2(Form parent)
+        public RegistroProveedor()
         {
             InitializeComponent();
-            this.WParent = parent;
         }
-
-
     }
 }

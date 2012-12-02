@@ -8,9 +8,15 @@ using System.Data.SqlClient;
 
 namespace GrouponDesktop.User
 {
-    class User
+    public class User
     {
-
+        
+        private String tipoUsuario;
+        public String TipoUsuario
+        {
+            get { return tipoUsuario; }
+            set { tipoUsuario = value; }
+        }
         private Login datosLogin;
         public Login DatosLogin
         {
@@ -25,25 +31,20 @@ namespace GrouponDesktop.User
             set{rol = value;}
         }
 
-        public User()
+        private DatosCliente datosCliente;
+        public DatosCliente DatosCliente
         {
+            get { return datosCliente; }
+            set { datosCliente = value; }
+        }
 
+        private DatosProveedor datosProveedor;
+        public DatosProveedor DatosProveedor
+        {
+            get { return datosProveedor; }
+            set { datosProveedor = value; }
         }
         
-        public void cargar()
-        {
-            DataAccess.SPManager spManager = new DataAccess.SPManager();
-
-            Dictionary<String, Object> param = new Dictionary<String, Object>();
-            param.Add("nombre_usuario", this.datosLogin.UserName);
-            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.get_nombre_rol_de_usuario", param))
-            {
-                reader.Read();
-                HomeRoles home = new HomeRoles();
-                this.rol = home.getRol((String) reader["rol"]);
-            }
-
-            spManager.Close();
-        }
+        
     }
 }
