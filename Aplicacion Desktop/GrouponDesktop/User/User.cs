@@ -44,7 +44,13 @@ namespace GrouponDesktop.User
             get { return datosProveedor; }
             set { datosProveedor = value; }
         }
-        
+
+        private List<String> ciudadesPreferencia;
+        public List<String> CuidadesPreferencia
+        {
+            get { return ciudadesPreferencia; }
+            set { ciudadesPreferencia = value; }
+        }
         
     }
 }

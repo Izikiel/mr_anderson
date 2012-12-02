@@ -42,3 +42,22 @@ begin
 	where l.username = @nombre_usuario
 
 end
+
+--get ciudades
+
+create procedure MR_ANDERSON.sp_get_ciudades
+	as
+		begin
+		select ciudad from MR_ANDERSON.ciudades
+		group by ciudad
+			
+		end
+
+--add ciudad preferencia para user
+create procedure MR_ANDERSON.sp_add_ciudad_user (@dni numeric, @ciudad varchar(255))
+	as
+		begin
+			insert into MR_ANDERSON.ciudades(dni,ciudad)
+				values(@dni,@ciudad)
+		end
+

@@ -58,6 +58,18 @@ namespace GrouponDesktop.User
                     throw new Exception(resultado);
                 }
 
+                DataAccess.SPManager spManager3 = new DataAccess.SPManager();
+
+
+                foreach (String c in usuario.CuidadesPreferencia)
+                {
+                    Dictionary<String, Object> param_ciudades = new Dictionary<string, object>();
+                    param_ciudades.Add("ciudad", c);
+                    param_ciudades.Add("dni", usuario.DatosCliente.Dni);
+                    spManager3.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_add_ciudad_user",param_ciudades);
+                }
+
+                spManager3.Close();
             }else{
                 Dictionary<String, Object> param_prov = new Dictionary<String, Object>();
                 param_prov.Add("provee_cuit_sended", usuario.DatosProveedor.Cuit);
@@ -90,6 +102,8 @@ namespace GrouponDesktop.User
 
             spManager2.executeSPWithParameters("MR_ANDERSON.sp_insert_login", param_login);
             spManager2.Close();
+
+         
         }
 
         ////VALIDACIONES////

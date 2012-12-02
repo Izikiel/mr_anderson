@@ -72,6 +72,7 @@
     <Compile Include="ConfirmarEliminarRolDialog.Designer.cs">
       <DependentUpon>ConfirmarEliminarRolDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cupones\HomeCiudades.cs" />
     <Compile Include="DataAccess\DBManager.cs" />
     <Compile Include="DataAccess\SPManager.cs" />
     <Compile Include="ModificacionRol.cs">
@@ -145,6 +146,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RegistroCliente.resx">
       <DependentUpon>RegistroCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RegistroProveedor.resx">
+      <DependentUpon>RegistroProveedor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RegistroWindow.resx">
       <DependentUpon>RegistroWindow.cs</DependentUpon>
