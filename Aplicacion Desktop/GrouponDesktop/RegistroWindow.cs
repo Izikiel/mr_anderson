@@ -32,6 +32,7 @@ namespace GrouponDesktop
             this.usuario = new User.User();
             this.usuario.DatosLogin = new Login();
             this.usuario.Rol = new Rol.Rol();
+            this.usuario.Direccion = new Direccion();
             this.comboBox2.Enabled = false;
         }
 
@@ -55,7 +56,7 @@ namespace GrouponDesktop
                 }
                 else
                 {
-                    w = new RegistroProveedor();
+                    w = new RegistroProveedor(this);
                     this.usuario.DatosCliente = null;
                     this.usuario.DatosProveedor = new DatosProveedor();
                 }
@@ -69,6 +70,7 @@ namespace GrouponDesktop
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.comboBox2.Items.Clear();
+            this.comboBox2.ResetText();
             this.comboBox2.Enabled = true;
             List<String> rolesParaTipo = this.homeRol.getRolesParaTipo(this.comboBox1.SelectedItem.ToString());
             foreach (String rol in rolesParaTipo)

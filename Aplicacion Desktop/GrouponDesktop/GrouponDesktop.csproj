@@ -177,6 +177,7 @@
     </Compile>
     <Compile Include="User\DatosCliente.cs" />
     <Compile Include="User\DatosProveedor.cs" />
+    <Compile Include="User\Direccion.cs" />
     <Compile Include="User\HomeUsuarios.cs" />
     <Compile Include="User\User.cs" />
   </ItemGroup>

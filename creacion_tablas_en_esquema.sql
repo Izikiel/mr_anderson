@@ -952,7 +952,7 @@ create procedure MR_ANDERSON.sp_insert_proveedor (@provee_cuit_sended NVARCHAR(2
                 end
 
             if exists(select provee_cuit from MR_ANDERSON.Datos_Proveedores where provee_cuit = @provee_cuit_sended)
-                or exists(select username from MR_ANDERSON.Datos_Proveedores where username = @username_sended)
+                
 
                 begin
                     set @result = 'PROV_EXISTENT'
@@ -961,7 +961,7 @@ create procedure MR_ANDERSON.sp_insert_proveedor (@provee_cuit_sended NVARCHAR(2
             
             insert into MR_ANDERSON.Datos_Proveedores (provee_cuit, provee_rs, provee_telefono, provee_rubro, username, nombre_contacto, provee_email) 
                 VALUES(@provee_cuit_sended, @provee_rs_sended, @provee_telefono_sended, @provee_rubro_sended, @username_sended, @nombre_contacto_sended, @provee_email_sended)
-            return 'PROV_REG_OK'
+            set @result =  'PROV_REG_OK'
                 
         end
 

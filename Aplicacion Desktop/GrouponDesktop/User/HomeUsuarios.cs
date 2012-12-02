@@ -57,6 +57,7 @@ namespace GrouponDesktop.User
                 {
                     throw new Exception(resultado);
                 }
+                
 
                 DataAccess.SPManager spManager3 = new DataAccess.SPManager();
 
@@ -80,12 +81,12 @@ namespace GrouponDesktop.User
                 param_prov.Add("nombre_contacto_sended", usuario.DatosProveedor.NombreContacto);
                 param_prov.Add("provee_email_sended", usuario.DatosProveedor.Mail);
                 param_prov.Add("result output", "");
-                SqlCommand command;
-                spManager.executeSPWithParameters("MR_ANDERSON.sp_insert_proveedor", param_prov,out command);
-                string resultado = (string)command.Parameters["@result"].Value;
-                if (!resultado.Equals("PROV_REG_OK"))
+                SqlCommand command_prov;
+                spManager.executeSPWithParameters("MR_ANDERSON.sp_insert_proveedor", param_prov,out command_prov);
+                String resultado_prov = command_prov.Parameters["@result"].Value.ToString();
+                if (!resultado_prov.Equals("PROV_REG_OK"))
                 {
-                    throw new Exception(resultado); 
+                    throw new Exception(resultado_prov); 
                 }
 
             }
@@ -102,6 +103,29 @@ namespace GrouponDesktop.User
 
             spManager2.executeSPWithParameters("MR_ANDERSON.sp_insert_login", param_login);
             spManager2.Close();
+
+            DataAccess.SPManager spManager4 = new DataAccess.SPManager();
+
+            Dictionary<String, Object> param_direccion = new Dictionary<string, object>();
+            param_direccion.Add("calle", usuario.Direccion.Calle);
+
+            param_direccion.Add("localidad", usuario.Direccion.Localidad);
+            param_direccion.Add("username", usuario.DatosLogin.UserName);
+            param_direccion.Add("nro_piso", usuario.Direccion.Piso);
+            param_direccion.Add("depto", usuario.Direccion.Depto);
+            param_direccion.Add("codigo_postal", usuario.Direccion.CodigoPostal);
+            param_direccion.Add("result output", "");
+
+            SqlCommand command2;
+            spManager4.executeSPWithParameters("MR_ANDERSON.sp_insert_direccion",param_direccion, out command2);
+
+            String resultado2 = command2.Parameters["@result"].Value.ToString();
+            if (!resultado2.Equals("OK"))
+            {
+                throw new Exception(resultado2);
+            }
+
+            spManager4.Close();
 
          
         }

@@ -49,6 +49,11 @@ namespace GrouponDesktop.User
             set { rubro = value; }
         }
 
-        
+        private String ciudad;
+        public String Ciudad
+        {
+            get { return ciudad; }
+            set { ciudad = value; }
+        } 
     }
 }

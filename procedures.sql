@@ -11,9 +11,10 @@ create procedure mostrar_cupones_proveedores (@fecha_inicio DATETIME, @fecha_fin
 			-- Falta banda, ver tema de las fechas, y usar cursor para retornar el select
 			
 		end
-
+GO
 
 -- rol
+
 
 create procedure MR_ANDERSON.get_datos_rol (@nombre_rol NVARCHAR(255))
 	as
@@ -24,6 +25,7 @@ create procedure MR_ANDERSON.get_datos_rol (@nombre_rol NVARCHAR(255))
 		where r.rol = @nombre_rol
 			
 		end
+GO
 
 --get nombre all roles
 
@@ -32,6 +34,7 @@ as
 begin
 select rol from MR_ANDERSON.Roles
 end
+GO
 
 --cargar rol con nombre de usuario
 
@@ -42,6 +45,7 @@ begin
 	where l.username = @nombre_usuario
 
 end
+GO
 
 --get ciudades
 
@@ -52,6 +56,7 @@ create procedure MR_ANDERSON.sp_get_ciudades
 		group by ciudad
 			
 		end
+GO
 
 --add ciudad preferencia para user
 create procedure MR_ANDERSON.sp_add_ciudad_user (@dni numeric, @ciudad varchar(255))
@@ -60,4 +65,4 @@ create procedure MR_ANDERSON.sp_add_ciudad_user (@dni numeric, @ciudad varchar(2
 			insert into MR_ANDERSON.ciudades(dni,ciudad)
 				values(@dni,@ciudad)
 		end
-
+GO

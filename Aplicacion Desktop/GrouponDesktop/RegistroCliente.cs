@@ -44,6 +44,14 @@ namespace GrouponDesktop
                 this.padre.Usuario.DatosCliente.Telefono = this.textBox5.Text;
                 this.padre.Usuario.CuidadesPreferencia = this.ciudadesSeleccionadas;
                 this.padre.Usuario.DatosCliente.FechaNac = this.getFechaToAAAAMMDD();
+
+                this.padre.Usuario.Direccion.Calle = this.textBox6.Text+" "+this.textBox7.Text;
+                this.padre.Usuario.Direccion.CodigoPostal = Convert.ToInt32(this.textBox11.Text);
+                this.padre.Usuario.Direccion.Piso = Convert.ToInt32(this.textBox8.Text);
+                this.padre.Usuario.Direccion.Depto = this.textBox9.Text;
+                this.padre.Usuario.Direccion.Localidad = this.textBox10.Text;
+
+                if(!this.textBox8.Text.Equals("-"))this.padre.Usuario.Direccion.Piso = Convert.ToInt32(this.textBox8.Text);
                 homeUsr.persistir(this.padre.Usuario);
             }
             catch (Exception exception)

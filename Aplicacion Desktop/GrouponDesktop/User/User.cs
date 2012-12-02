@@ -10,6 +10,12 @@ namespace GrouponDesktop.User
 {
     public class User
     {
+        private Direccion direccion;
+        public Direccion Direccion
+        {
+            get { return direccion; }
+            set { direccion = value; }
+        }
         
         private String tipoUsuario;
         public String TipoUsuario
