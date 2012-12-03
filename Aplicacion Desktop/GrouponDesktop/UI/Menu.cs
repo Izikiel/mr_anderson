@@ -11,9 +11,10 @@ namespace GrouponDesktop
 {
     public partial class Menu : Form
     {
-
-        public Menu()
+        LoginWindow loginWindow;
+        public Menu(LoginWindow loginWindow)
         {
+            this.loginWindow = loginWindow;
             InitializeComponent();
         }
 
@@ -22,7 +23,7 @@ namespace GrouponDesktop
             switch (f)
             {
                 case "ABM Rol":
-                    ABMRol w = new ABMRol();
+                    ABMRol w = new ABMRol(loginWindow);
                     w.Show();
                     break;
             }

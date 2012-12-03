@@ -11,8 +11,9 @@ namespace GrouponDesktop
 {
     public partial class ABMRol : Form
     {
-        public ABMRol()
+        public ABMRol(LoginWindow loginWindow)
         {
+            MessageBox.Show(loginWindow._Login.UserName);
             InitializeComponent();
         }
 

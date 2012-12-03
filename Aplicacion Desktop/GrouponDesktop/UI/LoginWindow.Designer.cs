@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.TxtBox_password = new System.Windows.Forms.TextBox();
             this.loginBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.TxtBox_userName = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -41,18 +41,18 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(101, 85);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.PasswordChar = '•';
-            this.textBox1.Size = new System.Drawing.Size(171, 20);
-            this.textBox1.TabIndex = 1;
+            this.TxtBox_password.Location = new System.Drawing.Point(101, 85);
+            this.TxtBox_password.Name = "password";
+            this.TxtBox_password.PasswordChar = '•';
+            this.TxtBox_password.Size = new System.Drawing.Size(171, 20);
+            this.TxtBox_password.TabIndex = 2;
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(101, 37);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(171, 20);
-            this.textBox2.TabIndex = 2;
+            this.TxtBox_userName.Location = new System.Drawing.Point(101, 37);
+            this.TxtBox_userName.Name = "user name";
+            this.TxtBox_userName.Size = new System.Drawing.Size(171, 20);
+            this.TxtBox_userName.TabIndex = 1;
             // 
             // button1
             // 
@@ -112,8 +112,8 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.TxtBox_userName);
+            this.Controls.Add(this.TxtBox_password);
             this.Name = "LoginWindow";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -123,8 +123,8 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox TxtBox_password;
+        private System.Windows.Forms.TextBox TxtBox_userName;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;

@@ -17,7 +17,9 @@ namespace GrouponDesktop
         User.User usuarioActivo;
         HomeUsuarios homeUsr;
         DataAccess.SPManager spManager = new GrouponDesktop.DataAccess.SPManager();
+        Login login;
 
+        
         public LoginWindow()
         {
             InitializeComponent();
@@ -31,10 +33,10 @@ namespace GrouponDesktop
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
-            Login login = new Login();
-            login.UserName = textBox2.Text;
-            login.Password = textBox1.Text;
+
+            login = new Login();
+            login.UserName = TxtBox_userName.Text;
+            login.Password = TxtBox_password.Text;
             try
             {
                 login.validateUser();
@@ -50,13 +52,13 @@ namespace GrouponDesktop
             MessageBox.Show("Bienvenid@ "+usuarioActivo.DatosLogin.UserName+"!");
 
             Menu menu = this.crearMenuWindow(usuarioActivo.Rol);
-            menu.ShowDialog();
+            menu.ShowDialog(this);
             
         }
 
         private Menu crearMenuWindow(Rol.Rol unRol)
         {
-            Menu menu = new Menu();
+            Menu menu = new Menu(this);
             int i = 0;
             int j = 0;
             foreach(String func in unRol.getFuncionalidades()){
@@ -89,7 +91,11 @@ namespace GrouponDesktop
             RegistroWindow w = new RegistroWindow();
             w.Show();
         }
-       
 
+        public Login _Login
+        {
+            get { return login; }
+            set { login = value; }
+        }
     }
 }
