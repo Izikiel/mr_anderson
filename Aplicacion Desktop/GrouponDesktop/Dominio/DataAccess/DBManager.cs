@@ -33,9 +33,8 @@ namespace GrouponDesktop.DataAccess
         {
             connection.Close();
         }
-        
 
-        String connectionString = "Server=localhost\\SQLSERVER2008;Database=GD2C2012;User Id=gd;Password=gd2012;";
+        String connectionString = AdministradorConfiguracion.obtenerValorDB("dataSource");
     }
 
  

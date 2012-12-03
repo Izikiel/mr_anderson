@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -48,92 +49,93 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ABM.cs">
+    <Compile Include="UI\ABM.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ABM.Designer.cs">
+    <Compile Include="UI\ABM.Designer.cs">
       <DependentUpon>ABM.cs</DependentUpon>
     </Compile>
-    <Compile Include="ABMRol.cs">
+    <Compile Include="UI\ABMRol.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ABMRol.Designer.cs">
+    <Compile Include="UI\ABMRol.Designer.cs">
       <DependentUpon>ABMRol.cs</DependentUpon>
     </Compile>
-    <Compile Include="AltaRol.cs">
+    <Compile Include="UI\AltaRol.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AltaRol.Designer.cs">
+    <Compile Include="UI\AltaRol.Designer.cs">
       <DependentUpon>AltaRol.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConfirmarEliminarRolDialog.cs">
+    <Compile Include="Dominio\AdministradorConfiguracion.cs" />
+    <Compile Include="UI\ConfirmarEliminarRolDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConfirmarEliminarRolDialog.Designer.cs">
+    <Compile Include="UI\ConfirmarEliminarRolDialog.Designer.cs">
       <DependentUpon>ConfirmarEliminarRolDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Cupones\HomeCiudades.cs" />
-    <Compile Include="DataAccess\DBManager.cs" />
-    <Compile Include="DataAccess\SPManager.cs" />
-    <Compile Include="ModificacionRol.cs">
+    <Compile Include="Dominio\Cupones\HomeCiudades.cs" />
+    <Compile Include="Dominio\DataAccess\DBManager.cs" />
+    <Compile Include="Dominio\DataAccess\SPManager.cs" />
+    <Compile Include="UI\ModificacionRol.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ModificacionRol.Designer.cs">
+    <Compile Include="UI\ModificacionRol.Designer.cs">
       <DependentUpon>ModificacionRol.cs</DependentUpon>
     </Compile>
-    <Compile Include="RegistroCliente.cs">
+    <Compile Include="UI\RegistroCliente.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RegistroCliente.Designer.cs">
+    <Compile Include="UI\RegistroCliente.Designer.cs">
       <DependentUpon>RegistroCliente.cs</DependentUpon>
     </Compile>
-    <Compile Include="RegistroProveedor.cs">
+    <Compile Include="UI\RegistroProveedor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RegistroProveedor.Designer.cs">
+    <Compile Include="UI\RegistroProveedor.Designer.cs">
       <DependentUpon>RegistroProveedor.cs</DependentUpon>
     </Compile>
-    <Compile Include="RegistroWindow.cs">
+    <Compile Include="UI\RegistroWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RegistroWindow.Designer.cs">
+    <Compile Include="UI\RegistroWindow.Designer.cs">
       <DependentUpon>RegistroWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Rol\DataTester.cs" />
-    <Compile Include="DataAdapter\Login.cs" />
-    <Compile Include="LoginWindow.cs">
+    <Compile Include="Dominio\Rol\DataTester.cs" />
+    <Compile Include="Dominio\DataAdapter\Login.cs" />
+    <Compile Include="UI\LoginWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginWindow.Designer.cs">
+    <Compile Include="UI\LoginWindow.Designer.cs">
       <DependentUpon>LoginWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Menu.cs">
+    <Compile Include="UI\Menu.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Menu.Designer.cs">
+    <Compile Include="UI\Menu.Designer.cs">
       <DependentUpon>Menu.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ABM.resx">
+    <EmbeddedResource Include="UI\ABM.resx">
       <DependentUpon>ABM.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ABMRol.resx">
+    <EmbeddedResource Include="UI\ABMRol.resx">
       <DependentUpon>ABMRol.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AltaRol.resx">
+    <EmbeddedResource Include="UI\AltaRol.resx">
       <DependentUpon>AltaRol.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ConfirmarEliminarRolDialog.resx">
+    <EmbeddedResource Include="UI\ConfirmarEliminarRolDialog.resx">
       <DependentUpon>ConfirmarEliminarRolDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LoginWindow.resx">
+    <EmbeddedResource Include="UI\LoginWindow.resx">
       <DependentUpon>LoginWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Menu.resx">
+    <EmbeddedResource Include="UI\Menu.resx">
       <DependentUpon>Menu.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ModificacionRol.resx">
+    <EmbeddedResource Include="UI\ModificacionRol.resx">
       <DependentUpon>ModificacionRol.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -141,22 +143,23 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ListadoRoles.resx">
+    <EmbeddedResource Include="UI\ListadoRoles.resx">
       <DependentUpon>ListadoRoles.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RegistroCliente.resx">
+    <EmbeddedResource Include="UI\RegistroCliente.resx">
       <DependentUpon>RegistroCliente.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RegistroProveedor.resx">
+    <EmbeddedResource Include="UI\RegistroProveedor.resx">
       <DependentUpon>RegistroProveedor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RegistroWindow.resx">
+    <EmbeddedResource Include="UI\RegistroWindow.resx">
       <DependentUpon>RegistroWindow.cs</DependentUpon>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="App.config" />
     <None Include="Properties\DataSources\Login.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -167,19 +170,19 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Rol\HomeRoles.cs" />
-    <Compile Include="Rol\Rol.cs" />
-    <Compile Include="ListadoRoles.cs">
+    <Compile Include="Dominio\Rol\HomeRoles.cs" />
+    <Compile Include="Dominio\Rol\Rol.cs" />
+    <Compile Include="UI\ListadoRoles.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ListadoRoles.Designer.cs">
+    <Compile Include="UI\ListadoRoles.Designer.cs">
       <DependentUpon>ListadoRoles.cs</DependentUpon>
     </Compile>
-    <Compile Include="User\DatosCliente.cs" />
-    <Compile Include="User\DatosProveedor.cs" />
-    <Compile Include="User\Direccion.cs" />
-    <Compile Include="User\HomeUsuarios.cs" />
-    <Compile Include="User\User.cs" />
+    <Compile Include="Dominio\User\DatosCliente.cs" />
+    <Compile Include="Dominio\User\DatosProveedor.cs" />
+    <Compile Include="Dominio\User\Direccion.cs" />
+    <Compile Include="Dominio\User\HomeUsuarios.cs" />
+    <Compile Include="Dominio\User\User.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

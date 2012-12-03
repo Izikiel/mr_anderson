@@ -31,6 +31,7 @@ namespace GrouponDesktop
 
         private void button1_Click(object sender, EventArgs e)
         {
+            
             Login login = new Login();
             login.UserName = textBox2.Text;
             login.Password = textBox1.Text;

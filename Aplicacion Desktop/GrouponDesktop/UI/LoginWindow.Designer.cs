@@ -49,7 +49,6 @@
             // 
             // textBox2
             // 
-            this.textBox2.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.loginBindingSource, "UserName", true));
             this.textBox2.Location = new System.Drawing.Point(101, 37);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(171, 20);

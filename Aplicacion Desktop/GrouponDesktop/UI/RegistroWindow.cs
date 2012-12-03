@@ -41,6 +41,7 @@ namespace GrouponDesktop
             if (homeUsr.usuarioNoExistente(this.textBox1.Text))
             {
                 if (this.textBox2.Text.Equals("")) { MessageBox.Show("Ingrese una contraseña."); return; }
+
                 if (this.comboBox1.SelectedIndex.Equals(-1)) { MessageBox.Show("Elija un tipo de usuario."); return; }
                 if (this.comboBox2.SelectedIndex.Equals(-1)) { MessageBox.Show("Elija un rol."); return; }
                 Form w = new Form();

@@ -33,6 +33,7 @@ namespace GrouponDesktop.User
       
 
         ////PERSISTENCIA////
+
         public void persistir(User usuario)
         {
             List<String> funcs = new List<String>();

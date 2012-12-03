@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
+using System.Security.Cryptography;
+
 
 namespace GrouponDesktop.DataAdapter
 {
@@ -41,7 +43,22 @@ namespace GrouponDesktop.DataAdapter
         public String Password
         {
             get { return password; }
-            set { password = value; }
+            set { password = SHA256Encrypt(value); }
         }
+
+        public string SHA256Encrypt(string input)
+        {
+            SHA256CryptoServiceProvider provider = new SHA256CryptoServiceProvider();
+
+            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+            byte[] hashedBytes = provider.ComputeHash(inputBytes);
+
+            StringBuilder output = new StringBuilder();
+
+            for (int i = 0; i < hashedBytes.Length; i++)
+                output.Append(hashedBytes[i].ToString("x2").ToLower());
+
+            return output.ToString();
+        }  
     }
 }
