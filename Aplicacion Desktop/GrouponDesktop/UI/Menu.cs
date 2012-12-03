@@ -26,6 +26,11 @@ namespace GrouponDesktop
                     ABMRol w = new ABMRol(loginWindow);
                     w.Show();
                     break;
+                case "Cargar Credito":
+                    CargarCredito creditoWindow = new CargarCredito(loginWindow);
+                    creditoWindow.Show();
+                    break;
+
             }
         }
 

@@ -92,10 +92,20 @@ namespace GrouponDesktop
             w.Show();
         }
 
+        #region Properties
+
         public Login _Login
         {
             get { return login; }
             set { login = value; }
         }
+
+        public User.User UsuarioActivo
+        {
+            get { return usuarioActivo; }
+            set { usuarioActivo = value; }
+        }
+
+        #endregion
     }
 }

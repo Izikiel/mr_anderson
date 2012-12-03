@@ -68,6 +68,12 @@
       <DependentUpon>AltaRol.cs</DependentUpon>
     </Compile>
     <Compile Include="Dominio\AdministradorConfiguracion.cs" />
+    <Compile Include="UI\CargarCredito.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\CargarCredito.Designer.cs">
+      <DependentUpon>CargarCredito.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\ConfirmarEliminarRolDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,6 +131,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\AltaRol.resx">
       <DependentUpon>AltaRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\CargarCredito.resx">
+      <DependentUpon>CargarCredito.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ConfirmarEliminarRolDialog.resx">
       <DependentUpon>ConfirmarEliminarRolDialog.cs</DependentUpon>
