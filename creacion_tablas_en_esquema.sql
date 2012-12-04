@@ -1429,3 +1429,36 @@ create procedure MR_ANDERSON.sp_pedir_devolucion (@dni numeric(18), @codigo nvar
 
         end
 GO 
+
+-- Punto 12
+
+create procedure MR_ANDERSON.sp_registra_consumo_cupon (@provee_cuit nvarchar(20), @cod_cupon nvarchar(50), 
+                                @dni_cliente numeric(18,0))
+    as
+        begin
+            if not exists(select codigo from MR_ANDERSON.Compras C where C.dni = @dni_cliente and C.codigo = @cod_cupon)
+            begin
+                RAISERROR('Cupon no encontrado o ya canjeado',10,1)
+                return
+            end
+
+            declare @fecha_actual DATETIME
+            set @fecha_actual = (select GETDATE())
+
+            if ((select vencimiento_oferta from MR_ANDERSON.Cupones where codigo = @cod_cupon) < @fecha_actual)
+            begin
+                RAISERROR('Cupon vencido',10,1)
+                return
+            end
+
+            if not exists(select codigo from MR_ANDERSON.Cupones C where C.codigo = @cod_cupon and C.provee_cuit = @provee_cuit)
+            begin
+                RAISERROR('Cupon no pertenece a proveedor dado',10,1)
+                return 
+            end
+
+            insert into MR_ANDERSON.Consumos VALUES (@fecha_actual, @cod_cupon, @dni_cliente)
+            delete MR_ANDERSON.Compras where MR_ANDERSON.Compras.dni = @dni_cliente and MR_ANDERSON.Compras.codigo = @cod_cupon
+
+        end
+GO
