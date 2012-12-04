@@ -247,6 +247,14 @@ GO
 ALTER TABLE [MR_ANDERSON].[Consumos] DROP CONSTRAINT [Datos_Clientes_Consumos]
 GO
 
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[Codigo_Ciudad]') AND parent_object_id = OBJECT_ID(N'[MR_ANDERSON].[Ciudades_Cupon]'))
+ALTER TABLE [MR_ANDERSON].[Ciudades_Cupon] DROP CONSTRAINT [Codigo_Ciudad]
+GO
+
+/****** Object:  Table [MR_ANDERSON].[Ciudades_Cupon]    Script Date: 12/04/2012 16:14:19 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[Ciudades_Cupon]') AND type in (N'U'))
+DROP TABLE [MR_ANDERSON].[Ciudades_Cupon]
+GO
 
 /* ---------------------------------------------------------------------- */
 /* Drop table "Consumos"                                                  */
@@ -469,6 +477,7 @@ DROP TABLE [MR_ANDERSON].[Direccion]
 GO
 
 
+
 /* ---------------------------------------------------------------------- */
 /* Drop table "Login"                                                     */
 /* ---------------------------------------------------------------------- */
@@ -511,6 +520,10 @@ GO
 
 DROP TABLE [MR_ANDERSON].[Roles]
 GO
+
+USE [GD2C2012]
+GO
+
 
 DROP SCHEMA [MR_ANDERSON]
 GO

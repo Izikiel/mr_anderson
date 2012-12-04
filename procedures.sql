@@ -26,7 +26,6 @@ create procedure MR_ANDERSON.get_datos_rol (@nombre_rol NVARCHAR(255))
 			
 		end
 GO
-
 --get nombre all roles
 
 create procedure MR_ANDERSON.get_all_roles
@@ -35,7 +34,6 @@ begin
 select rol from MR_ANDERSON.Roles
 end
 GO
-
 --cargar rol con nombre de usuario
 
 create procedure MR_ANDERSON.get_nombre_rol_de_usuario(@nombre_usuario NVARCHAR(255))
@@ -46,7 +44,6 @@ begin
 
 end
 GO
-
 --get ciudades
 
 create procedure MR_ANDERSON.sp_get_ciudades
@@ -57,7 +54,6 @@ create procedure MR_ANDERSON.sp_get_ciudades
 			
 		end
 GO
-
 --add ciudad preferencia para user
 create procedure MR_ANDERSON.sp_add_ciudad_user (@dni numeric, @ciudad varchar(255))
 	as
