@@ -1510,7 +1510,7 @@ create procedure MR_ANDERSON.sp_registra_consumo_cupon (@provee_cuit nvarchar(20
             declare @fecha_actual DATETIME
             set @fecha_actual = (select GETDATE())
 
-            if ((select vencimiento_oferta from MR_ANDERSON.Cupones where codigo = @cod_cupon) < @fecha_actual)
+            if ((select vencimiento_canje from MR_ANDERSON.Cupones where codigo = @cod_cupon) < @fecha_actual)
             begin
                 RAISERROR('Cupon vencido',10,1)
                 return
