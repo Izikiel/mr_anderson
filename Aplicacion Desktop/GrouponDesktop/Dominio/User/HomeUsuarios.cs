@@ -133,6 +133,16 @@ namespace GrouponDesktop.User
          
         }
 
+        public void modificarRol(String nombreViejo, String nombreNuevo)
+        {
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+            Dictionary<String, Object> param = new Dictionary<string, object>();
+            param.Add("nombre_rol", nombreViejo);
+            param.Add("nuevo_nombre_rol", nombreNuevo);
+            spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_change_rol_name_a_usuarios", param);
+            spManager.Close();
+        }
+
         ////VALIDACIONES////
         public Boolean usuarioNoExistente(String nombre)
         {

@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using GrouponDesktop.Rol;
 using GrouponDesktop.DataAdapter;
 using GrouponDesktop.DataAccess;
+using GrouponDesktop.User;
 
 namespace GrouponDesktop.Rol
 {
@@ -35,6 +36,7 @@ namespace GrouponDesktop.Rol
 
         public Rol getRol(String nombre_rol)
         {
+            String tipo;
             Boolean estado;
             List<String> funcs = new List<String>();
 
@@ -45,6 +47,7 @@ namespace GrouponDesktop.Rol
             using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.get_datos_rol", param))
             {
                 reader.Read();
+                tipo = (string)reader["tipo"];
                 if ((Boolean)reader["Habilitado"] == true)
                 {
                     estado = true;
@@ -61,7 +64,7 @@ namespace GrouponDesktop.Rol
             }
 
             Rol rol = new Rol();
-            return rol.cargar(estado, funcs, nombre_rol);
+            return rol.cargar(estado, funcs, nombre_rol,tipo);
         }
 
         public List<String> getRolesParaTipo(String tipo)
@@ -113,15 +116,6 @@ namespace GrouponDesktop.Rol
             foreach (String func in unRol.getFuncionalidades())
             {
 
-                /*spManager = new DataAccess.SPManager();
-
-                param_funcs.Add("funcionalidad", func);
-
-                spManager.executeSPWithParameters("MR_ANDERSON.sp_add_func_rol", param_funcs);
-
-                spManager.Close();
-
-                param_funcs.Remove("funcionalidad");*/
                 this.addFuncionalidad(unRol.getNombreRol(), func);
             }
         }
@@ -154,14 +148,14 @@ namespace GrouponDesktop.Rol
 
         public void modificarNombre(String nombreViejo,String nombreNuevo)
         {
-            DataAccess.SPManager spManager = new DataAccess.SPManager();
 
-            Dictionary<String, Object> param = new Dictionary<string, object>();
-            param.Add("nombre_rol", nombreViejo);
-            param.Add("nuevo_nombre_rol", nombreNuevo);
-
-            spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_change_rol_name", param);
-            spManager.Close();
+            Rol rolNuevo = this.getRol(nombreViejo);
+            rolNuevo.Nombre = nombreNuevo;
+            this.persistir(rolNuevo);
+            HomeUsuarios homeUsr = new HomeUsuarios();
+            homeUsr.modificarRol(nombreViejo, nombreNuevo);
+            this.eliminar(nombreViejo);
+            
          
         }
 

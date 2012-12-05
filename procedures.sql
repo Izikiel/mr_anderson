@@ -19,9 +19,10 @@ GO
 create procedure MR_ANDERSON.get_datos_rol (@nombre_rol NVARCHAR(255))
 	as
 		begin
-		select Habilitado,Funcionalidad
+		select Habilitado,Funcionalidad,tipo
 			from MR_ANDERSON.Roles r
-			join MR_ANDERSON.Funcionalidades_Roles f on r.Rol = f.Rol
+			left join MR_ANDERSON.Funcionalidades_Roles f on r.Rol = f.Rol
+			left join MR_ANDERSON.Rol_tipo rt on rt.Rol = r.Rol
 		where r.rol = @nombre_rol
 			
 		end
@@ -71,3 +72,14 @@ create procedure MR_ANDERSON.sp_get_roles_para_tipo (@tipo varchar(100))
 			where tipo = @tipo
 			
 		end
+GO
+
+--modify rol de usuario
+create procedure MR_ANDERSON.sp_modificar_rol_usr (@nombre_rol nvarchar(255),@nombre_antiguo NVARCHAR(255))
+	as
+		begin
+			update MR_ANDERSON.Login
+				set rol = @nombre_rol
+				where rol = @nombre_antiguo
+		end
+GO

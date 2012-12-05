@@ -33,11 +33,12 @@ namespace GrouponDesktop.Rol
         }
 
 
-        public Rol cargar(Boolean habilitado, List<String> funcs, String nombre_rol)
+        public Rol cargar(Boolean habilitado, List<String> funcs, String nombre_rol,String tipo)
         {
             this.setEstadoValido(habilitado);
             this.addAllFuncs(funcs);
             this.setNombreRol(nombre_rol);
+            this.TipoUsuario = tipo;
             return this;
         }
 
