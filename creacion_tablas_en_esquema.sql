@@ -787,7 +787,13 @@ GO
 create procedure MR_ANDERSON.sp_change_rol_name (@nombre_rol NVARCHAR(255), @nuevo_nombre_rol NVARCHAR(255))
     as
         begin
+            update MR_ANDERSON.Login
+                set rol = @nuevo_nombre_rol
+                where rol = @nombre_rol
             update MR_ANDERSON.Funcionalidades_Roles
+                set rol = @nuevo_nombre_rol
+                where rol = @nombre_rol
+            update MR_ANDERSON.Rol_Tipo
                 set rol = @nuevo_nombre_rol
                 where rol = @nombre_rol
             update MR_ANDERSON.Roles

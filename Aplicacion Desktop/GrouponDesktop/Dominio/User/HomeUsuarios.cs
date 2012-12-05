@@ -38,6 +38,18 @@ namespace GrouponDesktop.User
         {
             List<String> funcs = new List<String>();
 
+            DataAccess.SPManager spManager2 = new DataAccess.SPManager();
+
+            Dictionary<String, Object> param_login = new Dictionary<String, Object>();
+            param_login.Add("username_sended", usuario.DatosLogin.UserName);
+            param_login.Add("user_password_sended", usuario.DatosLogin.Password);
+            param_login.Add("rol_sended", usuario.Rol.getNombreRol());
+            param_login.Add("tipo", usuario.TipoUsuario);
+            param_login.Add("result output", "");
+
+            spManager2.executeSPWithParameters("MR_ANDERSON.sp_insert_login", param_login);
+            spManager2.Close();
+
             DataAccess.SPManager spManager = new DataAccess.SPManager();
 
             if(usuario.DatosCliente != null){
@@ -93,17 +105,7 @@ namespace GrouponDesktop.User
             }
             spManager.Close();
             
-            DataAccess.SPManager spManager2 = new DataAccess.SPManager();
-
-            Dictionary<String, Object> param_login = new Dictionary<String, Object>();
-            param_login.Add("username_sended", usuario.DatosLogin.UserName);
-            param_login.Add("user_password_sended", usuario.DatosLogin.Password);
-            param_login.Add("rol_sended", usuario.Rol.getNombreRol());
-            param_login.Add("tipo", usuario.TipoUsuario);
-            param_login.Add("result output", "");
-
-            spManager2.executeSPWithParameters("MR_ANDERSON.sp_insert_login", param_login);
-            spManager2.Close();
+            
 
             DataAccess.SPManager spManager4 = new DataAccess.SPManager();
 

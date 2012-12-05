@@ -226,9 +226,9 @@
             this.checkBoxListadoEstadistico.Enabled = false;
             this.checkBoxListadoEstadistico.Location = new System.Drawing.Point(211, 129);
             this.checkBoxListadoEstadistico.Name = "checkBoxListadoEstadistico";
-            this.checkBoxListadoEstadistico.Size = new System.Drawing.Size(116, 17);
+            this.checkBoxListadoEstadistico.Size = new System.Drawing.Size(114, 17);
             this.checkBoxListadoEstadistico.TabIndex = 15;
-            this.checkBoxListadoEstadistico.Text = "Listado Estadístico";
+            this.checkBoxListadoEstadistico.Text = "Listado Estadistico";
             this.checkBoxListadoEstadistico.UseVisualStyleBackColor = true;
             this.checkBoxListadoEstadistico.CheckedChanged += new System.EventHandler(this.allCheckBoxes_CheckedChanged);
             // 

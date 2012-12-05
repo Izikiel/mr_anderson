@@ -24,8 +24,8 @@ namespace GrouponDesktop
         private void button1_Click(object sender, EventArgs e)
         {
             HomeRoles home = new HomeRoles();
-            home.eliminar(this.nombre_rol);
-            MessageBox.Show("Se elimino correctamente");
+            home.modificarStatus(this.nombre_rol, false);
+            MessageBox.Show("Se inhabilito el rol correctamente");
             this.Close();
         }
 
