@@ -74,6 +74,12 @@
     <Compile Include="UI\CargarCredito.Designer.cs">
       <DependentUpon>CargarCredito.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\ComprarGiftCard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ComprarGiftCard.Designer.cs">
+      <DependentUpon>ComprarGiftCard.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\ConfirmarEliminarRolDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -134,6 +140,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\CargarCredito.resx">
       <DependentUpon>CargarCredito.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ComprarGiftCard.resx">
+      <DependentUpon>ComprarGiftCard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ConfirmarEliminarRolDialog.resx">
       <DependentUpon>ConfirmarEliminarRolDialog.cs</DependentUpon>
