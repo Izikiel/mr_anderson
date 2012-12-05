@@ -32,7 +32,7 @@ namespace GrouponDesktop
         public void fill()
         {
             Rol.Rol rol = home.getRol(this.selectedRolName);
-            this.funcionalidadesRol = rol.getFuncionalidades();
+            //this.funcionalidadesRol = rol.getFuncionalidades();
 
             this.textBox1.Text = this.selectedRolName;
             this.listBox1.DataSource = funcionalidadesRol;
@@ -43,12 +43,16 @@ namespace GrouponDesktop
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if(funcionalidadesRol.Contains(this.listBox2.SelectedValue.ToString())) return;
             this.home.addFuncionalidad(this.selectedRolName,this.listBox2.SelectedValue.ToString());
+            funcionalidadesRol.Add(this.listBox2.SelectedValue.ToString());
             this.fill();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (funcionalidadesRol.Count() == 1) return;
+            funcionalidadesRol.Remove(this.listBox1.SelectedValue.ToString());
             this.home.deleteFuncionalidad(this.selectedRolName, this.listBox1.SelectedValue.ToString());
             this.fill();
         }

@@ -62,3 +62,12 @@ create procedure MR_ANDERSON.sp_add_ciudad_user (@dni numeric, @ciudad varchar(2
 				values(@dni,@ciudad)
 		end
 GO
+
+--get roles para tipo
+create procedure MR_ANDERSON.sp_get_roles_para_tipo (@tipo varchar(100))
+	as
+		begin
+			select rol from MR_ANDERSON.Rol_Tipo
+			where tipo = @tipo
+			
+		end

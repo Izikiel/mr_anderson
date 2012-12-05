@@ -26,7 +26,7 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
     CREATE TABLE [Rol_Tipo](
         [Tipo] NVARCHAR(100) NOT NULL,
         [Rol] NVARCHAR(255) NOT NULL,
-        CONSTRAINT [PK_Tipo_Rol] PRIMARY KEY ([Rol],[Tipo])
+        CONSTRAINT [PK_Tipo_Rol] PRIMARY KEY ([Rol])
     )
 
 
@@ -300,10 +300,7 @@ GO
         FOREIGN KEY ([Rol]) REFERENCES [MR_ANDERSON].[Roles] ([Rol])
     GO
 
-    ALTER TABLE [MR_ANDERSON].[Rol_Tipo] ADD CONSTRAINT [FK_TIPO]
-        FOREIGN KEY ([Tipo]) REFERENCES [MR_ANDERSON].[Tipo_Usuario] ([Tipo])
-    GO
-
+    
     
     ALTER TABLE [MR_ANDERSON].[Login] ADD CONSTRAINT [Tipo_Login]
         FOREIGN KEY ([Tipo]) REFERENCES [MR_ANDERSON].[Tipo_Usuario] ([Tipo])
@@ -741,11 +738,13 @@ create trigger  actualizar_habilitaciones on MR_ANDERSON.Roles
         end
 GO
 */
-create procedure MR_ANDERSON.sp_new_rol (@nombre_rol NVARCHAR(255))
+create procedure MR_ANDERSON.sp_new_rol (@nombre_rol NVARCHAR(255),@tipo nvarchar(100))
     as
         begin
             insert into MR_ANDERSON.Roles(Rol,Habilitado)
                 VALUES(@nombre_rol, 1)
+             insert into MR_ANDERSON.Rol_Tipo(Tipo,Rol)
+                VALUES(@tipo, @nombre_rol)
         end
 GO
 
@@ -802,6 +801,9 @@ create procedure MR_ANDERSON.sp_eliminar_rol (@nombre_rol NVARCHAR(255))
     as
     begin
         delete from MR_ANDERSON.Funcionalidades_Roles
+            where rol = @nombre_rol
+
+        delete from MR_ANDERSON.Rol_Tipo
             where rol = @nombre_rol
 
         delete from MR_ANDERSON.Roles

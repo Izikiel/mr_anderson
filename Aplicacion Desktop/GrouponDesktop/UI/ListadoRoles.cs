@@ -38,7 +38,8 @@ namespace GrouponDesktop
             if (e.RowIndex < 0 || e.ColumnIndex !=
             dataGridView1.Columns["Seleccionar"].Index) return;
 
-            this.selectedRolName = this.dataGridView1.Rows[e.RowIndex].Cells[1].Value as string;
+            this.selectedRolName = this.dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString();
+            
             
             switch (f)
             {

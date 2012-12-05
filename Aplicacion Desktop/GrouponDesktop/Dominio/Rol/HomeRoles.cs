@@ -108,18 +108,21 @@ namespace GrouponDesktop.Rol
 
             spManager.Close();
 
+            Dictionary<String, Object> param_funcs = new Dictionary<string, object>();
+
             foreach (String func in unRol.getFuncionalidades())
             {
 
-                spManager = new DataAccess.SPManager();
+                /*spManager = new DataAccess.SPManager();
 
-                param.Add("funcionalidad", func);
+                param_funcs.Add("funcionalidad", func);
 
-                spManager.executeSPWithParameters("MR_ANDERSON.sp_add_func_rol", param);
+                spManager.executeSPWithParameters("MR_ANDERSON.sp_add_func_rol", param_funcs);
 
                 spManager.Close();
 
-                param.Remove("funcionalidad");
+                param_funcs.Remove("funcionalidad");*/
+                this.addFuncionalidad(unRol.getNombreRol(), func);
             }
         }
 

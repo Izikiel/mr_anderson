@@ -75,9 +75,9 @@ namespace GrouponDesktop
 
                 unRol.crear(textBox1.Text, cboBoxTipoUsr.SelectedItem.ToString(), funcionalidades);
             }
-            catch (Exception )
+            catch (Exception excep)
             {
-                MessageBox.Show("El nombre de rol ya existe");
+                MessageBox.Show(excep.ToString());
                 return;
             }
             MessageBox.Show("Se dio de alta al rol correctamente. Nombre de rol: "+ unRol.getNombreRol());

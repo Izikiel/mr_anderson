@@ -13,7 +13,6 @@ namespace GrouponDesktop
     {
         public ABMRol(LoginWindow loginWindow)
         {
-            MessageBox.Show(loginWindow._Login.UserName);
             InitializeComponent();
         }
 
