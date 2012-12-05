@@ -1421,7 +1421,7 @@ create procedure MR_ANDERSON.sp_ver_cupones_habilitados (@dni numeric(18), @fech
                 where Cupones.fecha_publicacion = @fecha
                                         
         end
-
+GO
 
 create procedure MR_ANDERSON.sp_comprar_cupon (@dni numeric(18), @codigo NVARCHAR(50), 
                                 @cantidad numeric(10,0),@fecha_compra DATETIME)
