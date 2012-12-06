@@ -121,3 +121,4 @@ create procedure MR_ANDERSON.sp_usuario_habilitado (@nombre_usuario varchar(100)
 			select Habilitado from MR_ANDERSON.Login
 			where username = @nombre_usuario
 		end
+GO

@@ -1584,3 +1584,4 @@ create procedure MR_ANDERSON.sp_insert_ciudad (@dni numeric(18), @ciudad_a_inser
                 values(@dni,@ciudad_a_insertar) 
         end
 GO
+
