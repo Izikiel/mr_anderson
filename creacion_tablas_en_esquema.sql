@@ -1085,6 +1085,16 @@ create procedure MR_ANDERSON.sp_modify_client (@nombre_sended NVARCHAR(255), @dn
 
         end
 GO
+
+create procedure MR_ANDERSON.sp_change_status_user (@username VARCHAR(100),@habilitado bit)
+    as
+        begin
+            update MR_ANDERSON.Login
+                set Habilitado = @habilitado
+            where username = @username
+        end
+GO
+
 --Listo Modificar cliente
 
 --Calcular total factura
@@ -1545,6 +1555,16 @@ create procedure MR_ANDERSON.sp_modify_direccion (@calle NVARCHAR(100),@nro_piso
                 where username = @username
         end
 GO
+
+--obtener direccion clientes
+create procedure MR_ANDERSON.sp_get_direccion (@username VARCHAR(100))
+    as
+        begin
+            select calle, nro_piso,depto,localidad,codigo_postal
+            from MR_ANDERSON.Direccion
+            where username = @username
+        end
+
 
 -- borrar/insertar ciudad cliente
 

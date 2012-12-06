@@ -152,7 +152,7 @@
             // 
             this.checkBoxVerCupones.AutoSize = true;
             this.checkBoxVerCupones.Enabled = false;
-            this.checkBoxVerCupones.Location = new System.Drawing.Point(211, 196);
+            this.checkBoxVerCupones.Location = new System.Drawing.Point(204, 196);
             this.checkBoxVerCupones.Name = "checkBoxVerCupones";
             this.checkBoxVerCupones.Size = new System.Drawing.Size(87, 17);
             this.checkBoxVerCupones.TabIndex = 9;
@@ -164,7 +164,7 @@
             // 
             this.checkBoxPedirDevolucion.AutoSize = true;
             this.checkBoxPedirDevolucion.Enabled = false;
-            this.checkBoxPedirDevolucion.Location = new System.Drawing.Point(211, 152);
+            this.checkBoxPedirDevolucion.Location = new System.Drawing.Point(204, 152);
             this.checkBoxPedirDevolucion.Name = "checkBoxPedirDevolucion";
             this.checkBoxPedirDevolucion.Size = new System.Drawing.Size(107, 17);
             this.checkBoxPedirDevolucion.TabIndex = 10;
@@ -176,7 +176,7 @@
             // 
             this.checkBoxHistorial.AutoSize = true;
             this.checkBoxHistorial.Enabled = false;
-            this.checkBoxHistorial.Location = new System.Drawing.Point(211, 219);
+            this.checkBoxHistorial.Location = new System.Drawing.Point(204, 219);
             this.checkBoxHistorial.Name = "checkBoxHistorial";
             this.checkBoxHistorial.Size = new System.Drawing.Size(82, 17);
             this.checkBoxHistorial.TabIndex = 11;
@@ -200,7 +200,7 @@
             // 
             this.checkBoxPublicarCupones.AutoSize = true;
             this.checkBoxPublicarCupones.Enabled = false;
-            this.checkBoxPublicarCupones.Location = new System.Drawing.Point(211, 173);
+            this.checkBoxPublicarCupones.Location = new System.Drawing.Point(204, 173);
             this.checkBoxPublicarCupones.Name = "checkBoxPublicarCupones";
             this.checkBoxPublicarCupones.Size = new System.Drawing.Size(109, 17);
             this.checkBoxPublicarCupones.TabIndex = 13;
@@ -224,7 +224,7 @@
             // 
             this.checkBoxListadoEstadistico.AutoSize = true;
             this.checkBoxListadoEstadistico.Enabled = false;
-            this.checkBoxListadoEstadistico.Location = new System.Drawing.Point(211, 129);
+            this.checkBoxListadoEstadistico.Location = new System.Drawing.Point(204, 129);
             this.checkBoxListadoEstadistico.Name = "checkBoxListadoEstadistico";
             this.checkBoxListadoEstadistico.Size = new System.Drawing.Size(114, 17);
             this.checkBoxListadoEstadistico.TabIndex = 15;

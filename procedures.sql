@@ -21,7 +21,7 @@ create procedure MR_ANDERSON.get_datos_rol (@nombre_rol NVARCHAR(255))
 		begin
 		select Habilitado,Funcionalidad,tipo
 			from MR_ANDERSON.Roles r
-			left join MR_ANDERSON.Funcionalidades_Roles f on r.Rol = f.Rol
+			join MR_ANDERSON.Funcionalidades_Roles f on r.Rol = f.Rol
 			left join MR_ANDERSON.Rol_tipo rt on rt.Rol = r.Rol
 		where r.rol = @nombre_rol
 			
@@ -81,5 +81,35 @@ create procedure MR_ANDERSON.sp_modificar_rol_usr (@nombre_rol nvarchar(255),@no
 			update MR_ANDERSON.Login
 				set rol = @nombre_rol
 				where rol = @nombre_antiguo
+		end
+GO
+
+--get all usrs tipo
+create procedure MR_ANDERSON.sp_get_all_usrs (@tipo NVARCHAR(100))
+	as
+		begin
+		select username from MR_ANDERSON.Login
+		where tipo = @tipo
+			
+		end
+GO
+
+
+--get ciudades para usuario
+create procedure MR_ANDERSON.sp_get_ciudades_para_usr (@dni numeric)
+	as
+		begin
+			select ciudad from MR_ANDERSON.ciudades
+			where dni = @dni
+		end
+GO
+
+--get datos cliente dni
+create procedure MR_ANDERSON.sp_get_datos_cliente(@username varchar(100))
+as
+begin
+		select nombre,apellido,telefono,mail,YEAR(fecha_nac)*10000+MONTH(fecha_nac)*100+DAY(fecha_nac) as fecha_nac,saldo  
+		from MR_ANDERSON.Datos_clientes
+		where username = @username
 		end
 GO
