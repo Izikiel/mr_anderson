@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using GrouponDesktop.UI;
 
 namespace GrouponDesktop
 {
@@ -30,6 +31,24 @@ namespace GrouponDesktop
                     CargarCredito creditoWindow = new CargarCredito(loginWindow);
                     creditoWindow.Show();
                     break;
+                case "ABM Usuario":
+                    Button BAbmClientes = new Button();
+                    Button BAbmProveedores = new Button();
+                    BAbmClientes.Text = "Abm Clientes";
+                    BAbmClientes.AutoSize = true;
+                    BAbmClientes.Location = new System.Drawing.Point(50, 30);
+                    BAbmClientes.Click += new EventHandler(this.abmClientes);
+                    BAbmProveedores.Text = "Abm Proveedores";
+                    BAbmProveedores.AutoSize = true;
+                    BAbmProveedores.Location = new System.Drawing.Point(40, 85);
+                    BAbmProveedores.Click += new EventHandler(this.abmProv);
+                    Form wABM = new Form();
+                    wABM.Controls.Add(BAbmProveedores);
+                    wABM.Controls.Add(BAbmClientes);
+                    wABM.Size = new System.Drawing.Size(200,200);
+                    wABM.Show();
+                    break;
+                   
                 case "Comprar Giftcard":
                     ComprarGiftCard comprarGiftCard = new ComprarGiftCard(loginWindow);
                     comprarGiftCard.Show();
@@ -52,5 +71,16 @@ namespace GrouponDesktop
             this.Close();
         }
 
+        private void abmProv(object sender, EventArgs e)
+        {
+            ABMUsr w = new ABMUsr("Proveedor");
+            w.Show();
+        }
+
+        private void abmClientes(object sender, EventArgs e)
+        {
+            ABMUsr w = new ABMUsr("Cliente");
+            w.Show();
+        }
     }
 }
