@@ -192,9 +192,9 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
         [stock_disponible] NUMERIC(10) NOT NULL,
         [provee_cuit] NVARCHAR(20) NOT NULL,
         [vencimiento_oferta] DATETIME NOT NULL,
-        [vencimiento_canje] VARCHAR(40),
+        [vencimiento_canje] DATETIME,
         [fecha_publicacion] DATETIME NOT NULL,
-       -- [ciudad] NVARCHAR(255) NOT NULL,
+        [publicado] BIT NOT NULL,
         CONSTRAINT [codigo] PRIMARY KEY ([codigo])
     )
     
@@ -544,11 +544,11 @@ begin tran trn_inserts_tablas
 
         insert into MR_ANDERSON.Cupones(codigo,precio,precio_fict,cantidad_x_usuario,descripcion,
                                         stock_disponible,provee_cuit,vencimiento_oferta,
-                                        vencimiento_canje,fecha_publicacion)
+                                        vencimiento_canje,fecha_publicacion, publicado)
 
             select master.Groupon_Codigo, master.Groupon_Precio, master.Groupon_Precio_Ficticio,
                     1, master.Groupon_Descripcion, master.Groupon_Cantidad,
-                    master.Provee_CUIT,master.Groupon_Fecha_Venc, NULL, master.Groupon_Fecha
+                    master.Provee_CUIT,master.Groupon_Fecha_Venc, NULL, master.Groupon_Fecha,1
                 from gd_esquema.Maestra master
 
                 join MR_ANDERSON.Datos_Proveedores Proveedores
@@ -1420,7 +1420,7 @@ create procedure MR_ANDERSON.sp_ver_cupones_habilitados (@dni numeric(18), @fech
                     on   Cupones.codigo = Ciudades_Cupon.codigo 
                     and Ciudades_Cupon.ciudad in (select C.ciudad from MR_ANDERSON.Ciudades C where C.dni = @dni)
 
-                where Cupones.fecha_publicacion = @fecha
+                where Cupones.fecha_publicacion = @fecha and publicado = 1
                                         
         end
 GO
@@ -1585,18 +1585,6 @@ create procedure MR_ANDERSON.sp_insert_ciudad (@dni numeric(18), @ciudad_a_inser
         end
 GO
 
-/*
-Requerimientos Rodri
-
-Las ciudades del usuario
-El credito por usuario (En realidad vendría bien todos los datos del usuario: Dni, Nombre, Apellido, etc).
-Porque en Devolución hay un "codigo" y un "id_compra" ? Yo supuestamente te tengo que pasar solamente el codigo del cupon que se compró
-En cargar credito, habría que sacar el campo FechaEmisión... está al pedo, no tiene sentido, no te lo piden en tarjetas
-El Nro de la Tarjeta debería ser un NVarChar... No tiene sentido que sea un Número y además, para usar un numero tan grande tendría que usar alguna clase que sería al pedo
-El Tipo Tarjeta a mi gusto es indistinto... es al pedo...(O sea habría que sacarlo para mi)
-
-*/
-
 create procedure MR_ANDERSON.sp_get_ciudades (@dni numeric(18))
     as
         begin
@@ -1608,5 +1596,100 @@ create procedure MR_ANDERSON.sp_get_datos_clientes (@dni numeric(18))
     as
         begin
             select * from MR_ANDERSON.Datos_Clientes where dni = @dni
+        end
+GO
+
+--Punto 11
+
+create procedure MR_ANDERSON.sp_agregar_cupon (@codigo NVARCHAR(50), @precio_real numeric(18,2), 
+                                @precio_fict numeric(18,2), @cantidad_x_usuario numeric(18,0), 
+                                @descripcion NVARCHAR(255), @stock_disponible numeric(10,0),
+                                @provee_cuit NVARCHAR(20), @vencimiento_oferta DATETIME,
+                                @vencimiento_canje DATETIME, @fecha_publicacion DATETIME)
+    as
+        begin
+            declare @fecha_actual DATETIME
+
+            set @fecha_actual = (select GETDATE())
+            
+            if @fecha_publicacion < @fecha_actual or @vencimiento_canje < @fecha_actual or @vencimiento_oferta < @fecha_actual  
+                 begin
+                     RAISERROR('Error en las fechas!',10,1)
+                     return
+                 end 
+
+            if @provee_cuit not in (select provee_cuit from MR_ANDERSON.Proveedores)
+                begin
+                    RAISERROR('No existe el proveedor',10,1)
+                    return
+                end
+
+            insert into MR_ANDERSON.Cupones(codigo,precio,precio_fict,cantidad_x_usuario,descripcion,stock_disponible,
+                                            provee_cuit,vencimiento_oferta,vencimiento_canje,fecha_publicacion, publicado)
+                VALUES(@codigo,@precio_real,@precio_fict,@cantidad_x_usuario,@descripcion,@stock_disponible,
+                                            @provee_cuit,@vencimiento_oferta,@vencimiento_canje,@fecha_publicacion, 0)
+        end
+GO
+
+begin tran insertar_funcionalidades
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Cliente',@Funcionalidad = 'Cargar Credito'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Cliente',@Funcionalidad = 'Comprar Giftcard'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Cliente',@Funcionalidad = 'Listado Estadistico'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Cliente',@Funcionalidad = 'Pedir Devolucion'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Cliente',@Funcionalidad = 'Ver Cupones'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Cliente',@Funcionalidad = 'Ver Historial'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Cliente',@Funcionalidad = 'Cargar Credito'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Cliente',@Funcionalidad = 'Comprar GiftCard'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Cliente',@Funcionalidad = 'Comprar Cupon'
+
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Proveedor',@Funcionalidad = 'Armar Cupon'
+
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'ABM Rol'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'ABM Usuario'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'Facturar Proveedor'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'Publicar Cupones'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'Cargar Credito'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'Comprar GiftCard'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'Comprar Cupon'
+
+
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Cargar Credito'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Comprar Giftcard'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Listado Estadistico'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Pedir Devolucion'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Ver Cupones'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Ver Historial'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Armar Cupon'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'ABM Rol'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'ABM Usuario'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Facturar Proveedor'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Publicar Cupones'
+commit tran insertar_funcionalidades
+GO
+
+--Punto 13
+
+create procedure MR_ANDERSON.sp_cupones_a_publicar (@fecha DATETIME, @provee_cuit NVARCHAR(20))
+    as
+        begin
+            if @provee_cuit is null
+                begin
+                    return select codigo, descripcion from MR_ANDERSON.Cupones where publicado = 0 and fecha_publicacion = @fecha
+                end
+
+            return  select codigo, descripcion 
+                        from MR_ANDERSON.Cupones Cupones
+
+                        join MR_ANDERSON.Proveedores Proveedores
+                            on   Cupones.provee_cuit = Proveedores.provee_cuit
+                        
+                    where publicado = 0 and fecha_publicacion = @fecha and provee_cuit = @provee_cuit
+        end
+GO
+
+create procedure MR_ANDERSON.sp_publicar_cupon (@codigo NVARCHAR(50))
+    as
+        begin
+            Update MR_ANDERSON.Cupones set publicado = 1 where codigo = @codigo
         end
 GO

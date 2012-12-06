@@ -10,6 +10,36 @@
 USE [GD2C2012]
 GO
 
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_publicar_cupon]    Script Date: 12/06/2012 19:52:47 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_publicar_cupon]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_publicar_cupon]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_cupones_a_publicar]    Script Date: 12/06/2012 19:28:17 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_cupones_a_publicar]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_cupones_a_publicar]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_get_direccion]    Script Date: 12/06/2012 19:10:25 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_get_direccion]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_get_direccion]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_change_status_user]    Script Date: 12/06/2012 19:10:09 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_change_status_user]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_change_status_user]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_agregar_cupon]    Script Date: 12/06/2012 19:03:38 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_agregar_cupon]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_agregar_cupon]
+GO
+
+
 /****** Object:  StoredProcedure [MR_ANDERSON].[sp_get_ciudades]    Script Date: 12/06/2012 18:11:02 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_get_ciudades]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [MR_ANDERSON].[sp_get_ciudades]
