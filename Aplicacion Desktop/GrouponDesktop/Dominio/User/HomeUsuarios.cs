@@ -12,45 +12,15 @@ namespace GrouponDesktop.User
     {
         //////BUSQUEDAS /////
 
+
         public User getUsuario(Login login)
         {
             User usuario = new User();
             usuario.DatosLogin = login;
-            setRolesAlUsuario(usuario);
-            //setCiudadesAlUsuario(usuario);
-            setSaldoAlUsuario(usuario);
-            
-            return usuario;
-        }
-
-        private void setSaldoAlUsuario(User usuario)
-        {
-            usuario.DatosCliente = new DatosCliente();
-            usuario.DatosCliente.Saldo = 100;
-        }
-
-        private void setCiudadesAlUsuario(User usuario)
-        {
             DataAccess.SPManager spManager = new DataAccess.SPManager();
 
             Dictionary<String, Object> param = new Dictionary<String, Object>();
-            param.Add("nombre_usuario", usuario.DatosLogin.UserName);
-            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_get_ciudades", param))
-            {
-                reader.Read();
-                HomeRoles home = new HomeRoles();
-                usuario.Rol = home.getRol((String)reader["rol"]);
-            }
-
-            spManager.Close();
-        }
-
-        public void setRolesAlUsuario(User usuario)
-        {
-            DataAccess.SPManager spManager = new DataAccess.SPManager();
-
-            Dictionary<String, Object> param = new Dictionary<String, Object>();
-            param.Add("nombre_usuario", usuario.DatosLogin.UserName);
+            param.Add("nombre_usuario", login.UserName);
             using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.get_nombre_rol_de_usuario", param))
             {
                 reader.Read();
@@ -59,6 +29,82 @@ namespace GrouponDesktop.User
             }
 
             spManager.Close();
+
+            DataAccess.SPManager spManager2 = new DataAccess.SPManager();
+
+            Dictionary<String, Object> param_direccion = new Dictionary<string, object>();
+            param_direccion.Add("username", login.UserName);
+            using (SqlDataReader reader2 = spManager2.executeSPWithParameters("MR_ANDERSON.sp_get_direccion", param_direccion))
+            {
+                if (!reader2.HasRows) return usuario;
+                reader2.Read();
+                usuario.Direccion = new Direccion();
+                usuario.Direccion.Calle = (string)reader2["calle"];
+                if (!reader2["depto"].ToString().Equals("")) usuario.Direccion.Depto = (string)reader2["depto"];
+                if (!reader2["codigo_postal"].ToString().Equals("")) usuario.Direccion.CodigoPostal = Convert.ToInt32(reader2["codigo_postal"]);
+                if (!reader2["nro_piso"].ToString().Equals("")) usuario.Direccion.Piso = Convert.ToInt32(reader2["nro_piso"]);
+                usuario.Direccion.Localidad = (string)reader2["localidad"];
+
+            }
+            spManager2.Close();
+            return usuario;
+        }
+
+        public User getCliente(Login login)
+        {
+            User usuario = this.getUsuario(login);
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+
+            Dictionary<String, Object> param = new Dictionary<String, Object>();
+            param.Add("username", login.UserName);
+            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_get_datos_cliente", param))
+            {
+                reader.Read();
+                usuario.DatosCliente = new DatosCliente();
+                usuario.DatosCliente.Apellido = (string)reader["apellido"];
+                usuario.DatosCliente.Nombre = (string)reader["nombre"];
+                usuario.DatosCliente.Saldo = Convert.ToInt32(reader["saldo"]);
+                usuario.DatosCliente.Telefono = Convert.ToString(reader["telefono"]);
+                usuario.DatosCliente.Mail = (string)reader["mail"];
+                usuario.DatosCliente.FechaNac = Convert.ToString(reader["fecha_nac"]);
+                usuario.DatosCliente.Dni = Convert.ToString(reader["dni"]);
+                
+            }
+            spManager.Close();
+
+            return usuario;
+        }
+
+
+        private void setSaldoAlUsuario(User usuario)
+        {
+            usuario.DatosCliente = new DatosCliente();
+            usuario.DatosCliente.Saldo = 100;
+        }
+
+     
+
+        public List<Login> getUsuarios(String tipo)
+        {
+            List<Login> usuarios = new List<Login>();
+
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+
+            Dictionary<String, Object> param = new Dictionary<String, Object>();
+            param.Add("tipo", tipo);
+            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_get_all_usrs", param))
+            {
+                while (reader.Read())
+                {
+                    Login login = new Login();
+                    login.UserName = (String)reader["username"];
+                    usuarios.Add(login);
+                }
+                reader.Close();
+            }
+            spManager.Close();
+            return usuarios;
+
         }
 
         ////PERSISTENCIA////
@@ -169,6 +215,53 @@ namespace GrouponDesktop.User
             param.Add("nombre_rol", nombreViejo);
             param.Add("nuevo_nombre_rol", nombreNuevo);
             spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_change_rol_name_a_usuarios", param);
+            spManager.Close();
+        }
+
+        private void setCiudadesAlUsuario(User usuario)
+        {
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+
+            Dictionary<String, Object> param = new Dictionary<String, Object>();
+            param.Add("nombre_usuario", usuario.DatosLogin.UserName);
+            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_get_ciudades", param))
+            {
+                reader.Read();
+                HomeRoles home = new HomeRoles();
+                usuario.Rol = home.getRol((String)reader["rol"]);
+            }
+
+            spManager.Close();
+        }
+
+        public void changeStatus(String nombreUsuario, Boolean habilitado)
+        {
+            int status = 0;
+            if (habilitado) status = 1;
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+
+            Dictionary<String, Object> param = new Dictionary<string, object>();
+            param.Add("username", nombreUsuario);
+            param.Add("habilitado", status);
+            spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_change_status_user", param);
+
+            spManager.Close();
+        }
+
+
+        public void setRolesAlUsuario(User usuario)
+        {
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+
+            Dictionary<String, Object> param = new Dictionary<String, Object>();
+            param.Add("nombre_usuario", usuario.DatosLogin.UserName);
+            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.get_nombre_rol_de_usuario", param))
+            {
+                reader.Read();
+                HomeRoles home = new HomeRoles();
+                usuario.Rol = home.getRol((String)reader["rol"]);
+            }
+
             spManager.Close();
         }
 
