@@ -30,6 +30,18 @@ namespace GrouponDesktop
                     CargarCredito creditoWindow = new CargarCredito(loginWindow);
                     creditoWindow.Show();
                     break;
+                case "Comprar Giftcard":
+                    ComprarGiftCard comprarGiftCard = new ComprarGiftCard(loginWindow);
+                    comprarGiftCard.Show();
+                    break;
+                case "Comprar Cupon":
+                    ComprarCupon comprarCupon = new ComprarCupon(loginWindow);
+                    comprarCupon.Show();
+                    break;
+                case "Pedir Devolucion":
+                    DevolverCupon devolverCupon = new DevolverCupon(loginWindow);
+                    devolverCupon.Show();
+                    break;
 
             }
         }

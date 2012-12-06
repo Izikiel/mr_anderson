@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace GrouponDesktop.UI
+namespace GrouponDesktop
 {
     public partial class ComprarGiftCard : Form
     {
@@ -15,13 +15,14 @@ namespace GrouponDesktop.UI
         String saldo;
         public ComprarGiftCard(LoginWindow login)
         {
+            InitializeComponent();
+
             this.login = login;
             saldo = login.UsuarioActivo.DatosCliente.Saldo.ToString();
             if (String.IsNullOrEmpty(saldo))
                 LblSaldo.Text = "0";
             else
                 LblSaldo.Text = saldo;
-            InitializeComponent();
         }
 
         private void button1_Click(object sender, EventArgs e)

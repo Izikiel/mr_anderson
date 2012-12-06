@@ -34,26 +34,26 @@
             this.Panel_PagoTarjeta = new System.Windows.Forms.Panel();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.TxtBox_MontoCargar = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.TxtBox_FechaVencimiento = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.TxtBox_CodSeguridad = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.textBox10 = new System.Windows.Forms.TextBox();
+            this.TxtBox_NroTarjeta = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
-            this.textBox11 = new System.Windows.Forms.TextBox();
+            this.TxtBox_NombreTitular = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.Panel_PayPal = new System.Windows.Forms.Panel();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.TxtBox_MontoPagarPayPal = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.TxtBox_CodigoPagoPayPal = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.TxtBox_UsuarioPayPal = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.Panel_nombreUsuario = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.TxtBox_Username = new System.Windows.Forms.TextBox();
             this.Btn_Confirmar = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.Panel_PagoTarjeta.SuspendLayout();
@@ -100,19 +100,19 @@
             // 
             this.Panel_PagoTarjeta.Controls.Add(this.label9);
             this.Panel_PagoTarjeta.Controls.Add(this.label10);
-            this.Panel_PagoTarjeta.Controls.Add(this.textBox7);
+            this.Panel_PagoTarjeta.Controls.Add(this.TxtBox_MontoCargar);
             this.Panel_PagoTarjeta.Controls.Add(this.label11);
-            this.Panel_PagoTarjeta.Controls.Add(this.textBox8);
+            this.Panel_PagoTarjeta.Controls.Add(this.TxtBox_FechaVencimiento);
             this.Panel_PagoTarjeta.Controls.Add(this.label12);
-            this.Panel_PagoTarjeta.Controls.Add(this.textBox9);
+            this.Panel_PagoTarjeta.Controls.Add(this.TxtBox_CodSeguridad);
             this.Panel_PagoTarjeta.Controls.Add(this.label13);
-            this.Panel_PagoTarjeta.Controls.Add(this.textBox10);
+            this.Panel_PagoTarjeta.Controls.Add(this.TxtBox_NroTarjeta);
             this.Panel_PagoTarjeta.Controls.Add(this.label14);
-            this.Panel_PagoTarjeta.Controls.Add(this.textBox11);
+            this.Panel_PagoTarjeta.Controls.Add(this.TxtBox_NombreTitular);
             this.Panel_PagoTarjeta.Controls.Add(this.label15);
-            this.Panel_PagoTarjeta.Location = new System.Drawing.Point(28, 92);
+            this.Panel_PagoTarjeta.Location = new System.Drawing.Point(28, 91);
             this.Panel_PagoTarjeta.Name = "Panel_PagoTarjeta";
-            this.Panel_PagoTarjeta.Size = new System.Drawing.Size(260, 199);
+            this.Panel_PagoTarjeta.Size = new System.Drawing.Size(260, 189);
             this.Panel_PagoTarjeta.TabIndex = 1;
             this.Panel_PagoTarjeta.Visible = false;
             // 
@@ -132,12 +132,12 @@
             this.label10.TabIndex = 24;
             this.label10.Text = "(3 dígitos al dorso)";
             // 
-            // textBox7
+            // TxtBox_MontoCargar
             // 
-            this.textBox7.Location = new System.Drawing.Point(64, 156);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(109, 20);
-            this.textBox7.TabIndex = 23;
+            this.TxtBox_MontoCargar.Location = new System.Drawing.Point(64, 156);
+            this.TxtBox_MontoCargar.Name = "TxtBox_MontoCargar";
+            this.TxtBox_MontoCargar.Size = new System.Drawing.Size(109, 20);
+            this.TxtBox_MontoCargar.TabIndex = 23;
             // 
             // label11
             // 
@@ -147,12 +147,12 @@
             this.label11.TabIndex = 22;
             this.label11.Text = "Monto a cargar";
             // 
-            // textBox8
+            // TxtBox_FechaVencimiento
             // 
-            this.textBox8.Location = new System.Drawing.Point(64, 118);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(46, 20);
-            this.textBox8.TabIndex = 21;
+            this.TxtBox_FechaVencimiento.Location = new System.Drawing.Point(64, 118);
+            this.TxtBox_FechaVencimiento.Name = "TxtBox_FechaVencimiento";
+            this.TxtBox_FechaVencimiento.Size = new System.Drawing.Size(46, 20);
+            this.TxtBox_FechaVencimiento.TabIndex = 21;
             // 
             // label12
             // 
@@ -162,12 +162,12 @@
             this.label12.TabIndex = 20;
             this.label12.Text = "Fecha vencimiento";
             // 
-            // textBox9
+            // TxtBox_CodSeguridad
             // 
-            this.textBox9.Location = new System.Drawing.Point(64, 79);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(46, 20);
-            this.textBox9.TabIndex = 19;
+            this.TxtBox_CodSeguridad.Location = new System.Drawing.Point(64, 79);
+            this.TxtBox_CodSeguridad.Name = "TxtBox_CodSeguridad";
+            this.TxtBox_CodSeguridad.Size = new System.Drawing.Size(46, 20);
+            this.TxtBox_CodSeguridad.TabIndex = 19;
             // 
             // label13
             // 
@@ -177,12 +177,12 @@
             this.label13.TabIndex = 18;
             this.label13.Text = "Código seguridad";
             // 
-            // textBox10
+            // TxtBox_NroTarjeta
             // 
-            this.textBox10.Location = new System.Drawing.Point(64, 39);
-            this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(166, 20);
-            this.textBox10.TabIndex = 17;
+            this.TxtBox_NroTarjeta.Location = new System.Drawing.Point(64, 39);
+            this.TxtBox_NroTarjeta.Name = "TxtBox_NroTarjeta";
+            this.TxtBox_NroTarjeta.Size = new System.Drawing.Size(166, 20);
+            this.TxtBox_NroTarjeta.TabIndex = 17;
             // 
             // label14
             // 
@@ -192,12 +192,12 @@
             this.label14.TabIndex = 16;
             this.label14.Text = "Numero de la tarjeta";
             // 
-            // textBox11
+            // TxtBox_NombreTitular
             // 
-            this.textBox11.Location = new System.Drawing.Point(64, 3);
-            this.textBox11.Name = "textBox11";
-            this.textBox11.Size = new System.Drawing.Size(166, 20);
-            this.textBox11.TabIndex = 15;
+            this.TxtBox_NombreTitular.Location = new System.Drawing.Point(64, 3);
+            this.TxtBox_NombreTitular.Name = "TxtBox_NombreTitular";
+            this.TxtBox_NombreTitular.Size = new System.Drawing.Size(166, 20);
+            this.TxtBox_NombreTitular.TabIndex = 15;
             // 
             // label15
             // 
@@ -209,24 +209,24 @@
             // 
             // Panel_PayPal
             // 
-            this.Panel_PayPal.Controls.Add(this.textBox5);
+            this.Panel_PayPal.Controls.Add(this.TxtBox_MontoPagarPayPal);
             this.Panel_PayPal.Controls.Add(this.label5);
-            this.Panel_PayPal.Controls.Add(this.textBox2);
+            this.Panel_PayPal.Controls.Add(this.TxtBox_CodigoPagoPayPal);
             this.Panel_PayPal.Controls.Add(this.label2);
-            this.Panel_PayPal.Controls.Add(this.textBox1);
+            this.Panel_PayPal.Controls.Add(this.TxtBox_UsuarioPayPal);
             this.Panel_PayPal.Controls.Add(this.label1);
-            this.Panel_PayPal.Location = new System.Drawing.Point(28, 92);
+            this.Panel_PayPal.Location = new System.Drawing.Point(28, 94);
             this.Panel_PayPal.Name = "Panel_PayPal";
             this.Panel_PayPal.Size = new System.Drawing.Size(255, 199);
             this.Panel_PayPal.TabIndex = 2;
             this.Panel_PayPal.Visible = false;
             // 
-            // textBox5
+            // TxtBox_MontoPagarPayPal
             // 
-            this.textBox5.Location = new System.Drawing.Point(128, 112);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(91, 20);
-            this.textBox5.TabIndex = 11;
+            this.TxtBox_MontoPagarPayPal.Location = new System.Drawing.Point(128, 112);
+            this.TxtBox_MontoPagarPayPal.Name = "TxtBox_MontoPagarPayPal";
+            this.TxtBox_MontoPagarPayPal.Size = new System.Drawing.Size(91, 20);
+            this.TxtBox_MontoPagarPayPal.TabIndex = 11;
             // 
             // label5
             // 
@@ -236,12 +236,12 @@
             this.label5.TabIndex = 10;
             this.label5.Text = "Monto a cargar";
             // 
-            // textBox2
+            // TxtBox_CodigoPagoPayPal
             // 
-            this.textBox2.Location = new System.Drawing.Point(70, 56);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(166, 20);
-            this.textBox2.TabIndex = 5;
+            this.TxtBox_CodigoPagoPayPal.Location = new System.Drawing.Point(70, 56);
+            this.TxtBox_CodigoPagoPayPal.Name = "TxtBox_CodigoPagoPayPal";
+            this.TxtBox_CodigoPagoPayPal.Size = new System.Drawing.Size(166, 20);
+            this.TxtBox_CodigoPagoPayPal.TabIndex = 5;
             // 
             // label2
             // 
@@ -251,12 +251,12 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "Codigo de Pago";
             // 
-            // textBox1
+            // TxtBox_UsuarioPayPal
             // 
-            this.textBox1.Location = new System.Drawing.Point(70, 14);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(166, 20);
-            this.textBox1.TabIndex = 3;
+            this.TxtBox_UsuarioPayPal.Location = new System.Drawing.Point(70, 14);
+            this.TxtBox_UsuarioPayPal.Name = "TxtBox_UsuarioPayPal";
+            this.TxtBox_UsuarioPayPal.Size = new System.Drawing.Size(166, 20);
+            this.TxtBox_UsuarioPayPal.TabIndex = 3;
             // 
             // label1
             // 
@@ -269,7 +269,7 @@
             // Panel_nombreUsuario
             // 
             this.Panel_nombreUsuario.Controls.Add(this.label8);
-            this.Panel_nombreUsuario.Controls.Add(this.textBox6);
+            this.Panel_nombreUsuario.Controls.Add(this.TxtBox_Username);
             this.Panel_nombreUsuario.Location = new System.Drawing.Point(28, 54);
             this.Panel_nombreUsuario.Name = "Panel_nombreUsuario";
             this.Panel_nombreUsuario.Size = new System.Drawing.Size(239, 32);
@@ -284,12 +284,12 @@
             this.label8.TabIndex = 4;
             this.label8.Text = "Username";
             // 
-            // textBox6
+            // TxtBox_Username
             // 
-            this.textBox6.Location = new System.Drawing.Point(64, 4);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(166, 20);
-            this.textBox6.TabIndex = 5;
+            this.TxtBox_Username.Location = new System.Drawing.Point(64, 4);
+            this.TxtBox_Username.Name = "TxtBox_Username";
+            this.TxtBox_Username.Size = new System.Drawing.Size(166, 20);
+            this.TxtBox_Username.TabIndex = 5;
             // 
             // Btn_Confirmar
             // 
@@ -299,17 +299,18 @@
             this.Btn_Confirmar.TabIndex = 15;
             this.Btn_Confirmar.Text = "Confirmar Pago";
             this.Btn_Confirmar.UseVisualStyleBackColor = false;
+            this.Btn_Confirmar.Click += new System.EventHandler(this.Btn_Confirmar_Click);
             // 
             // CargarCredito
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(583, 481);
+            this.ClientSize = new System.Drawing.Size(328, 439);
             this.Controls.Add(this.Panel_PagoTarjeta);
+            this.Controls.Add(this.Panel_PayPal);
             this.Controls.Add(this.Btn_Confirmar);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.Panel_nombreUsuario);
-            this.Controls.Add(this.Panel_PayPal);
             this.Name = "CargarCredito";
             this.Text = "CargarCredito";
             this.groupBox1.ResumeLayout(false);
@@ -331,27 +332,27 @@
         private System.Windows.Forms.RadioButton RB_tarjetaCredito;
         private System.Windows.Forms.Panel Panel_PagoTarjeta;
         private System.Windows.Forms.Panel Panel_PayPal;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox TxtBox_MontoPagarPayPal;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox TxtBox_CodigoPagoPayPal;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox TxtBox_UsuarioPayPal;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel Panel_nombreUsuario;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox TxtBox_Username;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button Btn_Confirmar;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.TextBox TxtBox_MontoCargar;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.TextBox TxtBox_FechaVencimiento;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.TextBox TxtBox_CodSeguridad;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.TextBox TxtBox_NroTarjeta;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.TextBox textBox11;
+        private System.Windows.Forms.TextBox TxtBox_NombreTitular;
         private System.Windows.Forms.Label label15;
     }
 }

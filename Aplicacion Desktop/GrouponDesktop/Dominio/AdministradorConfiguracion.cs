@@ -8,11 +8,18 @@ namespace GrouponDesktop
 {
     class AdministradorConfiguracion
     {
+        public static DateTime obtenerFecha()
+        {
+            String fecha = obtenerValorApp("fecha");
+            if (fecha == null)
+                return DateTime.Now;
+            return DateTime.Parse(fecha);
+        }
         public static string obtenerValorApp(string key)
         {
             try
             {
-                return ConfigurationManager.AppSettings[key];
+                return ConfigurationManager.AppSettings.Get(key);
             }
             catch
             {

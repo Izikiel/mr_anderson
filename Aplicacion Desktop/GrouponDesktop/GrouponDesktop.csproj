@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dominio\Cupones\Cupones.cs" />
+    <Compile Include="Dominio\DataAdapter\AdapterFuncionesUsuario.cs" />
     <Compile Include="UI\ABM.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -74,6 +76,12 @@
     <Compile Include="UI\CargarCredito.Designer.cs">
       <DependentUpon>CargarCredito.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\ComprarCupon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ComprarCupon.Designer.cs">
+      <DependentUpon>ComprarCupon.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\ComprarGiftCard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,6 +97,12 @@
     <Compile Include="Dominio\Cupones\HomeCiudades.cs" />
     <Compile Include="Dominio\DataAccess\DBManager.cs" />
     <Compile Include="Dominio\DataAccess\SPManager.cs" />
+    <Compile Include="UI\DevolverCupon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\DevolverCupon.Designer.cs">
+      <DependentUpon>DevolverCupon.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\ModificacionRol.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,11 +155,17 @@
     <EmbeddedResource Include="UI\CargarCredito.resx">
       <DependentUpon>CargarCredito.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\ComprarCupon.resx">
+      <DependentUpon>ComprarCupon.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\ComprarGiftCard.resx">
       <DependentUpon>ComprarGiftCard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ConfirmarEliminarRolDialog.resx">
       <DependentUpon>ConfirmarEliminarRolDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DevolverCupon.resx">
+      <DependentUpon>DevolverCupon.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\LoginWindow.resx">
       <DependentUpon>LoginWindow.cs</DependentUpon>

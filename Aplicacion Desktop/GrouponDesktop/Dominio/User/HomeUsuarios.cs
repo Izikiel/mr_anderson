@@ -16,10 +16,41 @@ namespace GrouponDesktop.User
         {
             User usuario = new User();
             usuario.DatosLogin = login;
+            setRolesAlUsuario(usuario);
+            //setCiudadesAlUsuario(usuario);
+            setSaldoAlUsuario(usuario);
+            
+            return usuario;
+        }
+
+        private void setSaldoAlUsuario(User usuario)
+        {
+            usuario.DatosCliente = new DatosCliente();
+            usuario.DatosCliente.Saldo = 100;
+        }
+
+        private void setCiudadesAlUsuario(User usuario)
+        {
             DataAccess.SPManager spManager = new DataAccess.SPManager();
 
             Dictionary<String, Object> param = new Dictionary<String, Object>();
-            param.Add("nombre_usuario", login.UserName);
+            param.Add("nombre_usuario", usuario.DatosLogin.UserName);
+            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_get_ciudades", param))
+            {
+                reader.Read();
+                HomeRoles home = new HomeRoles();
+                usuario.Rol = home.getRol((String)reader["rol"]);
+            }
+
+            spManager.Close();
+        }
+
+        public void setRolesAlUsuario(User usuario)
+        {
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+
+            Dictionary<String, Object> param = new Dictionary<String, Object>();
+            param.Add("nombre_usuario", usuario.DatosLogin.UserName);
             using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.get_nombre_rol_de_usuario", param))
             {
                 reader.Read();
@@ -28,9 +59,7 @@ namespace GrouponDesktop.User
             }
 
             spManager.Close();
-            return usuario;
         }
-      
 
         ////PERSISTENCIA////
 

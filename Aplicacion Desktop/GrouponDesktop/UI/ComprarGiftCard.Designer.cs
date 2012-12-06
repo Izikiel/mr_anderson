@@ -1,4 +1,4 @@
-﻿namespace GrouponDesktop.UI
+﻿namespace GrouponDesktop
 {
     partial class ComprarGiftCard
     {
@@ -83,9 +83,9 @@
             this.LblSaldo.AutoSize = true;
             this.LblSaldo.Location = new System.Drawing.Point(216, 9);
             this.LblSaldo.Name = "LblSaldo";
-            this.LblSaldo.Size = new System.Drawing.Size(35, 13);
+            this.LblSaldo.Size = new System.Drawing.Size(13, 13);
             this.LblSaldo.TabIndex = 6;
-            this.LblSaldo.Text = "label4";
+            this.LblSaldo.Text = "0";
             // 
             // button1
             // 
