@@ -108,8 +108,16 @@ GO
 create procedure MR_ANDERSON.sp_get_datos_cliente(@username varchar(100))
 as
 begin
-		select nombre,apellido,telefono,mail,YEAR(fecha_nac)*10000+MONTH(fecha_nac)*100+DAY(fecha_nac) as fecha_nac,saldo  
+		select nombre,apellido,telefono,mail,YEAR(fecha_nac)*10000+MONTH(fecha_nac)*100+DAY(fecha_nac) as fecha_nac,saldo,dni
 		from MR_ANDERSON.Datos_clientes
 		where username = @username
 		end
 GO
+
+--usuario Habilitado
+create procedure MR_ANDERSON.sp_usuario_habilitado (@nombre_usuario varchar(100))
+	as
+		begin
+			select Habilitado from MR_ANDERSON.Login
+			where username = @nombre_usuario
+		end

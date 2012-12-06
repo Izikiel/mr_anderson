@@ -46,6 +46,13 @@ namespace GrouponDesktop.DataAdapter
             set { password = SHA256Encrypt(value); }
         }
 
+        private Boolean habilitado;
+        public Boolean Habilitado
+        {
+            get { return habilitado; }
+            set { habilitado = value; }
+        }
+
         public string SHA256Encrypt(string input)
         {
             SHA256CryptoServiceProvider provider = new SHA256CryptoServiceProvider();

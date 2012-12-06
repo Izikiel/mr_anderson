@@ -17,8 +17,20 @@ namespace GrouponDesktop.User
         {
             User usuario = new User();
             usuario.DatosLogin = login;
-            DataAccess.SPManager spManager = new DataAccess.SPManager();
 
+            DataAccess.SPManager spManagerLogin = new DataAccess.SPManager();
+            Dictionary<String, Object> param_login = new Dictionary<String, Object>();
+
+            param_login.Add("nombre_usuario", login.UserName);
+
+            SqlDataReader reader_login = spManagerLogin.executeSPWithParameters("MR_ANDERSON.sp_usuario_habilitado", param_login);
+            reader_login.Read();
+
+            if (Convert.ToInt16(reader_login["Habilitado"]).Equals(1)) usuario.DatosLogin.Habilitado = true;
+            else usuario.DatosLogin.Habilitado = false;
+            spManagerLogin.Close();
+
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
             Dictionary<String, Object> param = new Dictionary<String, Object>();
             param.Add("nombre_usuario", login.UserName);
             using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.get_nombre_rol_de_usuario", param))
@@ -40,9 +52,9 @@ namespace GrouponDesktop.User
                 reader2.Read();
                 usuario.Direccion = new Direccion();
                 usuario.Direccion.Calle = (string)reader2["calle"];
-                if (!reader2["depto"].ToString().Equals("")) usuario.Direccion.Depto = (string)reader2["depto"];
-                if (!reader2["codigo_postal"].ToString().Equals("")) usuario.Direccion.CodigoPostal = Convert.ToInt32(reader2["codigo_postal"]);
-                if (!reader2["nro_piso"].ToString().Equals("")) usuario.Direccion.Piso = Convert.ToInt32(reader2["nro_piso"]);
+                if (!Convert.IsDBNull(reader2["depto"])) usuario.Direccion.Depto = (string)reader2["depto"];
+                if (!Convert.IsDBNull(reader2["codigo_postal"])) usuario.Direccion.CodigoPostal = Convert.ToInt32(reader2["codigo_postal"]);
+                if (!Convert.IsDBNull(reader2["nro_piso"])) usuario.Direccion.Piso = Convert.ToInt32(reader2["nro_piso"]);
                 usuario.Direccion.Localidad = (string)reader2["localidad"];
 
             }
@@ -264,6 +276,98 @@ namespace GrouponDesktop.User
 
             spManager.Close();
         }
+
+        public void modificarCliente(User clienteViejo, User clienteNuevo)
+        {
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+
+            Dictionary<String, Object> param = new Dictionary<String, Object>();
+            param.Add("nombre_sended",clienteNuevo.DatosCliente.Nombre);
+            param.Add("dni_sended", clienteNuevo.DatosCliente.Dni);
+            param.Add("apellido_sended", clienteNuevo.DatosCliente.Apellido);
+            param.Add("telefono_sended", clienteNuevo.DatosCliente.Telefono);
+            param.Add("mail_sended", clienteNuevo.DatosCliente.Mail);
+            param.Add("fecha_nac_sended", clienteNuevo.DatosCliente.FechaNac);
+            param.Add("username_sended", clienteViejo.DatosLogin.UserName);
+            param.Add("result output", "");
+            SqlCommand cmd = new SqlCommand();
+            spManager.executeSPWithParameters("MR_ANDERSON.sp_modify_client", param,out cmd);
+            string resultado = (string)cmd.Parameters["@result"].Value;
+            spManager.Close();
+
+            if (!resultado.Equals("OK"))
+            {
+                throw new Exception(resultado);
+            }
+            
+        }
+
+        public void modificarDireccion(String username, Direccion dir)
+        {
+
+        }
+
+        public void eliminarCiudadesDeCliente(String dni, List<String> ciudades)
+        {
+            Boolean ok = true;
+            Dictionary<String, Object> param = new Dictionary<String, Object>();
+            param.Add("dni", Convert.ToInt32(dni));
+            SqlCommand cmd = new SqlCommand();
+            
+            
+            foreach(String c in ciudades){
+
+                try
+                {
+                    DataAccess.SPManager spManager = new DataAccess.SPManager();
+                    param.Add("ciudad_a_borrar", c);
+                    spManager.executeSPWithParameters("MR_ANDERSON.sp_delete_ciudad", param);
+                    param.Remove("ciudad_a_borrar");
+                    spManager.Close();
+                }
+                catch (Exception )
+                {
+                    ok = false;
+                    
+                }
+                
+            }
+
+            if (!ok) {
+                throw new Exception("Fallo al eliminar ciudades");
+            }
+            
+        }
+
+        public void agregarCiudadesACliente(String dni, List<String> ciudades)
+        {
+            Boolean ok = true;
+            
+
+            Dictionary<String, Object> param = new Dictionary<String, Object>();
+            param.Add("dni", Convert.ToInt32(dni));
+            param.Add("result output", "");
+            SqlCommand cmd = new SqlCommand();
+
+            foreach (String c in ciudades)
+            {
+                DataAccess.SPManager spManager = new DataAccess.SPManager();
+                    param.Add("ciudad", c);
+                    spManager.executeSPWithParameters("MR_ANDERSON.sp_agregar_ciudad", param, out cmd);
+                    string resultado = (string)cmd.Parameters["@result"].Value;
+                    param.Remove("ciudad");
+                    if (!resultado.Equals("OK")) ok = false;
+                    spManager.Close();
+                
+            }
+
+            if (!ok)
+            {
+                throw new Exception("Fallo al agregar ciudades");
+            }
+
+        }
+
 
         ////VALIDACIONES////
         public Boolean usuarioNoExistente(String nombre)

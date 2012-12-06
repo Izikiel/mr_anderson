@@ -1539,7 +1539,7 @@ create procedure MR_ANDERSON.sp_registra_consumo_cupon (@provee_cuit nvarchar(20
 GO
 
 
---Modificar direccion clientes
+--Modificar direccion
 
 create procedure MR_ANDERSON.sp_modify_direccion (@calle NVARCHAR(100),@nro_piso numeric(3,0),@depto NVARCHAR(40), @localidad NVARCHAR(100), 
                                 @username NVARCHAR(100), @codigo_postal numeric(5,0))
@@ -1556,7 +1556,7 @@ create procedure MR_ANDERSON.sp_modify_direccion (@calle NVARCHAR(100),@nro_piso
         end
 GO
 
---obtener direccion clientes
+--obtener direccion 
 create procedure MR_ANDERSON.sp_get_direccion (@username VARCHAR(100))
     as
         begin
@@ -1564,6 +1564,7 @@ create procedure MR_ANDERSON.sp_get_direccion (@username VARCHAR(100))
             from MR_ANDERSON.Direccion
             where username = @username
         end
+GO
 
 
 -- borrar/insertar ciudad cliente
