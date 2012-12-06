@@ -13,7 +13,11 @@ namespace GrouponDesktop.DataAccess
     /// </summary>
     public class SPManager
     {
-        DBManager dbManager;
+        private DBManager dbManager;
+        public DBManager DbManager
+        {
+            get { return dbManager; }
+        }
         public SPManager()
         {
             dbManager = new DBManager();

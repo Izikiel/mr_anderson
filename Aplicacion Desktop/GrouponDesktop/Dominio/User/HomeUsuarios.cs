@@ -277,9 +277,10 @@ namespace GrouponDesktop.User
             spManager.Close();
         }
 
-        public void modificarCliente(User clienteViejo, User clienteNuevo)
+        public void modificarDatosCliente(User clienteViejo, User clienteNuevo)
         {
             DataAccess.SPManager spManager = new DataAccess.SPManager();
+            
 
             Dictionary<String, Object> param = new Dictionary<String, Object>();
             param.Add("nombre_sended",clienteNuevo.DatosCliente.Nombre);
@@ -299,6 +300,7 @@ namespace GrouponDesktop.User
             {
                 throw new Exception(resultado);
             }
+            
             
         }
 
@@ -368,6 +370,33 @@ namespace GrouponDesktop.User
 
         }
 
+        public void modificarCliente(User clienteViejo, User clienteNuevo,
+            List<String> ciudadesOriginales, List<String> ciudadesSeleccionadas, Boolean modificarCiudades,Boolean habilitado)
+        {
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+            SqlTransaction tran = spManager.DbManager.Connection.BeginTransaction();
+            try
+            {
+                if (modificarCiudades)
+                {
+                    this.eliminarCiudadesDeCliente(clienteViejo.DatosCliente.Dni, ciudadesOriginales);
+                    this.agregarCiudadesACliente(clienteViejo.DatosCliente.Dni, ciudadesSeleccionadas);
+                }
+
+                this.modificarDireccion(clienteViejo.DatosLogin.UserName, clienteNuevo.Direccion);
+                this.changeStatus(clienteViejo.DatosLogin.UserName, habilitado);
+                this.modificarDatosCliente(clienteViejo, clienteNuevo);
+            }
+            catch (Exception e)
+            {
+                tran.Rollback();
+                spManager.Close();
+                throw new Exception("No se pudo modificar al cliente por : " + e.ToString());
+
+            }
+            tran.Commit();
+            spManager.Close();
+        }
 
         ////VALIDACIONES////
         public Boolean usuarioNoExistente(String nombre)

@@ -110,35 +110,18 @@ namespace GrouponDesktop.UI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
-            if (this.modificarCiudades)
-            {
-                try
-                {
-                    this.homeUsr.eliminarCiudadesDeCliente(this.clienteSeleccionado.DatosCliente.Dni, this.ciudadesOriginales);
-                    this.homeUsr.agregarCiudadesACliente(this.clienteSeleccionado.DatosCliente.Dni, this.ciudadesSeleccionadas);
-
-                }
-                catch (Exception falloCiudades)
-                {
-                    //ver como hacer para que se vuelva a modificar con los datos originales en caso de q ya se hubiese eliminado
-                    MessageBox.Show("No se pudo modificar por: " + falloCiudades.ToString());
-                    return;
-                }
-            }
             try
-            {  
-                User.User nuevoCliente = this.nuevoCliente();
-                //ver como hacer para que no queden los datos inconsistentes
-                this.homeUsr.modificarDireccion(this.clienteSeleccionado.DatosLogin.UserName, nuevoCliente.Direccion);
-                //CAMBIAR ESTO this.homeUsr.changeStatus(this.clienteSeleccionado.DatosLogin.UserName, true);
-                this.homeUsr.modificarCliente(this.clienteSeleccionado, nuevoCliente);
-            }
-            catch (Exception excep)
             {
-                MessageBox.Show("No se pudo modificar por: " + excep.ToString());
+
+                homeUsr.modificarCliente(this.clienteSeleccionado, this.nuevoCliente(), this.ciudadesOriginales, this.ciudadesSeleccionadas,
+                    this.modificarCiudades, true);//cambiar el boolean, debe mostrar si esta habilitado
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("No se ha podido modificar el cliente");
                 return;
             }
+            
             MessageBox.Show("Se ha modificado correctamente");
             this.Close();
 

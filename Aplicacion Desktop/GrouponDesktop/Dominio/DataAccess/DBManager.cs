@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 
 namespace GrouponDesktop.DataAccess
 {
-    class DBManager
+    public class DBManager
     {
         private SqlConnection connection;
         public SqlConnection Connection
