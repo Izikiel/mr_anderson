@@ -10,6 +10,16 @@
 USE [GD2C2012]
 GO
 
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_get_ciudades]    Script Date: 12/06/2012 18:11:02 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_get_ciudades]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_get_ciudades]
+GO
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_get_datos_clientes]    Script Date: 12/06/2012 18:10:50 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_get_datos_clientes]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_get_datos_clientes]
+GO
+
 /****** Object:  StoredProcedure [MR_ANDERSON].[sp_delete_ciudad]    Script Date: 12/05/2012 21:13:35 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_delete_ciudad]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [MR_ANDERSON].[sp_delete_ciudad]

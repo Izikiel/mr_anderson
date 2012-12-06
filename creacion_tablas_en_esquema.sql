@@ -169,7 +169,7 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
     /* ---------------------------------------------------------------------- */
 
     CREATE TABLE [Datos_Tarjeta] (
-        [nro_tarjeta] NUMERIC(30) NOT NULL,
+        [nro_tarjeta] NVARCHAR(50) NOT NULL,
         [fecha_emision] DATETIME NOT NULL,
         [fecha_vencimiento] DATETIME NOT NULL,
         [dni] NUMERIC(18) NOT NULL,
@@ -1145,7 +1145,7 @@ GO
 -- Cargar credito
 
 create procedure MR_ANDERSON.sp_cargar_credito (@monto int, @dni NUMERIC(18), 
-                                @fecha DATETIME, @tipo_pago NVARCHAR(10), @nro_tarjeta NUMERIC(30),
+                                @fecha DATETIME, @tipo_pago NVARCHAR(10), @nro_tarjeta NVARCHAR(50),
                                 @fecha_emision DATETIME, @fecha_vencimiento DATETIME,
                                 @tipo_tarjeta NVARCHAR(10), @result NVARCHAR(20))
     as
@@ -1196,7 +1196,7 @@ create procedure MR_ANDERSON.sp_cargar_credito (@monto int, @dni NUMERIC(18),
 GO
 
 --Agrega tarjeta!
-create procedure MR_ANDERSON.sp_agregar_tarjeta (@dni NUMERIC(18),@nro_tarjeta NUMERIC(30),
+create procedure MR_ANDERSON.sp_agregar_tarjeta (@dni NUMERIC(18),@nro_tarjeta NVARCHAR(50),
                                 @fecha_emision DATETIME, @fecha_vencimiento DATETIME,
                                 @tipo_tarjeta NVARCHAR(10))
     as
@@ -1585,3 +1585,28 @@ create procedure MR_ANDERSON.sp_insert_ciudad (@dni numeric(18), @ciudad_a_inser
         end
 GO
 
+/*
+Requerimientos Rodri
+
+Las ciudades del usuario
+El credito por usuario (En realidad vendría bien todos los datos del usuario: Dni, Nombre, Apellido, etc).
+Porque en Devolución hay un "codigo" y un "id_compra" ? Yo supuestamente te tengo que pasar solamente el codigo del cupon que se compró
+En cargar credito, habría que sacar el campo FechaEmisión... está al pedo, no tiene sentido, no te lo piden en tarjetas
+El Nro de la Tarjeta debería ser un NVarChar... No tiene sentido que sea un Número y además, para usar un numero tan grande tendría que usar alguna clase que sería al pedo
+El Tipo Tarjeta a mi gusto es indistinto... es al pedo...(O sea habría que sacarlo para mi)
+
+*/
+
+create procedure MR_ANDERSON.sp_get_ciudades (@dni numeric(18))
+    as
+        begin
+            return select ciudad from MR_ANDERSON.Ciudades where dni = @dni    
+        end
+GO
+
+create procedure MR_ANDERSON.sp_get_datos_clientes (@dni numeric(18))
+    as
+        begin
+            select * from MR_ANDERSON.Datos_Clientes where dni = @dni
+        end
+GO
