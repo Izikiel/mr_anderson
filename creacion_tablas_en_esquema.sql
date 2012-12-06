@@ -26,7 +26,7 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
     CREATE TABLE [Rol_Tipo](
         [Tipo] NVARCHAR(100) NOT NULL,
         [Rol] NVARCHAR(255) NOT NULL,
-        CONSTRAINT [PK_Tipo_Rol] PRIMARY KEY ([Rol])
+        CONSTRAINT [PK_Tipo_Rol] PRIMARY KEY ([Rol],[Tipo])
     )
 
 
@@ -300,7 +300,10 @@ GO
         FOREIGN KEY ([Rol]) REFERENCES [MR_ANDERSON].[Roles] ([Rol])
     GO
 
-    
+    ALTER TABLE [MR_ANDERSON].[Rol_Tipo] ADD CONSTRAINT [FK_TIPO]
+        FOREIGN KEY ([Tipo]) REFERENCES [MR_ANDERSON].[Tipo_Usuario] ([Tipo])
+    GO
+
     
     ALTER TABLE [MR_ANDERSON].[Login] ADD CONSTRAINT [Tipo_Login]
         FOREIGN KEY ([Tipo]) REFERENCES [MR_ANDERSON].[Tipo_Usuario] ([Tipo])
@@ -738,13 +741,11 @@ create trigger  actualizar_habilitaciones on MR_ANDERSON.Roles
         end
 GO
 */
-create procedure MR_ANDERSON.sp_new_rol (@nombre_rol NVARCHAR(255),@tipo nvarchar(100))
+create procedure MR_ANDERSON.sp_new_rol (@nombre_rol NVARCHAR(255))
     as
         begin
             insert into MR_ANDERSON.Roles(Rol,Habilitado)
                 VALUES(@nombre_rol, 1)
-             insert into MR_ANDERSON.Rol_Tipo(Tipo,Rol)
-                VALUES(@tipo, @nombre_rol)
         end
 GO
 
@@ -787,13 +788,7 @@ GO
 create procedure MR_ANDERSON.sp_change_rol_name (@nombre_rol NVARCHAR(255), @nuevo_nombre_rol NVARCHAR(255))
     as
         begin
-            update MR_ANDERSON.Login
-                set rol = @nuevo_nombre_rol
-                where rol = @nombre_rol
             update MR_ANDERSON.Funcionalidades_Roles
-                set rol = @nuevo_nombre_rol
-                where rol = @nombre_rol
-            update MR_ANDERSON.Rol_Tipo
                 set rol = @nuevo_nombre_rol
                 where rol = @nombre_rol
             update MR_ANDERSON.Roles
@@ -807,9 +802,6 @@ create procedure MR_ANDERSON.sp_eliminar_rol (@nombre_rol NVARCHAR(255))
     as
     begin
         delete from MR_ANDERSON.Funcionalidades_Roles
-            where rol = @nombre_rol
-
-        delete from MR_ANDERSON.Rol_Tipo
             where rol = @nombre_rol
 
         delete from MR_ANDERSON.Roles
@@ -1533,5 +1525,41 @@ create procedure MR_ANDERSON.sp_registra_consumo_cupon (@provee_cuit nvarchar(20
             insert into MR_ANDERSON.Consumos VALUES (@fecha_actual, @cod_cupon, @dni_cliente)
             delete MR_ANDERSON.Compras where MR_ANDERSON.Compras.dni = @dni_cliente and MR_ANDERSON.Compras.codigo = @cod_cupon
 
+        end
+GO
+
+
+--Modificar direccion clientes
+
+create procedure MR_ANDERSON.sp_modify_direccion (@calle NVARCHAR(100),@nro_piso numeric(3,0),@depto NVARCHAR(40), @localidad NVARCHAR(100), 
+                                @username NVARCHAR(100), @codigo_postal numeric(5,0))
+    as
+        begin
+            update MR_ANDERSON.Direccion
+                set calle = @calle,
+                    nro_piso = @nro_piso,
+                    depto = @depto,
+                    localidad = @localidad,
+                    codigo_postal = @codigo_postal
+
+                where username = @username
+        end
+GO
+
+-- borrar/insertar ciudad cliente
+
+create procedure MR_ANDERSON.sp_delete_ciudad (@dni numeric(18), @ciudad_a_borrar NVARCHAR(255))
+    as
+        begin
+              delete from MR_ANDERSON.Ciudades where dni = @dni and ciudad = @ciudad_a_borrar
+        end
+
+GO
+
+create procedure MR_ANDERSON.sp_insert_ciudad (@dni numeric(18), @ciudad_a_insertar NVARCHAR(255))
+    as
+        begin
+           insert into MR_ANDERSON.Ciudades(dni, ciudad) 
+                values(@dni,@ciudad_a_insertar) 
         end
 GO
