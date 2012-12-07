@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using GrouponDesktop.Rol;
+using GrouponDesktop.Dominio.DataAdapter;
 
 namespace GrouponDesktop
 {
@@ -28,7 +29,7 @@ namespace GrouponDesktop
 
         private void fillGrid() {
                 HomeRoles home_roles = new HomeRoles();
-                List<Rol.Rol> listaRoles = home_roles.getRoles();
+                List<RolStringContainer> listaRoles = home_roles.getNombreRoles();
                 dataGridView1.DataSource = listaRoles;
         }
 
@@ -38,7 +39,7 @@ namespace GrouponDesktop
             if (e.RowIndex < 0 || e.ColumnIndex !=
             dataGridView1.Columns["Seleccionar"].Index) return;
 
-            this.selectedRolName = this.dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString();
+            this.selectedRolName = this.dataGridView1.Rows[e.RowIndex].Cells[1].Value.ToString();
             
             
             switch (f)

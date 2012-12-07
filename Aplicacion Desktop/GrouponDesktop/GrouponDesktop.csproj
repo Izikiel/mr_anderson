@@ -51,6 +51,8 @@
   <ItemGroup>
     <Compile Include="Dominio\Cupones\Cupones.cs" />
     <Compile Include="Dominio\DataAdapter\AdapterFuncionesUsuario.cs" />
+    <Compile Include="Dominio\DataAdapter\RolStringContainer.cs" />
+    <Compile Include="Dominio\DataAdapter\UserStringContainer.cs" />
     <Compile Include="UI\ABM.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -62,6 +64,12 @@
     </Compile>
     <Compile Include="UI\ABMRol.Designer.cs">
       <DependentUpon>ABMRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ABMUsr.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ABMUsr.Designer.cs">
+      <DependentUpon>ABMUsr.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\AltaRol.cs">
       <SubType>Form</SubType>
@@ -97,11 +105,29 @@
     <Compile Include="Dominio\Cupones\HomeCiudades.cs" />
     <Compile Include="Dominio\DataAccess\DBManager.cs" />
     <Compile Include="Dominio\DataAccess\SPManager.cs" />
+    <Compile Include="UI\ConfirmarEliminarUsuarioDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ConfirmarEliminarUsuarioDialog.Designer.cs">
+      <DependentUpon>ConfirmarEliminarUsuarioDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\DevolverCupon.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\DevolverCupon.Designer.cs">
       <DependentUpon>DevolverCupon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ListadoUsuarios.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ListadoUsuarios.Designer.cs">
+      <DependentUpon>ListadoUsuarios.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ModificacionCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ModificacionCliente.Designer.cs">
+      <DependentUpon>ModificacionCliente.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\ModificacionRol.cs">
       <SubType>Form</SubType>
@@ -149,6 +175,9 @@
     <EmbeddedResource Include="UI\ABMRol.resx">
       <DependentUpon>ABMRol.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\ABMUsr.resx">
+      <DependentUpon>ABMUsr.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\AltaRol.resx">
       <DependentUpon>AltaRol.cs</DependentUpon>
     </EmbeddedResource>
@@ -164,14 +193,23 @@
     <EmbeddedResource Include="UI\ConfirmarEliminarRolDialog.resx">
       <DependentUpon>ConfirmarEliminarRolDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\ConfirmarEliminarUsuarioDialog.resx">
+      <DependentUpon>ConfirmarEliminarUsuarioDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\DevolverCupon.resx">
       <DependentUpon>DevolverCupon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ListadoUsuarios.resx">
+      <DependentUpon>ListadoUsuarios.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\LoginWindow.resx">
       <DependentUpon>LoginWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Menu.resx">
       <DependentUpon>Menu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ModificacionCliente.resx">
+      <DependentUpon>ModificacionCliente.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ModificacionRol.resx">
       <DependentUpon>ModificacionRol.cs</DependentUpon>

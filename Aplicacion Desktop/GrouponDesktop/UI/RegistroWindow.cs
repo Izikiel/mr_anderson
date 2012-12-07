@@ -27,7 +27,6 @@ namespace GrouponDesktop
         {
             InitializeComponent();
             this.homeRol = new HomeRoles();
-            List<Rol.Rol> roles =  homeRol.getRoles();
             this.homeUsr = new HomeUsuarios();
             this.usuario = new User.User();
             this.usuario.DatosLogin = new Login();

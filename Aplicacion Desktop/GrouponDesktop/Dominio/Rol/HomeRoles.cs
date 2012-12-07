@@ -8,6 +8,7 @@ using GrouponDesktop.Rol;
 using GrouponDesktop.DataAdapter;
 using GrouponDesktop.DataAccess;
 using GrouponDesktop.User;
+using GrouponDesktop.Dominio.DataAdapter;
 
 namespace GrouponDesktop.Rol
 {
@@ -15,9 +16,9 @@ namespace GrouponDesktop.Rol
     {
         //////////BUSQUEDAS/////////////
 
-        public List<Rol> getRoles()
+        public List<RolStringContainer> getNombreRoles()
         {
-            List<Rol> roles = new List<Rol>();
+            List<RolStringContainer> roles = new List<RolStringContainer>();
 
             DataAccess.SPManager spManager = new DataAccess.SPManager();
             
@@ -26,7 +27,9 @@ namespace GrouponDesktop.Rol
                 while (reader.Read())
                 {
                     Rol unRol =   this.getRol((String)reader["rol"]);
-                    roles.Add(unRol);
+                    RolStringContainer sRol = new RolStringContainer();
+                    sRol.Nombre = unRol.Nombre;
+                    roles.Add(sRol);
                 }
                 reader.Close();
             }
