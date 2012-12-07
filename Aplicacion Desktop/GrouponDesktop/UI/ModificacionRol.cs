@@ -16,29 +16,33 @@ namespace GrouponDesktop
         List<String> funcionalidadesRol;
         List<String> funcionalidadesDisponibles;
         HomeRoles home;
+        Rol.Rol selectedRol;
 
         public ModificacionRol(String nombre)
         {
             InitializeComponent();
             this.selectedRolName = nombre;
             this.home = new HomeRoles();
+            this.selectedRol = home.getRol(this.selectedRolName);
             
             Rol.Rol adminRol = home.getRol("Administrador General");
             this.funcionalidadesDisponibles = adminRol.getFuncionalidades();
+            if(!this.selectedRol.TipoUsuario.Contains("Administrador"))
+            this.funcionalidadesDisponibles.Remove("Simular Usuario");
             this.fill();
             
         }
 
         public void fill()
         {
-            Rol.Rol rol = home.getRol(this.selectedRolName);
-            this.funcionalidadesRol = rol.getFuncionalidades();
+           
+            this.funcionalidadesRol = this.selectedRol.getFuncionalidades();
 
             this.textBox1.Text = this.selectedRolName;
             this.listBox1.DataSource = funcionalidadesRol;
             this.listBox2.DataSource = funcionalidadesDisponibles;
 
-            this.checkBox1.Checked = rol.estaHabilitado();
+            this.checkBox1.Checked = this.selectedRol.estaHabilitado();
         }
 
         private void button2_Click(object sender, EventArgs e)
