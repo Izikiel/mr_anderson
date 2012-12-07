@@ -54,6 +54,7 @@
     <Compile Include="Dominio\DataAdapter\FuncionesCupones.cs" />
     <Compile Include="Dominio\DataAdapter\RolStringContainer.cs" />
     <Compile Include="Dominio\DataAdapter\UserStringContainer.cs" />
+    <Compile Include="Dominio\Utilidades\Utilidades.cs" />
     <Compile Include="UI\ABMRol.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,7 +73,7 @@
     <Compile Include="UI\AltaRol.Designer.cs">
       <DependentUpon>AltaRol.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dominio\AdministradorConfiguracion.cs" />
+    <Compile Include="Dominio\Utilidades\AdministradorConfiguracion.cs" />
     <Compile Include="UI\CargarCredito.cs">
       <SubType>Form</SubType>
     </Compile>

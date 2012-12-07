@@ -32,6 +32,9 @@
             this.RB_payPal = new System.Windows.Forms.RadioButton();
             this.RB_tarjetaCredito = new System.Windows.Forms.RadioButton();
             this.Panel_PagoTarjeta = new System.Windows.Forms.Panel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.RB_TipoTarjetaDebito = new System.Windows.Forms.RadioButton();
+            this.RB_TipoTarjetaCredito = new System.Windows.Forms.RadioButton();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.TxtBox_MontoCargar = new System.Windows.Forms.TextBox();
@@ -51,18 +54,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.TxtBox_UsuarioPayPal = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.Panel_nombreUsuario = new System.Windows.Forms.Panel();
-            this.label8 = new System.Windows.Forms.Label();
-            this.TxtBox_Username = new System.Windows.Forms.TextBox();
             this.Btn_Confirmar = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.RB_TipoTarjetaCredito = new System.Windows.Forms.RadioButton();
-            this.RB_TipoTarjetaDebito = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.Panel_PagoTarjeta.SuspendLayout();
-            this.Panel_PayPal.SuspendLayout();
-            this.Panel_nombreUsuario.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.Panel_PayPal.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -121,6 +117,39 @@
             this.Panel_PagoTarjeta.TabIndex = 1;
             this.Panel_PagoTarjeta.Visible = false;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.RB_TipoTarjetaDebito);
+            this.groupBox2.Controls.Add(this.RB_TipoTarjetaCredito);
+            this.groupBox2.Location = new System.Drawing.Point(167, 112);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(85, 58);
+            this.groupBox2.TabIndex = 26;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Tipo";
+            // 
+            // RB_TipoTarjetaDebito
+            // 
+            this.RB_TipoTarjetaDebito.AutoSize = true;
+            this.RB_TipoTarjetaDebito.Location = new System.Drawing.Point(7, 35);
+            this.RB_TipoTarjetaDebito.Name = "RB_TipoTarjetaDebito";
+            this.RB_TipoTarjetaDebito.Size = new System.Drawing.Size(56, 17);
+            this.RB_TipoTarjetaDebito.TabIndex = 1;
+            this.RB_TipoTarjetaDebito.Text = "Debito";
+            this.RB_TipoTarjetaDebito.UseVisualStyleBackColor = true;
+            // 
+            // RB_TipoTarjetaCredito
+            // 
+            this.RB_TipoTarjetaCredito.AutoSize = true;
+            this.RB_TipoTarjetaCredito.Checked = true;
+            this.RB_TipoTarjetaCredito.Location = new System.Drawing.Point(7, 14);
+            this.RB_TipoTarjetaCredito.Name = "RB_TipoTarjetaCredito";
+            this.RB_TipoTarjetaCredito.Size = new System.Drawing.Size(58, 17);
+            this.RB_TipoTarjetaCredito.TabIndex = 0;
+            this.RB_TipoTarjetaCredito.TabStop = true;
+            this.RB_TipoTarjetaCredito.Text = "Credito";
+            this.RB_TipoTarjetaCredito.UseVisualStyleBackColor = true;
+            // 
             // label9
             // 
             this.label9.Location = new System.Drawing.Point(118, 126);
@@ -155,6 +184,7 @@
             // TxtBox_FechaVencimiento
             // 
             this.TxtBox_FechaVencimiento.Location = new System.Drawing.Point(64, 118);
+            this.TxtBox_FechaVencimiento.MaxLength = 5;
             this.TxtBox_FechaVencimiento.Name = "TxtBox_FechaVencimiento";
             this.TxtBox_FechaVencimiento.Size = new System.Drawing.Size(46, 20);
             this.TxtBox_FechaVencimiento.TabIndex = 21;
@@ -170,6 +200,7 @@
             // TxtBox_CodSeguridad
             // 
             this.TxtBox_CodSeguridad.Location = new System.Drawing.Point(64, 79);
+            this.TxtBox_CodSeguridad.MaxLength = 3;
             this.TxtBox_CodSeguridad.Name = "TxtBox_CodSeguridad";
             this.TxtBox_CodSeguridad.Size = new System.Drawing.Size(46, 20);
             this.TxtBox_CodSeguridad.TabIndex = 19;
@@ -185,6 +216,7 @@
             // TxtBox_NroTarjeta
             // 
             this.TxtBox_NroTarjeta.Location = new System.Drawing.Point(64, 39);
+            this.TxtBox_NroTarjeta.MaxLength = 16;
             this.TxtBox_NroTarjeta.Name = "TxtBox_NroTarjeta";
             this.TxtBox_NroTarjeta.Size = new System.Drawing.Size(166, 20);
             this.TxtBox_NroTarjeta.TabIndex = 17;
@@ -271,31 +303,6 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Nombre Usuario";
             // 
-            // Panel_nombreUsuario
-            // 
-            this.Panel_nombreUsuario.Controls.Add(this.label8);
-            this.Panel_nombreUsuario.Controls.Add(this.TxtBox_Username);
-            this.Panel_nombreUsuario.Location = new System.Drawing.Point(28, 54);
-            this.Panel_nombreUsuario.Name = "Panel_nombreUsuario";
-            this.Panel_nombreUsuario.Size = new System.Drawing.Size(239, 32);
-            this.Panel_nombreUsuario.TabIndex = 14;
-            this.Panel_nombreUsuario.Visible = false;
-            // 
-            // label8
-            // 
-            this.label8.Location = new System.Drawing.Point(3, 3);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(55, 23);
-            this.label8.TabIndex = 4;
-            this.label8.Text = "Username";
-            // 
-            // TxtBox_Username
-            // 
-            this.TxtBox_Username.Location = new System.Drawing.Point(64, 4);
-            this.TxtBox_Username.Name = "TxtBox_Username";
-            this.TxtBox_Username.Size = new System.Drawing.Size(166, 20);
-            this.TxtBox_Username.TabIndex = 5;
-            // 
             // Btn_Confirmar
             // 
             this.Btn_Confirmar.Location = new System.Drawing.Point(105, 299);
@@ -306,39 +313,6 @@
             this.Btn_Confirmar.UseVisualStyleBackColor = false;
             this.Btn_Confirmar.Click += new System.EventHandler(this.Btn_Confirmar_Click);
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.RB_TipoTarjetaDebito);
-            this.groupBox2.Controls.Add(this.RB_TipoTarjetaCredito);
-            this.groupBox2.Location = new System.Drawing.Point(167, 112);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(85, 58);
-            this.groupBox2.TabIndex = 26;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Tipo";
-            // 
-            // RB_TipoTarjetaCredito
-            // 
-            this.RB_TipoTarjetaCredito.AutoSize = true;
-            this.RB_TipoTarjetaCredito.Checked = true;
-            this.RB_TipoTarjetaCredito.Location = new System.Drawing.Point(7, 14);
-            this.RB_TipoTarjetaCredito.Name = "RB_TipoTarjetaCredito";
-            this.RB_TipoTarjetaCredito.Size = new System.Drawing.Size(58, 17);
-            this.RB_TipoTarjetaCredito.TabIndex = 0;
-            this.RB_TipoTarjetaCredito.TabStop = true;
-            this.RB_TipoTarjetaCredito.Text = "Credito";
-            this.RB_TipoTarjetaCredito.UseVisualStyleBackColor = true;
-            // 
-            // RB_TipoTarjetaDebito
-            // 
-            this.RB_TipoTarjetaDebito.AutoSize = true;
-            this.RB_TipoTarjetaDebito.Location = new System.Drawing.Point(7, 35);
-            this.RB_TipoTarjetaDebito.Name = "RB_TipoTarjetaDebito";
-            this.RB_TipoTarjetaDebito.Size = new System.Drawing.Size(56, 17);
-            this.RB_TipoTarjetaDebito.TabIndex = 1;
-            this.RB_TipoTarjetaDebito.Text = "Debito";
-            this.RB_TipoTarjetaDebito.UseVisualStyleBackColor = true;
-            // 
             // CargarCredito
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -348,19 +322,16 @@
             this.Controls.Add(this.Panel_PayPal);
             this.Controls.Add(this.Btn_Confirmar);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.Panel_nombreUsuario);
             this.Name = "CargarCredito";
             this.Text = "CargarCredito";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.Panel_PagoTarjeta.ResumeLayout(false);
             this.Panel_PagoTarjeta.PerformLayout();
-            this.Panel_PayPal.ResumeLayout(false);
-            this.Panel_PayPal.PerformLayout();
-            this.Panel_nombreUsuario.ResumeLayout(false);
-            this.Panel_nombreUsuario.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.Panel_PayPal.ResumeLayout(false);
+            this.Panel_PayPal.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -378,9 +349,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox TxtBox_UsuarioPayPal;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel Panel_nombreUsuario;
-        private System.Windows.Forms.TextBox TxtBox_Username;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button Btn_Confirmar;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;

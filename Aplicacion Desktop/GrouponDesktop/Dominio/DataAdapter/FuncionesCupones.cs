@@ -51,5 +51,11 @@ namespace GrouponDesktop.Dominio.DataAdapter
             }
         }
 
+        public string devolverCupon(String dni, String codigo, int cantidad, DateTime fecha)
+        {
+            return "";
+        }
+
+
     }
 }
