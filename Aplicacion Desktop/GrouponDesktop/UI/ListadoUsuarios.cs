@@ -83,10 +83,17 @@ namespace GrouponDesktop.UI
                     this.fillGrid();
                     break;
                 case "Modificacion":
-                    if(tipo.Equals("Cliente")){
-                    ModificacionCliente dModif = new ModificacionCliente(this.SelectedUsrname);  
-                    dModif.ShowDialog();
-                    this.fillGrid();
+                    if (tipo.Equals("Cliente"))
+                    {
+                        ModificacionCliente dModif = new ModificacionCliente(this.SelectedUsrname);
+                        dModif.ShowDialog();
+                        this.fillGrid();
+                    }
+                    else
+                    {
+                        ModificacionProveedor dModifP = new ModificacionProveedor(this.SelectedUsrname);
+                        dModifP.ShowDialog();
+                        this.fillGrid();
                     }
                     break;
 

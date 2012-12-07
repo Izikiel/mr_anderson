@@ -106,7 +106,6 @@ namespace GrouponDesktop.UI
             nuevoCliente.Direccion.Localidad = this.textBox10.Text;
             if(!this.textBox8.Text.Equals(""))nuevoCliente.Direccion.Piso = Convert.ToInt32(this.textBox8.Text);
             if (!this.textBox11.Text.Equals("")) nuevoCliente.Direccion.CodigoPostal = Convert.ToInt32(this.textBox11.Text);
-            //agregar habilitado o no 
             return nuevoCliente;
         }
 

@@ -91,8 +91,28 @@ namespace GrouponDesktop.User
 
         public User getProveedor(Login login)
         {
-            //TODO
-            return new User();
+            User usuario = this.getUsuario(login);
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+
+            Dictionary<String, Object> param = new Dictionary<String, Object>();
+            param.Add("username", login.UserName);
+            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_get_datos_proveedor", param))
+            {
+                reader.Read();
+                usuario.DatosProveedor = new DatosProveedor();
+                usuario.DatosProveedor.Cuit = (string)reader["provee_cuit"];
+                usuario.DatosProveedor.RazonSocial = (string)reader["provee_rs"];
+                usuario.DatosProveedor.Telefono = Convert.ToString(reader["provee_telefono"]);
+                usuario.DatosProveedor.Rubro = (string)reader["provee_rubro"];
+                if(!Convert.IsDBNull(reader["nombre_contacto"]))
+                    usuario.DatosProveedor.NombreContacto = (string)reader["nombre_contacto"];
+                if (!Convert.IsDBNull(reader["provee_email"]))
+                usuario.DatosProveedor.Mail = (string)reader["provee_email"];
+
+            }
+            spManager.Close();
+
+            return usuario;
         }
 
 
@@ -458,6 +478,16 @@ namespace GrouponDesktop.User
             spManager.Close();
         }
 
+        public void modificarDatosProveedor()
+        {
+        }
+
+        public void modificarProveedor(User provViejo , User provNuevo,Boolean habilitado)
+        {
+
+        }
+
+        
         ////VALIDACIONES////
         public Boolean usuarioNoExistente(String nombre)
         {

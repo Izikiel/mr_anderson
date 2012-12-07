@@ -1592,10 +1592,19 @@ create procedure MR_ANDERSON.sp_get_ciudades (@dni numeric(18))
         end
 GO
 
-create procedure MR_ANDERSON.sp_get_datos_clientes (@dni numeric(18))
+create procedure MR_ANDERSON.sp_get_datos_cliente(@username varchar(100))
+as
+        begin
+            select nombre,apellido,telefono,mail,YEAR(fecha_nac)*10000+MONTH(fecha_nac)*100+DAY(fecha_nac) as fecha_nac,saldo,dni
+            from MR_ANDERSON.Datos_clientes
+            where username = @username
+        end
+GO
+
+create procedure MR_ANDERSON.sp_get_datos_proveedor (@username varchar(100))
     as
         begin
-            select * from MR_ANDERSON.Datos_Clientes where dni = @dni
+            select * from MR_ANDERSON.Datos_Proveedores where username = @username
         end
 GO
 
