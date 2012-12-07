@@ -5,6 +5,7 @@ using System.Text;
 using System.Data.SqlClient;
 using GrouponDesktop.DataAdapter;
 using GrouponDesktop.Rol;
+using GrouponDesktop.Dominio.DataAdapter;
 
 namespace GrouponDesktop.User
 {
@@ -62,6 +63,7 @@ namespace GrouponDesktop.User
             return usuario;
         }
 
+        
         public User getCliente(Login login)
         {
             User usuario = this.getUsuario(login);
@@ -87,6 +89,12 @@ namespace GrouponDesktop.User
             return usuario;
         }
 
+        public User getProveedor(Login login)
+        {
+            //TODO
+            return new User();
+        }
+
 
         private void setSaldoAlUsuario(User usuario)
         {
@@ -96,9 +104,9 @@ namespace GrouponDesktop.User
 
      
 
-        public List<Login> getUsuarios(String tipo)
-        {
-            List<Login> usuarios = new List<Login>();
+        public List<UserStringContainer> getNombreUsuarios(String tipo)
+        {//retorna los usuarios de un tipo
+            List<UserStringContainer> usuarios = new List<UserStringContainer>();
 
             DataAccess.SPManager spManager = new DataAccess.SPManager();
 
@@ -108,15 +116,45 @@ namespace GrouponDesktop.User
             {
                 while (reader.Read())
                 {
-                    Login login = new Login();
-                    login.UserName = (String)reader["username"];
-                    usuarios.Add(login);
+                    UserStringContainer user = new UserStringContainer();
+                    user.Nombre = (String)reader["username"];
+                    usuarios.Add(user);
                 }
                 reader.Close();
             }
             spManager.Close();
             return usuarios;
 
+        }
+
+        public List<UserStringContainer> getNombreUsuarios(String tipo, String filtro1, String filtro2, String filtro3, String filtro4)
+        {
+
+            List<UserStringContainer> usuarios = new List<UserStringContainer>();
+
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+
+            Dictionary<String, Object> param = new Dictionary<String, Object>();
+            param.Add("tipo", tipo);
+            if(filtro1 != null) param.Add("filtro1", "%" + filtro1 + "%");
+            if(filtro2 != null) param.Add("filtro2", "%" + filtro2 + "%");
+            if(filtro3 != null) param.Add("filtro3", "%" + filtro3 + "%");
+            if(filtro4 != null) param.Add("filtro4", "%" + filtro4 + "%");
+
+            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_get_usrs_filtrados", param))
+            {
+                while (reader.Read())
+                {
+                    UserStringContainer user = new UserStringContainer();
+                    user.Nombre = (String)reader["username"];
+                    usuarios.Add(user);
+                }
+                reader.Close();
+            }
+            spManager.Close();
+            return usuarios;
+
+            
         }
 
         ////PERSISTENCIA////
@@ -306,6 +344,28 @@ namespace GrouponDesktop.User
 
         public void modificarDireccion(String username, Direccion dir)
         {
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+
+
+            Dictionary<String, Object> param = new Dictionary<String, Object>();
+            param.Add("username", username);
+            param.Add("calle", dir.Calle);
+            param.Add("nro_piso", dir.Piso);
+            param.Add("depto", dir.Depto);
+            param.Add("localidad", dir.Localidad);
+            param.Add("codigo_postal", dir.CodigoPostal);
+            SqlCommand cmd = new SqlCommand();
+            try{
+                spManager.executeSPWithParameters("MR_ANDERSON.sp_modify_direccion", param);
+            
+            spManager.Close();
+
+        }
+            catch(Exception e){
+                spManager.Close();
+                throw new Exception(e.ToString());
+            }
+            
 
         }
 

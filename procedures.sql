@@ -94,6 +94,34 @@ create procedure MR_ANDERSON.sp_get_all_usrs (@tipo NVARCHAR(100))
 		end
 GO
 
+--get usrs tipo con filtros
+alter procedure MR_ANDERSON.sp_get_usrs_filtrados (@tipo NVARCHAR(100), @filtro1 varchar(20), @filtro2 varchar(20),@filtro3 varchar(20),@filtro4 varchar(20))
+	as
+		begin
+			if @tipo = 'Cliente'
+				begin
+					
+					select l.username from MR_ANDERSON.Login l
+					join MR_ANDERSON.Datos_Clientes cli on cli.username = l.username					
+					where 
+					 (@filtro1 is null or PATINDEX( @filtro1,cli.nombre) = 1)
+					 and (@filtro2 is null or PATINDEX(@filtro2, cli.apellido) = 1)
+					 and (@filtro3 is null or PATINDEX(@filtro3,convert(varchar,cli.dni)) = 1)
+					 and(@filtro4 is null or PATINDEX(@filtro4,cli.mail) = 1)
+				end
+				else
+				begin
+					select l.username from MR_ANDERSON.Login l
+					join MR_ANDERSON.Datos_Proveedores prov on prov.username = l.username
+					where
+					(@filtro1 is null or PATINDEX( @filtro1,prov.provee_rs) = 1)
+					 and (@filtro2 is null or PATINDEX(@filtro2, prov.provee_cuit) = 1)
+					 and(@filtro3 is null or PATINDEX(@filtro4,prov.provee_email) = 1)
+				end
+				
+					
+		end
+
 
 --get ciudades para usuario
 create procedure MR_ANDERSON.sp_get_ciudades_para_usr (@dni numeric)

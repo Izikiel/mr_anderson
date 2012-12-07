@@ -37,6 +37,7 @@ namespace GrouponDesktop.UI
             this.ciudadesOriginales.AddRange(ciudadesSeleccionadas);
             this.listBox1.DataSource = ciudadesSeleccionadas;
             this.listBox2.DataSource = homeCiudades.getCiudades();
+            this.checkBox1.Checked = this.clienteSeleccionado.DatosLogin.Habilitado;
 
             this.textBox1.Text = this.clienteSeleccionado.DatosCliente.Nombre;
             this.textBox2.Text = this.clienteSeleccionado.DatosCliente.Apellido;
@@ -92,6 +93,7 @@ namespace GrouponDesktop.UI
             User.User nuevoCliente = new User.User();
             nuevoCliente.DatosCliente = new DatosCliente();
             nuevoCliente.DatosLogin = new Login();
+            nuevoCliente.DatosLogin.Habilitado = this.checkBox1.Checked;
             nuevoCliente.DatosCliente.Nombre = textBox1.Text;
             nuevoCliente.DatosCliente.Apellido = this.textBox2.Text;
             nuevoCliente.DatosCliente.Dni = textBox3.Text;
@@ -112,9 +114,9 @@ namespace GrouponDesktop.UI
         {
             try
             {
-
-                homeUsr.modificarCliente(this.clienteSeleccionado, this.nuevoCliente(), this.ciudadesOriginales, this.ciudadesSeleccionadas,
-                    this.modificarCiudades, true);//cambiar el boolean, debe mostrar si esta habilitado
+                User.User nuevoCliente = this.nuevoCliente();
+                homeUsr.modificarCliente(this.clienteSeleccionado, nuevoCliente, this.ciudadesOriginales, this.ciudadesSeleccionadas,
+                    this.modificarCiudades, nuevoCliente.DatosLogin.Habilitado);
             }
             catch (Exception)
             {
