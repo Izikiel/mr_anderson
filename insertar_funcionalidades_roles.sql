@@ -17,6 +17,7 @@ exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 
 exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'Cargar Credito'
 exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'Comprar GiftCard'
 exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'Comprar Cupon'
+exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'Simular Usuario'
 
 
 exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Cargar Credito'
@@ -30,3 +31,11 @@ exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funciona
 exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'ABM Usuario'
 exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Facturar Proveedor'
 exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Publicar Cupones'
+
+
+
+select * from MR_ANDERSON.Login
+
+select * from MR_ANDERSON.Datos_clientes where username = '99725860'
+
+$19759

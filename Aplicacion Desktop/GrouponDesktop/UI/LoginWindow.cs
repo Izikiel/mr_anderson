@@ -14,17 +14,20 @@ namespace GrouponDesktop
     public partial class LoginWindow : Form
     {
         Menu menu;
+        //El usuario activo puede ser el mismo que el logeado. 
+        //Se diferencia del logeado, cuando un Administrador(usuarioLogeado) quiere 
+        //generar las funciones como un Cliente.
         User.User usuarioActivo;
-        HomeUsuarios homeUsr;
-        DataAccess.SPManager spManager = new GrouponDesktop.DataAccess.SPManager();
+        User.User usuarioLogeado;
+        //DataAccess.SPManager spManager = new GrouponDesktop.DataAccess.SPManager();
         Login login;
+        HomeUsuarios homeUsr;
 
         
         public LoginWindow()
         {
             InitializeComponent();
-            this.homeUsr = new HomeUsuarios();
-            this.usuarioActivo = new User.User();
+           // this.usuarioActivo = new User.User();
            
         }
 
@@ -33,7 +36,7 @@ namespace GrouponDesktop
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            this.homeUsr = new HomeUsuarios();
             login = new Login();
             login.UserName = TxtBox_userName.Text;
             login.Password = TxtBox_password.Text;
@@ -46,10 +49,13 @@ namespace GrouponDesktop
                 MessageBox.Show(excep.ToString());
                 return;
             }
+            
+            this.usuarioLogeado = homeUsr.getUsuario(login);
+            homeUsr.setInformacionAlUsuario(this.usuarioLogeado);
 
-            this.usuarioActivo = homeUsr.getUsuario(login);
+            this.usuarioActivo = this.usuarioLogeado.clonarUsuario();
 
-            MessageBox.Show("Bienvenid@ "+usuarioActivo.DatosLogin.UserName+"!");
+            MessageBox.Show("Bienvenid@ " + usuarioLogeado.DatosLogin.UserName + "!");
 
             Menu menu = this.crearMenuWindow(usuarioActivo.Rol);
             menu.ShowDialog(this);
@@ -92,13 +98,12 @@ namespace GrouponDesktop
             w.Show();
         }
 
-        #region Properties
-
-        public Login _Login
+        public void volverAdminAModoInicial()
         {
-            get { return login; }
-            set { login = value; }
+            this.usuarioActivo = this.usuarioLogeado.clonarUsuario();
         }
+
+        #region Properties
 
         public User.User UsuarioActivo
         {

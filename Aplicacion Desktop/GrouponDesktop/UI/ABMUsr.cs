@@ -27,8 +27,8 @@ namespace GrouponDesktop.UI
         private void buttonModificacionBajaClicked(object sender, EventArgs e)
         {
             Button boton = (Button)sender;
-            ListadoUsuarios w = new ListadoUsuarios(this.tipo,boton.Text);
-            w.ShowDialog();
+          //  ListadoUsuarios w = new ListadoUsuarios(this.tipo,boton.Text);
+         //   w.ShowDialog();
             
         }
 

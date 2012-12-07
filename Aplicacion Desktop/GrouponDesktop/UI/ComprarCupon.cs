@@ -12,11 +12,14 @@ namespace GrouponDesktop
     public partial class ComprarCupon : Form
     {
         LoginWindow login;
+        Dominio.Cupones cupones;
+
         public ComprarCupon(LoginWindow login)
         {
             this.login = login;
             InitializeComponent();
             InitializeCuponDataGrid();
+
 
         }
         private BindingSource bindingSource1 = new BindingSource();
@@ -26,34 +29,44 @@ namespace GrouponDesktop
             DataGrid_Cupones.AutoGenerateColumns = false;
             DataGrid_Cupones.AutoSize = true;
             DataGrid_Cupones.DataSource = bindingSource1;
+            GenerarColumnaDeCupones();
+            cupones = new Dominio.Cupones();
 
-            Dominio.Cupones cupones = new Dominio.Cupones();
-            List<Dominio.Cupon> cuponesList = cupones.obtenerCuponesEnFecha(AdministradorConfiguracion.obtenerFecha(), AdministradorConfiguracion.obtenerFecha());
+            List<Dominio.Cupon> cuponesList = cupones.obtenerCuponesEnFecha(login.UsuarioActivo.DatosCliente.Dni, AdministradorConfiguracion.obtenerFecha());
             
             foreach (Dominio.Cupon cupon in cuponesList)
             {
                 bindingSource1.Add(cupon);
             }
-            GenerarColumnaDeCupones();
         }
 
         public void GenerarColumnaDeCupones()
         {
             DataGridViewColumn column = new DataGridViewTextBoxColumn();
-            column.DataPropertyName = "TituloCupon";
-            column.Name = "Cupon Title";
+            column.DataPropertyName = "CuponCodigo";
+            column.Name = "Codigo del Cupon";
             DataGrid_Cupones.Columns.Add(column);
 
             column = new DataGridViewTextBoxColumn();
-            column.DataPropertyName = "PrecioActual";
-            column.Name = "Precio";
+            column.DataPropertyName = "Descripcion";
+            column.Name = "Descripcion";
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
             DataGrid_Cupones.Columns.Add(column);
+
         }
 
         private void Btn_Comprar_Click(object sender, EventArgs e)
         {
-            //Comparo con el saldo disponible (si es necesario y no lo hace la DB)
-            //Efectuo compra
+            String codigoCupon = (String) DataGrid_Cupones["Codigo del Cupon",rowSelectedIndex].Value;
+            cupones.comprarCupones(login.UsuarioActivo.DatosCliente.Dni, codigoCupon, (int)Numeric_CantidadCupones.Value);
+        }
+
+        int rowSelectedIndex = 0;
+
+        private void DataGrid_Cupones_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            rowSelectedIndex = e.RowIndex;
         }
     }
 }

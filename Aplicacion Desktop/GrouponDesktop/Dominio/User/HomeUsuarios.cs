@@ -13,7 +13,11 @@ namespace GrouponDesktop.User
     {
         //////BUSQUEDAS /////
 
-
+        /// <summary>
+        /// Devuelve el Usuario inicializado, sin datos. Solo 
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns></returns>
         public User getUsuario(Login login)
         {
             User usuario = new User();
@@ -31,9 +35,27 @@ namespace GrouponDesktop.User
             else usuario.DatosLogin.Habilitado = false;
             spManagerLogin.Close();
 
+                
+            return usuario;
+        }
+        /// <summary>
+        /// A este método le pasaremos un usuario, y se encargará de agregarle la información o en su debido caso, actualizarla.
+        /// Se puede usar después de Cargar crédito, o hacer alguna modificación en la Configuración del usuario.
+        /// </summary>
+        /// <param name="usuario"></param>
+        public void setInformacionAlUsuario(User usuario)
+        {
+            setUsuarioRol(usuario);
+            setUsuarioDirecciones(usuario);
+            setDatosUsuarioAlUsuario(usuario);
+
+        }
+
+        private static void setUsuarioRol(User usuario)
+        {
             DataAccess.SPManager spManager = new DataAccess.SPManager();
             Dictionary<String, Object> param = new Dictionary<String, Object>();
-            param.Add("nombre_usuario", login.UserName);
+            param.Add("nombre_usuario", usuario.DatosLogin.UserName);
             using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.get_nombre_rol_de_usuario", param))
             {
                 reader.Read();
@@ -42,14 +64,24 @@ namespace GrouponDesktop.User
             }
 
             spManager.Close();
+        }
 
+        /// <summary>
+        /// Este método se encargara de setear las direcciones en el Usuario que se le pasa
+        /// </summary>
+        /// <param name="usuario"></param>
+        public void setUsuarioDirecciones(User usuario)
+        {
             DataAccess.SPManager spManager2 = new DataAccess.SPManager();
 
             Dictionary<String, Object> param_direccion = new Dictionary<string, object>();
-            param_direccion.Add("username", login.UserName);
+            param_direccion.Add("username", usuario.DatosLogin.UserName);
             using (SqlDataReader reader2 = spManager2.executeSPWithParameters("MR_ANDERSON.sp_get_direccion", param_direccion))
             {
-                if (!reader2.HasRows) return usuario;
+                if (!reader2.HasRows)
+                {
+                    return;
+                }
                 reader2.Read();
                 usuario.Direccion = new Direccion();
                 usuario.Direccion.Calle = (string)reader2["calle"];
@@ -60,33 +92,44 @@ namespace GrouponDesktop.User
 
             }
             spManager2.Close();
-            return usuario;
         }
 
-        
-        public User getCliente(Login login)
-        {
-            User usuario = this.getUsuario(login);
-            DataAccess.SPManager spManager = new DataAccess.SPManager();
+        public void setDatosUsuarioAlUsuario(User usuario)
 
+        {
+            if (usuario.Rol.TipoUsuario == "Cliente")
+            {
+                usuario.DatosCliente = getDatosCliente(usuario.DatosLogin.UserName);
+            }
+        }
+
+        /// <summary>
+        /// Solo para Clientes
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public DatosCliente getDatosCliente(String username)
+        {
+            DatosCliente datosCliente = new DatosCliente();
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+            
             Dictionary<String, Object> param = new Dictionary<String, Object>();
-            param.Add("username", login.UserName);
+            param.Add("username", username);
+            
+
             using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_get_datos_cliente", param))
             {
                 reader.Read();
-                usuario.DatosCliente = new DatosCliente();
-                usuario.DatosCliente.Apellido = (string)reader["apellido"];
-                usuario.DatosCliente.Nombre = (string)reader["nombre"];
-                usuario.DatosCliente.Saldo = Convert.ToInt32(reader["saldo"]);
-                usuario.DatosCliente.Telefono = Convert.ToString(reader["telefono"]);
-                usuario.DatosCliente.Mail = (string)reader["mail"];
-                usuario.DatosCliente.FechaNac = Convert.ToString(reader["fecha_nac"]);
-                usuario.DatosCliente.Dni = Convert.ToString(reader["dni"]);
-                
+                datosCliente.Apellido = (string)reader["apellido"];
+                datosCliente.Nombre = (string)reader["nombre"];
+                datosCliente.Saldo = Convert.ToInt32(reader["saldo"]);
+                datosCliente.Telefono = Convert.ToString(reader["telefono"]);
+                datosCliente.Mail = (string)reader["mail"];
+                datosCliente.FechaNac = Convert.ToString(reader["fecha_nac"]);
+                datosCliente.Dni = Convert.ToString(reader["dni"]);
             }
             spManager.Close();
-
-            return usuario;
+            return datosCliente;
         }
 
         public User getProveedor(Login login)

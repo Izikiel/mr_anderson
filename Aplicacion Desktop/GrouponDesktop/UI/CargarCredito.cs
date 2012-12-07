@@ -60,22 +60,48 @@ namespace GrouponDesktop
 
         private void Btn_Confirmar_Click(object sender, EventArgs e)
         {
-            String userName = null;
-            String dni = "35999999";
-            String[] fecha = TxtBox_FechaVencimiento.Text.Split('/');
-            int mes = Int32.Parse(fecha[0]);
-            int anio = Int32.Parse(fecha[1])+2000;
+            String userName = "";
+            String resultado = "";
+            String dni = "";
+            User.HomeUsuarios homeUsuario = new User.HomeUsuarios();
 
-            if (isAdmin == false)
-                userName = TxtBox_Username.Text;
-            if (isCreditCardActive)
+            if (isAdmin)
             {
-                Dominio.DataAdapter.CargaCredito.agregarCredito(userName, dni, AdministradorConfiguracion.obtenerFecha(),
-                    Int32.Parse(TxtBox_MontoCargar.Text), TxtBox_NroTarjeta.Text, "Tarjeta", new DateTime(anio, mes, 1));
+                //Tengo que obtener el DNI del usuario al que le quiere cargar credito el Administrador
+                userName = TxtBox_Username.Text;
+                dni = homeUsuario.getDatosCliente(userName).Dni;
             }
             else
             {
-                //Dominio.DataAdapter.CargaCredito.agregarCredito();
+                dni = loginWindow.UsuarioActivo.DatosCliente.Dni;
+            }
+
+            if (isCreditCardActive)
+            {
+                String tipoTarjeta = "";
+                String[] fecha = TxtBox_FechaVencimiento.Text.Split('/');
+                int mes = Int32.Parse(fecha[0]);
+                int anio = Int32.Parse(fecha[1]) + 2000;
+                if (RB_TipoTarjetaCredito.Checked == true)
+                    tipoTarjeta = "Credito";
+                else
+                    tipoTarjeta = "Debito";
+                resultado = Dominio.DataAdapter.CargaCredito.agregarCreditoTarjeta(userName, dni, AdministradorConfiguracion.obtenerFecha(),
+                    Int32.Parse(TxtBox_MontoCargar.Text), TxtBox_NroTarjeta.Text, tipoTarjeta, "Tarjeta", new DateTime(anio, mes, 1));
+            }
+            else
+            {
+                resultado =Dominio.DataAdapter.CargaCredito.agregarCreditoPayPal(userName, dni, AdministradorConfiguracion.obtenerFecha(),
+                Int32.Parse(TxtBox_MontoPagarPayPal.Text));
+            }
+            if (resultado != null)
+            {
+                //Actualizo la información del usuario activo.
+                homeUsuario.setInformacionAlUsuario(this.loginWindow.UsuarioActivo);
+            }
+            else
+            {
+                MessageBox.Show("No se pudo realizar la carga.");
             }
 
         }

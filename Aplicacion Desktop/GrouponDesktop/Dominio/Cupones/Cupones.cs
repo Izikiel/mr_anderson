@@ -7,6 +7,7 @@ namespace GrouponDesktop.Dominio
 {
     public class Cupones
     {
+        Dominio.DataAdapter.FuncionesCupones funcionesCupones = null;
         List<Cupon> cuponesList;
         public List<Cupon> CuponesList
         {
@@ -15,45 +16,35 @@ namespace GrouponDesktop.Dominio
         }
         public Cupones()
         {
-            //Indexa con todos los Descuentos de la DB
-            cuponesList = new List<Cupon>();
-            Cupon cupon = new Cupon();
-            cupon.PrecioActual = "10";
-            cupon.TituloCupon = "Descuentos en matracas";
-            cuponesList.Add(cupon);
-             cupon = new Cupon();
-
-            cupon.PrecioActual = "5";
-            cupon.TituloCupon = "Beneficios en chicas";
-            cuponesList.Add(cupon);
-             cupon = new Cupon();
-
-            cupon.PrecioActual = "25";
-            cupon.TituloCupon = "Gratis a la cancha con matracas";
-            cuponesList.Add(cupon);
-             cupon = new Cupon();
-
-            cupon.PrecioActual = "35";
-            cupon.TituloCupon = "Descuentos en Lolas";
-            cuponesList.Add(cupon);
-
+            funcionesCupones = new GrouponDesktop.Dominio.DataAdapter.FuncionesCupones(); ;
         }
 
-        public List<Cupon> obtenerCuponesEnFecha(DateTime desde, DateTime hasta)
+        public List<Cupon> obtenerCuponesEnFecha(String dni, DateTime fecha)
         {
-            return CuponesList;
-            return new List<Cupon>();
+            return funcionesCupones.obtenerCupones(dni, fecha);
+            
+        }
+
+        public String comprarCupones(String dni, String codigo, int cantidad)
+        {
+            return funcionesCupones.comprarCupones(dni, codigo, cantidad, AdministradorConfiguracion.obtenerFecha());
         }
 
     }
 
     public class Cupon
     {
-        String tituloCupon;
-        public String TituloCupon
+        String cuponCodigo;
+        public String CuponCodigo
         {
-            get { return tituloCupon; }
-            set { tituloCupon = value; }
+            get { return cuponCodigo; }
+            set { cuponCodigo = value; }
+        }
+        String descripcion;
+        public String Descripcion
+        {
+            get { return descripcion; }
+            set { descripcion = value; }
         }
 
         String precioActual;

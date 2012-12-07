@@ -19,7 +19,7 @@ namespace GrouponDesktop.Cupones
             {
                 while (reader.Read())
                 {
-                    String unaCiudad = ((String)reader["ciudad"]);
+                    String unaCiudad = ((String)reader["ciudad"]).Trim();
                     ciudades.Add(unaCiudad);
                 }
                 reader.Close();

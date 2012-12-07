@@ -54,13 +54,17 @@ namespace GrouponDesktop
                     comprarGiftCard.Show();
                     break;
                 case "Comprar Cupon":
-                   /* ComprarCupon comprarCupon = new ComprarCupon(loginWindow);
-                    comprarCupon.Show();*/
+                    ComprarCupon comprarCupon = new ComprarCupon(loginWindow);
+                    comprarCupon.Show();
                     break;
                 case "Pedir Devolucion":
                     /*DevolverCupon devolverCupon = new DevolverCupon(loginWindow);
                     devolverCupon.Show();*/
                     break;
+                case "Simular Usuario":
+                    new SimularOtroUsuario(loginWindow).Show();
+                    break;
+
 
             }
         }

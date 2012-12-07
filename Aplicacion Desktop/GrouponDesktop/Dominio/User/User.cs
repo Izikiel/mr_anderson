@@ -10,6 +10,18 @@ namespace GrouponDesktop.User
 {
     public class User
     {
+        public User()
+        {
+        }
+        public User(bool inicializar)
+        {
+            direccion = new Direccion();
+            datosCliente = new DatosCliente();
+            datosLogin = new Login();
+            rol = new GrouponDesktop.Rol.Rol();
+            datosProveedor = new DatosProveedor();
+            ciudadesPreferencia = new List<string>();
+        }
         private Direccion direccion;
         public Direccion Direccion
         {
@@ -57,6 +69,12 @@ namespace GrouponDesktop.User
             get { return ciudadesPreferencia; }
             set { ciudadesPreferencia = value; }
         }
+        public User clonarUsuario()
+        {
+            return (User) MemberwiseClone();
+        }
         
+
+
     }
 }
