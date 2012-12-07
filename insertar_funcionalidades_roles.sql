@@ -33,9 +33,3 @@ exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funciona
 exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Publicar Cupones'
 
 
-
-select * from MR_ANDERSON.Login
-
-select * from MR_ANDERSON.Datos_clientes where username = '99725860'
-
-$19759
