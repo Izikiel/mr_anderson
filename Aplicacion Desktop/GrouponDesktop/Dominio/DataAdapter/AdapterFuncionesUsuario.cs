@@ -45,6 +45,28 @@ namespace GrouponDesktop.Dominio.DataAdapter
             return agregarCreditoTarjeta(userName, dni, fechaActual, montoACargar, "", tipoPago, "", new DateTime(2100, 1,1)); 
         }
     }
+    public class RegistrarConsumo
+    {
+        public static void Registrar(String codigo, String dni, String cuit)
+        {
+            DataAccess.SPManager spManager = new GrouponDesktop.DataAccess.SPManager();
+
+            Dictionary<String,Object> param = new Dictionary<string,object>();
+
+            param.Add("fecha_actual", AdministradorConfiguracion.obtenerFecha());
+            param.Add("cod_cupon", codigo);
+            param.Add("dni_cliente",dni);
+            param.Add("provee_cuit",cuit);
+
+            SqlCommand command;
+
+            SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_registra_consumo_cupon",param, out command);
+
+            spManager.Close();
+            return;
+
+        }
+    }
 
     public class CuponArmado
     {

@@ -1563,7 +1563,7 @@ GO
 
 -- Punto 12
 
-create procedure MR_ANDERSON.sp_registra_consumo_cupon (@provee_cuit nvarchar(20), @cod_cupon nvarchar(50), 
+create procedure MR_ANDERSON.sp_registra_consumo_cupon (@fecha_actual DATETIME,@provee_cuit nvarchar(20), @cod_cupon nvarchar(50), 
                                 @dni_cliente numeric(18,0))
     as
         begin
@@ -1572,9 +1572,6 @@ create procedure MR_ANDERSON.sp_registra_consumo_cupon (@provee_cuit nvarchar(20
                 RAISERROR('Cupon no encontrado o ya canjeado',10,1)
                 return
             end
-
-            declare @fecha_actual DATETIME
-            set @fecha_actual = (select GETDATE())
 
             if ((select vencimiento_canje from MR_ANDERSON.Cupones where codigo = @cod_cupon) < @fecha_actual)
             begin
@@ -1824,5 +1821,19 @@ create procedure MR_ANDERSON.sp_buscador_proveedores (@provee_rs NVARCHAR(100), 
 
                 where provee_rs like ('%' + @provee_rs + '%') or provee_cuit = @provee_cuit
                         or provee_email like ('%' + @provee_email + '%')
+        end
+GO
+
+create function MR_ANDERSON.fn_existe_cuit (@provee_cuit NVARCHAR(20))
+
+    returns BIT
+
+    as
+        begin
+            if exists (select provee_cuit from MR_ANDERSON.Datos_Proveedores where provee_cuit = @provee_cuit)
+                begin
+                    return 1
+                end
+            return 0
         end
 GO
