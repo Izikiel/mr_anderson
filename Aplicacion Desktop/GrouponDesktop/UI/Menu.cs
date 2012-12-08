@@ -67,8 +67,12 @@ namespace GrouponDesktop
                 case "Armar Cupon":
                     new ArmarCupon(loginWindow).Show();
                     break;
-
-
+                case "Registro Consumo":
+                    new RegistroConsumo(loginWindow).Show();
+                    break;
+                case "Publicar Cupon":
+            //        new PublicarCupon(loginWindow).Show();
+                    break;
             }
         }
 

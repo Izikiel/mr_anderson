@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using GrouponDesktop.User;
 using GrouponDesktop.DataAdapter;
+using GrouponDesktop.UI;
 
 namespace GrouponDesktop
 {
@@ -45,8 +46,16 @@ namespace GrouponDesktop
             }
             catch (Exception excep)
             {
-                MessageBox.Show(excep.ToString());
-                return;
+                if(excep.Message.Equals("LOGIN_FIRST"))
+                {
+                    new RegistrarPassword(login).Show();
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show(excep.ToString());
+                    return;
+                }
             }
             
             this.usuarioLogeado = homeUsr.getUsuario(login);

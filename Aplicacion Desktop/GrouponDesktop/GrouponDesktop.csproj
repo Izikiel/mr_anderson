@@ -134,7 +134,7 @@
     <Compile Include="UI\ModificacionProveedor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\ModificacionProveedor.Designer.cs">
+    <Compile Include="UI\ModificacionProveedor.designer.cs">
       <DependentUpon>ModificacionProveedor.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\ModificacionRol.cs">
@@ -149,11 +149,23 @@
     <Compile Include="UI\PublicarCupon.Designer.cs">
       <DependentUpon>PublicarCupon.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\RegistrarPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\RegistrarPassword.Designer.cs">
+      <DependentUpon>RegistrarPassword.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\RegistroCliente.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\RegistroCliente.Designer.cs">
       <DependentUpon>RegistroCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\RegistroConsumo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\RegistroConsumo.Designer.cs">
+      <DependentUpon>RegistroConsumo.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\RegistroProveedor.cs">
       <SubType>Form</SubType>
@@ -242,8 +254,14 @@
     <EmbeddedResource Include="UI\PublicarCupon.resx">
       <DependentUpon>PublicarCupon.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\RegistrarPassword.resx">
+      <DependentUpon>RegistrarPassword.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\RegistroCliente.resx">
       <DependentUpon>RegistroCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\RegistroConsumo.resx">
+      <DependentUpon>RegistroConsumo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\RegistroProveedor.resx">
       <DependentUpon>RegistroProveedor.cs</DependentUpon>

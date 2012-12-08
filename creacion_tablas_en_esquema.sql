@@ -1511,7 +1511,7 @@ create procedure MR_ANDERSON.sp_comprar_cupon (@dni numeric(18), @codigo NVARCHA
                 set stock_disponible = stock_disponible - @cantidad
                 where codigo = @codigo
 
-            update MR_ANDERSON.Datos_Clientes saldo = saldo - (select precio from MR_ANDERSON.Cupones where codigo = @codigo)
+            update MR_ANDERSON.Datos_Clientes saldo = saldo - (select precio* @cantidad from MR_ANDERSON.Cupones where codigo = @codigo) 
                 where dni = @dni
         end
 GO
@@ -1980,10 +1980,12 @@ GO
 create procedure MR_ANDERSON.sp_cambiar_password (@password NVARCHAR(255), @username NVARCHAR(100))
     as
         begin
-            if not exists(select user_password from Login where username = @username)
+            if (select user_password from MR_ANDERSON.Login where username = @username) is null
                 begin
-                    Update Login set user_password = @password where username = @username
+                    Update MR_ANDERSON.Login set user_password = @password where username = @username
+                    return 1
                 end
+            return 0
         end
 GO
 
