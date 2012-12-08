@@ -73,6 +73,10 @@ namespace GrouponDesktop
                 case "Publicar Cupon":
             //        new PublicarCupon(loginWindow).Show();
                     break;
+                case "Listado Estadistico":
+                    new ListadoEstadistico().Show();
+                    break;
+
             }
         }
 
