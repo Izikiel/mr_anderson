@@ -565,7 +565,6 @@ namespace GrouponDesktop.User
 
             DataAccess.SPManager spManager = new DataAccess.SPManager();
 
-            //cambiar esto es copypasteado de cliente
             Dictionary<String, Object> param = new Dictionary<String, Object>();
             param.Add("cuit_sended", provNuevo.DatosProveedor.Cuit);
             param.Add("rs_sended", provNuevo.DatosProveedor.RazonSocial);

@@ -29,10 +29,17 @@ namespace GrouponDesktop
         {
             User.HomeUsuarios usuarios = new GrouponDesktop.User.HomeUsuarios();
             int montoGiftCard = 0;
-            if(Int32.TryParse(TxtBoxMontoGift.Text, out montoGiftCard) == false)
-                return;
-            if (usuarios.usuarioNoExistente(TxtBoxUsuarioDestino.Text) || montoGiftCard > Int32.Parse(saldo))
+            if (Int32.TryParse(TxtBoxMontoGift.Text, out montoGiftCard) == false)
             {
+                MessageBox.Show("Monto no valido");
+                return;
+            }
+            Boolean usuarioNoExistente;
+            usuarioNoExistente = usuarios.usuarioNoExistente(TxtBoxUsuarioDestino.Text);
+            if (usuarioNoExistente || montoGiftCard > Int32.Parse(saldo))
+            {
+                if(usuarioNoExistente) MessageBox.Show("El usuario no existe");
+                else MessageBox.Show("Su saldo no es suficiente");
                 return;
             }
             //Do SP

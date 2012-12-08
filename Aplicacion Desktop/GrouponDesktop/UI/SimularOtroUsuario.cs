@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using GrouponDesktop.User;
 
 namespace GrouponDesktop.UI
 {
@@ -22,8 +23,8 @@ namespace GrouponDesktop.UI
         {
             String userName = TxtBox_Username.Text;
             DataAdapter.Login log = new GrouponDesktop.DataAdapter.Login();
-            
-            if(log.existeUsuario(userName)==false)
+            HomeUsuarios homeUsrs = new HomeUsuarios();
+            if(homeUsrs.usuarioNoExistente(userName))
             {
                 MessageBox.Show("No existe el usuario");
                 return;
@@ -35,6 +36,9 @@ namespace GrouponDesktop.UI
             homeUsuario.setInformacionAlUsuario(user);
 
             login.UsuarioActivo = user;
+            MessageBox.Show("Simulación como usuario \"" + userName + "\" activa.\n" +
+                "Para volver al modo administrador haga click en el botón \n\"Volver Modo Admin\".");
+                
             
         }
 

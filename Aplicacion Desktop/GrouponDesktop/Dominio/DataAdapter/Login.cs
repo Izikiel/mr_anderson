@@ -32,13 +32,6 @@ namespace GrouponDesktop.DataAdapter
 
        }
 
-
-        public bool existeUsuario(String username)
-        {
-
-            return true;
-        }
-
         private String userName;
         public String UserName
         {
