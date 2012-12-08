@@ -173,6 +173,7 @@ namespace GrouponDesktop.User
         public User getProveedor(Login login)
         {
             User usuario = this.getUsuario(login);
+            this.setInformacionAlUsuario(usuario);
             DataAccess.SPManager spManager = new DataAccess.SPManager();
 
             Dictionary<String, Object> param = new Dictionary<String, Object>();
