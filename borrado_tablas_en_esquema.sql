@@ -10,6 +10,12 @@
 USE [GD2C2012]
 GO
 
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_buscador_clientes]    Script Date: 12/08/2012 12:25:33 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_buscador_clientes]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_buscador_clientes]
+GO
+
+
 /****** Object:  StoredProcedure [MR_ANDERSON].[sp_modify_proveedor]    Script Date: 12/08/2012 11:41:29 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_modify_proveedor]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [MR_ANDERSON].[sp_modify_proveedor]

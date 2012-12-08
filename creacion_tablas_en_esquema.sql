@@ -1802,3 +1802,15 @@ create procedure MR_ANDERSON.sp_facturar_proveedor (@fecha_inicio DATETIME, @fec
 GO
 
 -- generar sp para buscadores
+
+create procedure MR_ANDERSON.sp_buscador_clientes (@nombre NVARCHAR(255), @apellido NVARCHAR(255), 
+                                @dni numeric(18,2), @mail NVARCHAR(255))
+    as
+        begin
+            select nombre,apellido,dni,mail 
+                from MR_ANDERSON.Datos_Clientes Clientes
+
+                where nombre like ('%'+ @nombre + '%' ) or apellido like ('%' + @apellido + '%')
+                        or dni = @dni or mail like ('%' + @mail + '%')
+        end
+GO
