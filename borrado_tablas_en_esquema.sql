@@ -10,6 +10,26 @@
 USE [GD2C2012]
 GO
 
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_modify_proveedor]    Script Date: 12/08/2012 11:41:29 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_modify_proveedor]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_modify_proveedor]
+GO
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_get_datos_proveedor]    Script Date: 12/08/2012 11:41:20 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_get_datos_proveedor]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_get_datos_proveedor]
+GO
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_get_datos_cliente]    Script Date: 12/08/2012 11:40:57 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_get_datos_cliente]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_get_datos_cliente]
+GO
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_facturar_proveedor]    Script Date: 12/08/2012 11:40:36 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_facturar_proveedor]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_facturar_proveedor]
+GO
+
 /****** Object:  StoredProcedure [MR_ANDERSON].[sp_publicar_cupon]    Script Date: 12/06/2012 19:52:47 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_publicar_cupon]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [MR_ANDERSON].[sp_publicar_cupon]

@@ -1185,14 +1185,44 @@ GO
 
 --Listo Agregar ciudad-dni
 
--- Generar vistas para que muestre clientes y proveedores habilitados, ademas de generar sp para buscadores
 
--- Cargar credito
+
+--Agrega tarjeta!
+create procedure MR_ANDERSON.sp_agregar_tarjeta (@dni NUMERIC(18),@nro_tarjeta NVARCHAR(50),
+                                @fecha_emision DATETIME, @fecha_vencimiento DATETIME,
+                                @tipo_tarjeta NVARCHAR(10), @result BIT output)
+    as
+        begin
+            if @fecha_emision is not null and
+               @fecha_vencimiento is not null and
+               @fecha_emision < @fecha_vencimiento 
+                begin
+                    if not exists(select nro_tarjeta, tipo from MR_ANDERSON.Datos_Tarjeta
+                                                where nro_tarjeta = @nro_tarjeta
+                                                and tipo = @tipo_tarjeta)
+                        begin
+                            insert into MR_ANDERSON.Datos_Tarjeta(nro_tarjeta, fecha_emision, fecha_vencimiento,
+                                                                  dni, tipo)
+                                VALUES(@nro_tarjeta,@fecha_emision,@fecha_vencimiento,@dni,@tipo_tarjeta)
+                            set @result = 1
+                            return
+                        end
+                    set @result = 0
+                    return
+                end
+            else 
+                begin
+                    set @result = null
+                    return
+                end
+            return
+        end
+GO
 
 create procedure MR_ANDERSON.sp_cargar_credito (@monto int, @dni NUMERIC(18), 
                                 @fecha DATETIME, @tipo_pago NVARCHAR(10), @nro_tarjeta NVARCHAR(50),
                                 @fecha_emision DATETIME, @fecha_vencimiento DATETIME,
-                                @tipo_tarjeta NVARCHAR(10), @result NVARCHAR(20))
+                                @tipo_tarjeta NVARCHAR(10), @result NVARCHAR(20) output)
     as
         begin
             if @monto >= 15 --Monto minimo  
@@ -1203,8 +1233,12 @@ create procedure MR_ANDERSON.sp_cargar_credito (@monto int, @dni NUMERIC(18),
                                 begin
                                     declare @res BIT
                                     
-                                    set @res = MR_ANDERSON.sp_agregar_tarjeta(@dni,@nro_tarjeta,@fecha_emision,@fecha_vencimiento,
-                                                                    @tipo_tarjeta)
+                                    exec MR_ANDERSON.sp_agregar_tarjeta @dni = @dni,
+                                                                    @nro_tarjeta = @nro_tarjeta,
+                                                                    @fecha_emision = @fecha_emision,
+                                                                    @fecha_vencimiento = @fecha_vencimiento,
+                                                                    @tipo_tarjeta = @tipo_tarjeta,
+                                                                    @result = @res output
                                     if @res is null
                                         begin
                                             set @result = 'Datos_Tarjeta_Invalidos'
@@ -1240,30 +1274,7 @@ create procedure MR_ANDERSON.sp_cargar_credito (@monto int, @dni NUMERIC(18),
         end
 GO
 
---Agrega tarjeta!
-create procedure MR_ANDERSON.sp_agregar_tarjeta (@dni NUMERIC(18),@nro_tarjeta NVARCHAR(50),
-                                @fecha_emision DATETIME, @fecha_vencimiento DATETIME,
-                                @tipo_tarjeta NVARCHAR(10))
-    as
-        begin
-            if @fecha_emision is not null and
-               @fecha_vencimiento is not null and
-               @fecha_emision < @fecha_vencimiento 
-                begin
-                    if not exists(select nro_tarjeta, tipo from MR_ANDERSON.Datos_Tarjeta
-                                                where nro_tarjeta = @nro_tarjeta
-                                                and tipo = @tipo_tarjeta)
-                        begin
-                            insert into MR_ANDERSON.Datos_Tarjeta(nro_tarjeta, fecha_emision, fecha_vencimiento,
-                                                                  dni, tipo)
-                                VALUES(@nro_tarjeta,@fecha_emision,@fecha_vencimiento,@dni,@tipo_tarjeta)
-                            return 1
-                        end
-                    return 0
-                end
-            return null
-        end
-GO
+
 
 create procedure MR_ANDERSON.sp_compra_giftcard (@cliente_origen NUMERIC(18), @cliente_destino NUMERIC(18),  
                                 @monto int, @fecha DATETIME, @result NVARCHAR(20))
@@ -1458,7 +1469,7 @@ GO
 create procedure MR_ANDERSON.sp_ver_cupones_habilitados (@dni numeric(18), @fecha DATETIME )
     as
         begin
-            return select Cupones.codigo, Cupones.descripcion 
+            select Cupones.codigo, Cupones.descripcion 
                 from MR_ANDERSON.Cupones Cupones
 
                 join MR_ANDERSON.Ciudades_Cupon Ciudades_Cupon
@@ -1630,7 +1641,7 @@ create procedure MR_ANDERSON.sp_insert_ciudad (@dni numeric(18), @ciudad_a_inser
         end
 GO
 
-create procedure MR_ANDERSON.sp_get_ciudades ()
+create procedure MR_ANDERSON.sp_get_ciudades
     as
         begin
             select distinct ciudad from MR_ANDERSON.Ciudades    
@@ -1789,3 +1800,5 @@ create procedure MR_ANDERSON.sp_facturar_proveedor (@fecha_inicio DATETIME, @fec
         end
 
 GO
+
+-- generar sp para buscadores

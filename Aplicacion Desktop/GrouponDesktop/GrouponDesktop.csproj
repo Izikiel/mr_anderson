@@ -125,12 +125,6 @@
     <Compile Include="UI\ModificacionCliente.Designer.cs">
       <DependentUpon>ModificacionCliente.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\ModificacionProveedor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ModificacionProveedor.Designer.cs">
-      <DependentUpon>ModificacionProveedor.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\ModificacionRol.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -209,9 +203,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ModificacionCliente.resx">
       <DependentUpon>ModificacionCliente.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ModificacionProveedor.resx">
-      <DependentUpon>ModificacionProveedor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ModificacionRol.resx">
       <DependentUpon>ModificacionRol.cs</DependentUpon>
