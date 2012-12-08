@@ -1518,7 +1518,7 @@ create procedure MR_ANDERSON.sp_chequear_pertenencia (@dni numeric(18), @codigo 
 GO
 
 create procedure MR_ANDERSON.sp_pedir_devolucion (@dni numeric(18), @codigo nvarchar(50), @fecha_devolucion DATETIME,
-                                @motivo NVARCHAR(255), @fecha_compra DATETIME, @id_compra numeric )
+                                @motivo NVARCHAR(255), @id_compra numeric )
     as
         begin
             if @fecha_devolucion > (select vencimiento_canje from MR_ANDERSON.Cupones where codigo = @codigo)
@@ -1630,10 +1630,10 @@ create procedure MR_ANDERSON.sp_insert_ciudad (@dni numeric(18), @ciudad_a_inser
         end
 GO
 
-create procedure MR_ANDERSON.sp_get_ciudades (@dni numeric(18))
+create procedure MR_ANDERSON.sp_get_ciudades ()
     as
         begin
-            return select ciudad from MR_ANDERSON.Ciudades where dni = @dni    
+            select distinct ciudad from MR_ANDERSON.Ciudades    
         end
 GO
 
