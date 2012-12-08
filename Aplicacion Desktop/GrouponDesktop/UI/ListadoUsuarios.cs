@@ -91,9 +91,9 @@ namespace GrouponDesktop.UI
                     }
                     else
                     {
-                        ModificacionProveedor dModifP = new ModificacionProveedor(this.SelectedUsrname);
+                        /*ModificacionProveedor dModifP = new ModificacionProveedor(this.SelectedUsrname);
                         dModifP.ShowDialog();
-                        this.fillGrid();
+                        this.fillGrid();*/
                     }
                     break;
 

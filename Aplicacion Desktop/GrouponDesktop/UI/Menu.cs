@@ -64,6 +64,9 @@ namespace GrouponDesktop
                 case "Simular Usuario":
                     new SimularOtroUsuario(loginWindow).Show();
                     break;
+                case "Armar Cupon":
+                    new ArmarCupon(loginWindow).Show();
+                    break;
 
 
             }

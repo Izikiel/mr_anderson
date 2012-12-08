@@ -23,7 +23,7 @@ namespace GrouponDesktop.Dominio.DataAdapter
                 while (reader.Read())
                 {
                     Cupon cupon = new Cupon();
-                    cupon.CuponCodigo = ((String)reader["codigo"]).Trim();
+                    cupon.Codigo = ((String)reader["codigo"]).Trim();
                     cupon.Descripcion = ((String)reader["descripcion"]).Trim();
                     cupones.Add(cupon);
                 }

@@ -101,6 +101,10 @@ namespace GrouponDesktop.User
             {
                 usuario.DatosCliente = getDatosCliente(usuario.DatosLogin.UserName);
             }
+            if (usuario.Rol.TipoUsuario == "Proveedor")
+            {
+                usuario.DatosProveedor = getDatosProveedor(usuario.DatosLogin.UserName);
+            }
         }
 
         /// <summary>
@@ -114,10 +118,10 @@ namespace GrouponDesktop.User
         {
             DatosCliente datosCliente = new DatosCliente();
             DataAccess.SPManager spManager = new DataAccess.SPManager();
-            
+
             Dictionary<String, Object> param = new Dictionary<String, Object>();
             param.Add("username", username);
-            
+
 
             using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_get_datos_cliente", param))
             {
@@ -133,6 +137,38 @@ namespace GrouponDesktop.User
             spManager.Close();
             return datosCliente;
         }
+
+        public DatosProveedor getDatosProveedor(String username)
+        {
+            DatosProveedor datosProveedor = new DatosProveedor();
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+
+            Dictionary<String, Object> param = new Dictionary<String, Object>();
+            param.Add("username", username);
+
+
+            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_get_datos_proveedor", param))
+            {
+                reader.Read();
+                datosProveedor.Cuit = (string)reader["provee_cuit"];
+                datosProveedor.RazonSocial = (string)reader["provee_rs"];
+                //datosCliente.Saldo = Convert.ToInt32(reader["provee_cuit"]);
+                datosProveedor.Telefono = Convert.ToString(reader["provee_telefono"]);
+                datosProveedor.Rubro = (string)reader["provee_rubro"];
+                try
+                {
+                    datosProveedor.NombreContacto = (string)reader["nombre_contacto"];
+                    datosProveedor.Mail = (string)reader["provee_email"];
+                }
+                catch
+                {
+                }
+            }
+            spManager.Close();
+            return datosProveedor;
+        }
+
+
 
         public User getProveedor(Login login)
         {

@@ -13,8 +13,15 @@ namespace GrouponDesktop.Dominio.DataAdapter
                     String tipoPago, String tipoTarjeta, DateTime fechaVencimiento)
         {
             String result = "";
-            DataAccess.SPManager spManager = new DataAccess.SPManager();
-
+            DataAccess.SPManager spManager;
+            try
+            {
+                spManager = new DataAccess.SPManager();
+            }
+            catch
+            {
+                return "Problema Conexion DB";
+            }
             Dictionary<String, Object> param = new Dictionary<String, Object>();
             param.Add("monto", montoACargar);
             param.Add("dni", Int32.Parse(dni));
@@ -27,17 +34,77 @@ namespace GrouponDesktop.Dominio.DataAdapter
             param.Add("result output", result);
             SqlCommand command;
             SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_cargar_credito", param, out command);
-            string resultado = (string)command.Parameters["@result"].Value;
-
+            result = (string)command.Parameters["@result"].Value;
             //spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.", param);
-
             spManager.Close();
-            return resultado;
+            return result;
         }
         public static string agregarCreditoPayPal(String userName, String dni, DateTime fechaActual, int montoACargar)
         {
             const String tipoPago = "Efectivo";
             return agregarCreditoTarjeta(userName, dni, fechaActual, montoACargar, "", tipoPago, "", new DateTime(2100, 1,1)); 
         }
+    }
+
+    public class CuponArmado
+    {
+        public Cupon cupon;
+
+        public CuponArmado()
+        {
+            cupon = new Cupon();
+        }
+        public CuponArmado(Cupon cupon)
+        {
+            this.cupon = cupon;
+            cupon.Codigo = generarCodigoCupon();
+        }
+
+
+        private String generarCodigoCupon()
+        {
+            String strToEncrypt = cupon.Descripcion.ToString() + cupon.FechaVencimiento.ToString()
+                 + AdministradorConfiguracion.obtenerFecha().ToShortDateString() + new Random(DateTime.Now.Second);
+            strToEncrypt = Utilidades.SHA256Encrypt(strToEncrypt);
+            strToEncrypt = strToEncrypt.Substring(0, 12);
+            return strToEncrypt.ToUpper();
+
+        }
+        public String guardar()
+        {
+            String result = "";
+            DataAccess.SPManager spManager;
+            try
+            {
+                spManager = new DataAccess.SPManager();
+            }
+            catch
+            {
+                return "Problema Conexion DB";
+            }
+            Dictionary<String, Object> param = new Dictionary<String, Object>();
+            param.Add("codigo", cupon.Codigo);
+            param.Add("precio_real", cupon.PrecioReal);
+            param.Add("precio_fict", cupon.PrecioFicticio);
+            param.Add("cantidad_x_usuario", cupon.CantidadMaximaPorUsuario);
+            param.Add("descripcion", cupon.Descripcion);
+            param.Add("stock_disponible", cupon.Stock);
+            param.Add("provee_cuit", cupon.CuitProveedor);
+            param.Add("vencimiento_oferta", cupon.FechaFinalizacionOferta);
+            param.Add("vencimiento_canje", cupon.FechaVencimiento);
+            param.Add("fecha_publicacion", cupon.FechaPublicacion);
+            try
+            {
+                spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_agregar_cupon", param);
+            }
+            catch(Exception e)
+            {
+                spManager.Close();
+                return "Ocurrio un error cuando se quizo crear el cupon";
+            }
+            spManager.Close();
+            return "Se creó correctamente el cupón";
+        }
+
     }
 }

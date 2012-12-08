@@ -35,10 +35,28 @@ namespace GrouponDesktop.Dominio
     public class Cupon
     {
         String cuponCodigo;
-        public String CuponCodigo
+        public String Codigo
         {
             get { return cuponCodigo; }
             set { cuponCodigo = value; }
+        }
+        DateTime fechaVencimiento;
+        public DateTime FechaVencimiento
+        {
+            get { return fechaVencimiento; }
+            set { fechaVencimiento = value; }
+        }
+        DateTime fechaFinalizacionOferta;
+        public DateTime FechaFinalizacionOferta
+        {
+            get { return fechaFinalizacionOferta; }
+            set { fechaFinalizacionOferta = value; }
+        }
+        DateTime fechaPublicacion;
+        public DateTime FechaPublicacion
+        {
+            get { return fechaPublicacion; }
+            set { fechaPublicacion = value; }
         }
         String descripcion;
         public String Descripcion
@@ -47,11 +65,51 @@ namespace GrouponDesktop.Dominio
             set { descripcion = value; }
         }
 
-        String precioActual;
-        public String PrecioActual
+        double precioFicticio;
+        public double PrecioFicticio
         {
-            get { return precioActual; }
-            set { precioActual = value; }
+            get { return precioFicticio; }
+            set { precioFicticio = value; }
         }
+
+        double precioReal;
+        public double PrecioReal
+        {
+            get { return precioReal; }
+            set { precioReal = value; }
+        }
+
+        int cantidadDisponible;
+        public int CantidadDisponible
+        {
+            get { return cantidadDisponible; }
+            set { cantidadDisponible = value; }
+        }
+
+        int cantidadMaximaPorUsuario;
+        public int CantidadMaximaPorUsuario
+        {
+            get { return cantidadMaximaPorUsuario; }
+            set { cantidadMaximaPorUsuario = value; }
+        }
+        int stock;
+        public int Stock
+        {
+            get { return stock; }
+            set { stock = value; }
+        }
+        String cuitProveedor = "";
+        public String CuitProveedor
+        {
+            get { return cuitProveedor; }
+            set { cuitProveedor = value; }
+        }
+
+        
+
+
+
+
+
     }
 }
