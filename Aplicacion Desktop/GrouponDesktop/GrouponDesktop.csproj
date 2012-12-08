@@ -101,11 +101,35 @@
     <Compile Include="Dominio\Cupones\HomeCiudades.cs" />
     <Compile Include="Dominio\DataAccess\DBManager.cs" />
     <Compile Include="Dominio\DataAccess\SPManager.cs" />
+    <Compile Include="UI\ConfirmarEliminarUsuarioDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ConfirmarEliminarUsuarioDialog.Designer.cs">
+      <DependentUpon>ConfirmarEliminarUsuarioDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\DevolverCupon.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\DevolverCupon.Designer.cs">
       <DependentUpon>DevolverCupon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ListadoUsuarios.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ListadoUsuarios.Designer.cs">
+      <DependentUpon>ListadoUsuarios.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ModificacionCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ModificacionCliente.Designer.cs">
+      <DependentUpon>ModificacionCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ModificacionProveedor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ModificacionProveedor.Designer.cs">
+      <DependentUpon>ModificacionProveedor.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\ModificacionRol.cs">
       <SubType>Form</SubType>
@@ -168,14 +192,26 @@
     <EmbeddedResource Include="UI\ConfirmarEliminarRolDialog.resx">
       <DependentUpon>ConfirmarEliminarRolDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\ConfirmarEliminarUsuarioDialog.resx">
+      <DependentUpon>ConfirmarEliminarUsuarioDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\DevolverCupon.resx">
       <DependentUpon>DevolverCupon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ListadoUsuarios.resx">
+      <DependentUpon>ListadoUsuarios.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\LoginWindow.resx">
       <DependentUpon>LoginWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Menu.resx">
       <DependentUpon>Menu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ModificacionCliente.resx">
+      <DependentUpon>ModificacionCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ModificacionProveedor.resx">
+      <DependentUpon>ModificacionProveedor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ModificacionRol.resx">
       <DependentUpon>ModificacionRol.cs</DependentUpon>

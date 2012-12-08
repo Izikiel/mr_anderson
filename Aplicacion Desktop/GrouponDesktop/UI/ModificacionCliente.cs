@@ -25,9 +25,10 @@ namespace GrouponDesktop.UI
         public ModificacionCliente(String username)
         {
             InitializeComponent();
-            Login login = new Login();
-            login.UserName = username;
-            this.clienteSeleccionado = homeUsr.getCliente(login);
+            Login l = new Login();
+            l.UserName = username;
+            this.clienteSeleccionado = homeUsr.getUsuario(l);
+            homeUsr.setInformacionAlUsuario(this.clienteSeleccionado);
             this.fill();
         }
 

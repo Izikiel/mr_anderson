@@ -108,6 +108,8 @@ namespace GrouponDesktop.User
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
+        /// 
+
         public DatosCliente getDatosCliente(String username)
         {
             DatosCliente datosCliente = new DatosCliente();
@@ -521,13 +523,51 @@ namespace GrouponDesktop.User
             spManager.Close();
         }
 
-        public void modificarDatosProveedor()
+        public void modificarDatosProveedor(User provViejo, User provNuevo)
         {
+
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+
+            //cambiar esto es copypasteado de cliente
+            Dictionary<String, Object> param = new Dictionary<String, Object>();
+            param.Add("cuit_sended", provNuevo.DatosProveedor.Cuit);
+            param.Add("rs_sended", provNuevo.DatosProveedor.RazonSocial);
+            param.Add("rubro_sended", provNuevo.DatosProveedor.Rubro);
+            param.Add("telefono_sended", provNuevo.DatosProveedor.Telefono);
+            param.Add("provee_email_sended", provNuevo.DatosProveedor.Mail);
+            param.Add("nombre_contacto_sended", provNuevo.DatosProveedor.NombreContacto);
+            param.Add("username_sended", provViejo.DatosLogin.UserName);
+            param.Add("result output", "");
+            SqlCommand cmd = new SqlCommand();
+            spManager.executeSPWithParameters("MR_ANDERSON.sp_modify_proveedor", param, out cmd);
+            string resultado = (string)cmd.Parameters["@result"].Value;
+            spManager.Close();
+
+            if (!resultado.Equals("OK"))
+            {
+                throw new Exception(resultado);
+            }
         }
 
         public void modificarProveedor(User provViejo , User provNuevo,Boolean habilitado)
         {
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+            SqlTransaction tran = spManager.DbManager.Connection.BeginTransaction();
+            try
+            {
+                this.modificarDireccion(provViejo.DatosLogin.UserName, provNuevo.Direccion);
+                this.changeStatus(provViejo.DatosLogin.UserName, habilitado);
+                this.modificarDatosProveedor(provViejo, provNuevo);
+            }
+            catch (Exception e)
+            {
+                tran.Rollback();
+                spManager.Close();
+                throw new Exception("No se pudo modificar el proveedor por : " + e.ToString());
 
+            }
+            tran.Commit();
+            spManager.Close();
         }
 
         

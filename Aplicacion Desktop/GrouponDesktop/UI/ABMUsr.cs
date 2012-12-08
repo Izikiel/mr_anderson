@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using GrouponDesktop.UI;
 
+
 namespace GrouponDesktop.UI
 {
     public partial class ABMUsr : Form
@@ -21,14 +22,17 @@ namespace GrouponDesktop.UI
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            RegistroWindow rw = new RegistroWindow();
+            rw.comboBox1.Text = tipo;
+            rw.comboBox1.Enabled = false;
+            rw.ShowDialog();
         }
 
         private void buttonModificacionBajaClicked(object sender, EventArgs e)
         {
             Button boton = (Button)sender;
-          //  ListadoUsuarios w = new ListadoUsuarios(this.tipo,boton.Text);
-         //   w.ShowDialog();
+            ListadoUsuarios w = new ListadoUsuarios(this.tipo,boton.Text);
+            w.ShowDialog();
             
         }
 

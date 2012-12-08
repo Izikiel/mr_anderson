@@ -1097,6 +1097,51 @@ GO
 
 --Listo Modificar cliente
 
+--Modificar proveedor
+
+create procedure MR_ANDERSON.sp_modify_proveedor (@cuit_sended NVARCHAR(20), @rs_sended NVARCHAR(100), @rubro_sended NVARCHAR(100),
+                    @telefono_sended NUMERIC(18) , @provee_email_sended NVARCHAR(255), @nombre_contacto_sended NVARCHAR(40),
+                    @username_sended NVARCHAR(100), @result NVARCHAR(19) output)
+    as
+        begin
+            if @cuit_sended is null 
+                or @rs_sended is null 
+                or @rubro_sended is null 
+                or @telefono_sended is null 
+                or @provee_email_sended is null 
+                or @nombre_contacto_sended is null
+                or @username_sended is null
+                begin
+                    set @result = 'SENT_VALUE_NULL'
+                    return 2
+                end
+
+            if @telefono_sended in (select telefono from MR_ANDERSON.Datos_Clientes where username != @username_sended)
+                begin 
+                    set @result = 'PROV_TEL_EXISTENT'
+                    return 1
+                end
+
+
+            update MR_ANDERSON.Datos_Proveedores
+                set provee_cuit = @cuit_sended
+                ,provee_rs = @rs_sended
+                ,provee_rubro = @rubro_sended
+                ,provee_telefono = @telefono_sended
+                ,provee_email = @provee_email_sended
+                ,nombre_contacto = @nombre_contacto_sended
+
+                where username = @username_sended
+
+            set @result = 'OK'
+
+        end
+GO
+
+
+--Listo modificar proveedor
+
+
 --Calcular total factura
 
 create function MR_ANDERSON.fn_total_factura (@factura_nro NUMERIC(18))
@@ -1660,6 +1705,7 @@ begin tran insertar_funcionalidades
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'Cargar Credito'
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'Comprar GiftCard'
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'Comprar Cupon'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'Simular Usuario'
 
 
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Cargar Credito'
@@ -1673,6 +1719,7 @@ begin tran insertar_funcionalidades
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'ABM Usuario'
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Facturar Proveedor'
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Publicar Cupones'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Simular Usuario'
 commit tran insertar_funcionalidades
 GO
 
