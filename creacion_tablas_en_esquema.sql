@@ -1749,3 +1749,43 @@ create procedure MR_ANDERSON.sp_publicar_cupon (@codigo NVARCHAR(50))
             Update MR_ANDERSON.Cupones set publicado = 1 where codigo = @codigo
         end
 GO
+
+
+-- Punto 14
+
+
+create procedure MR_ANDERSON.sp_facturar_proveedor (@fecha_inicio DATETIME, @fecha_final DATETIME, @provee_cuit nvarchar(20), 
+            @nro_factura numeric(18,0) output, @importe_factura numeric(18,0) output)
+    as
+        begin
+            declare @fecha_actual DATETIME
+            set @fecha_actual = (select GETDATE())
+
+            set @nro_factura = (select top 1 factura_nro from MR_ANDERSON.Factura order by factura_nro DESC) + 1
+            set @importe_factura = (select SUM(CP.precio)
+                                        from MR_ANDERSON.Consumos C
+                                        join MR_ANDERSON.Cupones CP
+                                            on   C.codigo = CP.codigo
+                                        where CP.provee_cuit = @provee_cuit
+                                        and C.fecha_consumo >= @fecha_inicio and C.fecha_consumo <= @fecha_final)
+
+            insert into MR_ANDERSON.Factura VALUES (@nro_factura, @fecha_actual, @provee_cuit)
+
+            insert into MR_ANDERSON.Factura_Renglon select COUNT(C.codigo), @nro_factura, C.codigo
+                                                                    from MR_ANDERSON.Consumos C
+                                                                    join MR_ANDERSON.Cupones CP
+                                                                        on   C.codigo = CP.codigo
+                                                                    where CP.provee_cuit = @provee_cuit
+                                                                        and C.fecha_consumo >= @fecha_inicio and C.fecha_consumo <= @fecha_final
+                                                                    group by C.codigo, CP.provee_cuit
+
+            select C.codigo, COUNT(C.codigo) as Cantidad
+                from MR_ANDERSON.Consumos C
+                join MR_ANDERSON.Cupones CP
+                    on   C.codigo = CP.codigo
+                where CP.provee_cuit = @provee_cuit
+                and C.fecha_consumo >= @fecha_inicio and C.fecha_consumo <= @fecha_final
+                group by C.codigo, CP.provee_cuit
+        end
+
+GO
