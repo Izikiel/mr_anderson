@@ -1487,18 +1487,21 @@ create procedure MR_ANDERSON.sp_comprar_cupon (@dni numeric(18), @codigo NVARCHA
         begin
             if (select stock_disponible from MR_ANDERSON.Cupones where codigo = @codigo) < @cantidad
                 begin
-                    RAISERROR('No hay stock para la cantidad pedida',10,1)
+                    RAISERROR('No hay stock para la cantidad pedida',13,1)
+                    return
                 end
 
             if (select saldo from MR_ANDERSON.Datos_Clientes where dni = @dni) <
                 (select precio * @cantidad from MR_ANDERSON.Cupones where codigo = @codigo)
                 begin
-                    RAISERROR('Saldo insuficiente',10,1)
+                    RAISERROR('Saldo insuficiente',13,1)
+                    return
                 end
 
             if (select cantidad_x_usuario from MR_ANDERSON.Cupones where codigo = @codigo) < @cantidad
                 begin
-                    RAISERROR('Excede cantidad maxima para el usuario',10,1)
+                    RAISERROR('Excede cantidad maxima para el usuario',13,1)
+                    return
                 end
 
             insert into MR_ANDERSON.Compras(dni,cantidad,fecha,codigo)
@@ -1507,6 +1510,9 @@ create procedure MR_ANDERSON.sp_comprar_cupon (@dni numeric(18), @codigo NVARCHA
             update MR_ANDERSON.Cupones
                 set stock_disponible = stock_disponible - @cantidad
                 where codigo = @codigo
+
+            update MR_ANDERSON.Datos_Clientes saldo = saldo - (select precio from MR_ANDERSON.Cupones where codigo = @codigo)
+                where dni = @dni
         end
 GO
 
@@ -1534,13 +1540,13 @@ create procedure MR_ANDERSON.sp_pedir_devolucion (@dni numeric(18), @codigo nvar
         begin
             if @fecha_devolucion > (select vencimiento_canje from MR_ANDERSON.Cupones where codigo = @codigo)
                 begin
-                    RAISERROR('No se puede devolver',12,1)
+                    RAISERROR('No se puede devolver',13,1)
                     return
                 end
 
             if exists(select id_compra from MR_ANDERSON.Devoluciones where id_compra = @id_compra)
                 begin
-                    RAISERROR('Ya fue devuelto',10,1)
+                    RAISERROR('Ya fue devuelto',13,1)
                     return
                 end
 
@@ -1569,19 +1575,19 @@ create procedure MR_ANDERSON.sp_registra_consumo_cupon (@fecha_actual DATETIME,@
         begin
             if not exists(select codigo from MR_ANDERSON.Compras C where C.dni = @dni_cliente and C.codigo = @cod_cupon)
             begin
-                RAISERROR('Cupon no encontrado o ya canjeado',10,1)
+                RAISERROR('Cupon no encontrado o ya canjeado',13,1)
                 return
             end
 
             if ((select vencimiento_canje from MR_ANDERSON.Cupones where codigo = @cod_cupon) < @fecha_actual)
             begin
-                RAISERROR('Cupon vencido',10,1)
+                RAISERROR('Cupon vencido',13,1)
                 return
             end
 
             if not exists(select codigo from MR_ANDERSON.Cupones C where C.codigo = @cod_cupon and C.provee_cuit = @provee_cuit)
             begin
-                RAISERROR('Cupon no pertenece a proveedor dado',10,1)
+                RAISERROR('Cupon no pertenece a proveedor dado',13,1)
                 return 
             end
 
@@ -1676,13 +1682,13 @@ create procedure MR_ANDERSON.sp_agregar_cupon (@codigo NVARCHAR(50), @precio_rea
             
             if @fecha_publicacion < @fecha_actual or @vencimiento_canje < @fecha_actual or @vencimiento_oferta < @fecha_actual  
                  begin
-                     RAISERROR('Error en las fechas!',10,1)
+                     RAISERROR('Error en las fechas!',13,1)
                      return
                  end 
 
             if @provee_cuit not in (select provee_cuit from MR_ANDERSON.Proveedores)
                 begin
-                    RAISERROR('No existe el proveedor',10,1)
+                    RAISERROR('No existe el proveedor',13,1)
                     return
                 end
 
@@ -1705,6 +1711,8 @@ begin tran insertar_funcionalidades
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Cliente',@Funcionalidad = 'Comprar Cupon'
 
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Proveedor',@Funcionalidad = 'Armar Cupon'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Proveedor',@Funcionalidad = 'Registro Consumo'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Proveedor',@Funcionalidad = 'Publicar Cupon'
 
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'ABM Rol'
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'ABM Usuario'
@@ -1838,10 +1846,144 @@ alter procedure MR_ANDERSON.sp_existe_cuit (@provee_cuit NVARCHAR(20), @existe i
         end
 GO
 
-create function MR_ANDERSON.fn_existe_cuit ()
 
-    returns BIT
+create procedure MR_ANDERSON.get_datos_rol (@nombre_rol NVARCHAR(255))
+    as
+        begin
+        select Habilitado,Funcionalidad,tipo
+            from MR_ANDERSON.Roles r
+            join MR_ANDERSON.Funcionalidades_Roles f on r.Rol = f.Rol
+            left join MR_ANDERSON.Rol_tipo rt on rt.Rol = r.Rol
+        where r.rol = @nombre_rol
+            
+        end
+GO
+--get nombre all roles
 
-    
+create procedure MR_ANDERSON.get_all_roles
+as
+begin
+select rol from MR_ANDERSON.Roles
+end
+GO
+--cargar rol con nombre de usuario
+
+create procedure MR_ANDERSON.get_nombre_rol_de_usuario(@nombre_usuario NVARCHAR(255))
+as 
+begin
+    select rol from MR_ANDERSON.Login l
+    where l.username = @nombre_usuario
+
+end
+GO
+--add ciudad preferencia para user
+create procedure MR_ANDERSON.sp_add_ciudad_user (@dni numeric, @ciudad varchar(255))
+    as
+        begin
+            insert into MR_ANDERSON.ciudades(dni,ciudad)
+                values(@dni,@ciudad)
+        end
+GO
+
+--get roles para tipo
+create procedure MR_ANDERSON.sp_get_roles_para_tipo (@tipo varchar(100))
+    as
+        begin
+            select rol from MR_ANDERSON.Rol_Tipo
+            where tipo = @tipo
+            
+        end
+GO
+
+--modify rol de usuario
+create procedure MR_ANDERSON.sp_modificar_rol_usr (@nombre_rol nvarchar(255),@nombre_antiguo NVARCHAR(255))
+    as
+        begin
+            update MR_ANDERSON.Login
+                set rol = @nombre_rol
+                where rol = @nombre_antiguo
+        end
+GO
+
+--get all usrs tipo
+create procedure MR_ANDERSON.sp_get_all_usrs (@tipo NVARCHAR(100))
+    as
+        begin
+        select username from MR_ANDERSON.Login
+        where tipo = @tipo
+            
+        end
+GO
+
+--get usrs tipo con filtros
+create procedure MR_ANDERSON.sp_get_usrs_filtrados (@tipo NVARCHAR(100), @filtro1 varchar(20), @filtro2 varchar(20),@filtro3 varchar(20),@filtro4 varchar(20))
+    as
+        begin
+            if @tipo = 'Cliente'
+                begin
+                    
+                    select l.username from MR_ANDERSON.Login l
+                    join MR_ANDERSON.Datos_Clientes cli on cli.username = l.username                    
+                    where 
+                     (@filtro1 is null or PATINDEX( @filtro1,cli.nombre) = 1)
+                     and (@filtro2 is null or PATINDEX(@filtro2, cli.apellido) = 1)
+                     and (@filtro3 is null or PATINDEX(@filtro3,convert(varchar,cli.dni)) = 1)
+                     and(@filtro4 is null or PATINDEX(@filtro4,cli.mail) = 1)
+                end
+                else
+                begin
+                    select l.username from MR_ANDERSON.Login l
+                    join MR_ANDERSON.Datos_Proveedores prov on prov.username = l.username
+                    where
+                    (@filtro1 is null or PATINDEX( @filtro1,prov.provee_rs) = 1)
+                     and (@filtro2 is null or PATINDEX(@filtro2, prov.provee_cuit) = 1)
+                     and(@filtro3 is null or PATINDEX(@filtro4,prov.provee_email) = 1)
+                end
+                
+                    
+        end
+GO
+
+--get ciudades para usuario
+create procedure MR_ANDERSON.sp_get_ciudades_para_usr (@dni numeric)
+    as
+        begin
+            select ciudad from MR_ANDERSON.ciudades
+            where dni = @dni
+        end
+GO
+
+--usuario Habilitado
+create procedure MR_ANDERSON.sp_usuario_habilitado (@nombre_usuario varchar(100))
+    as
+        begin
+            select Habilitado from MR_ANDERSON.Login
+            where username = @nombre_usuario
+        end
+GO
+
+create procedure MR_ANDERSON.sp_existe_usuario (@username NVARCHAR(100), 
+                                @result bit output)
+    as
+        begin
+            if exists(select username from Login where username = @username)
+                begin
+                    set @result = 1
+                    return
+                end
+            
+            set @result = 0
+            return
+        end
+GO
+
+create procedure MR_ANDERSON.sp_cambiar_password (@password NVARCHAR(255), @username NVARCHAR(100))
+    as
+        begin
+            if not exists(select user_password from Login where username = @username)
+                begin
+                    Update Login set user_password = @password where username = @username
+                end
+        end
 GO
 

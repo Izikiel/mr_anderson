@@ -10,6 +10,76 @@
 USE [GD2C2012]
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_cambiar_password]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_cambiar_password]
+GO
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_existe_usuario]    Script Date: 12/08/2012 15:33:34 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_existe_usuario]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_existe_usuario]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_get_usrs_filtrados]    Script Date: 12/08/2012 14:59:14 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_get_usrs_filtrados]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_get_usrs_filtrados]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_get_ciudades_para_usr]    Script Date: 12/08/2012 14:58:58 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_get_ciudades_para_usr]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_get_ciudades_para_usr]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_usuario_habilitado]    Script Date: 12/08/2012 14:41:32 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_usuario_habilitado]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_usuario_habilitado]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_modificar_rol_usr]    Script Date: 12/08/2012 14:41:23 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_modificar_rol_usr]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_modificar_rol_usr]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_get_roles_para_tipo]    Script Date: 12/08/2012 14:41:15 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_get_roles_para_tipo]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_get_roles_para_tipo]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_get_all_usrs]    Script Date: 12/08/2012 14:41:03 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_get_all_usrs]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_get_all_usrs]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_add_ciudad_user]    Script Date: 12/08/2012 14:40:55 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_add_ciudad_user]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_add_ciudad_user]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[get_nombre_rol_de_usuario]    Script Date: 12/08/2012 14:40:47 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[get_nombre_rol_de_usuario]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[get_nombre_rol_de_usuario]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[get_datos_rol]    Script Date: 12/08/2012 14:40:37 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[get_datos_rol]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[get_datos_rol]
+GO
+
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[get_all_roles]    Script Date: 12/08/2012 14:39:58 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[get_all_roles]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[get_all_roles]
+GO
+
+
 /****** Object:  UserDefinedFunction [MR_ANDERSON].[fn_existe_cuit]    Script Date: 12/08/2012 13:31:52 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[fn_existe_cuit]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 DROP FUNCTION [MR_ANDERSON].[fn_existe_cuit]
