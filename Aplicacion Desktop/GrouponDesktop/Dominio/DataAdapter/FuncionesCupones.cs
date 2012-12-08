@@ -47,7 +47,7 @@ namespace GrouponDesktop.Dominio.DataAdapter
             }
             catch (Exception e)
             {
-                return "Error en compra";
+                return "Error en compra. " + e.Message;
             }
         }
 

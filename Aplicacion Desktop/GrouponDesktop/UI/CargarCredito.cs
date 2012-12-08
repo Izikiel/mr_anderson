@@ -100,7 +100,9 @@ namespace GrouponDesktop
             else
             {
                 MessageBox.Show("No se pudo realizar la carga.");
+                return;
             }
+            MessageBox.Show(resultado);
 
         }
 
