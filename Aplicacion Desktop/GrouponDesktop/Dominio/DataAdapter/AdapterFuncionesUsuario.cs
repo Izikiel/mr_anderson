@@ -51,16 +51,14 @@ namespace GrouponDesktop.Dominio.DataAdapter
         {
             DataAccess.SPManager spManager = new GrouponDesktop.DataAccess.SPManager();
 
-            Dictionary<String,Object> param = new Dictionary<string,object>();
+            Dictionary<String, Object> param = new Dictionary<string, object>();
 
             param.Add("fecha_actual", AdministradorConfiguracion.obtenerFecha());
             param.Add("cod_cupon", codigo);
-            param.Add("dni_cliente",dni);
-            param.Add("provee_cuit",cuit);
+            param.Add("dni_cliente", dni);
+            param.Add("provee_cuit", cuit);
 
-            SqlCommand command;
-
-            SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_registra_consumo_cupon",param, out command);
+            spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_registra_consumo_cupon", param);
 
             spManager.Close();
             return;
@@ -68,65 +66,57 @@ namespace GrouponDesktop.Dominio.DataAdapter
         }
     }
 
-    public class CuponArmado
+    public class AdministradorAdapter
     {
-        public Cupon cupon;
-
-        public CuponArmado()
+        public static int existeUsuario(String cuit)
         {
-            cupon = new Cupon();
-        }
-        public CuponArmado(Cupon cupon)
-        {
-            this.cupon = cupon;
-            cupon.Codigo = generarCodigoCupon();
-        }
+            DataAccess.SPManager spManager = new GrouponDesktop.DataAccess.SPManager();
 
+            Dictionary<String, Object> param = new Dictionary<string, object>();
 
-        private String generarCodigoCupon()
-        {
-            String strToEncrypt = cupon.Descripcion.ToString() + cupon.FechaVencimiento.ToString()
-                 + AdministradorConfiguracion.obtenerFecha().ToShortDateString() + new Random(DateTime.Now.Second);
-            strToEncrypt = Utilidades.SHA256Encrypt(strToEncrypt);
-            strToEncrypt = strToEncrypt.Substring(0, 12);
-            return strToEncrypt.ToUpper();
-
-        }
-        public String guardar()
-        {
-            String result = "";
-            DataAccess.SPManager spManager;
+            bool salida = false;
+            param.Add("provee_cuit", cuit);
+            param.Add("existe output", salida);
+            SqlCommand command;
+            
             try
             {
-                spManager = new DataAccess.SPManager();
-            }
-            catch
-            {
-                return "Problema Conexion DB";
-            }
-            Dictionary<String, Object> param = new Dictionary<String, Object>();
-            param.Add("codigo", cupon.Codigo);
-            param.Add("precio_real", cupon.PrecioReal);
-            param.Add("precio_fict", cupon.PrecioFicticio);
-            param.Add("cantidad_x_usuario", cupon.CantidadMaximaPorUsuario);
-            param.Add("descripcion", cupon.Descripcion);
-            param.Add("stock_disponible", cupon.Stock);
-            param.Add("provee_cuit", cupon.CuitProveedor);
-            param.Add("vencimiento_oferta", cupon.FechaFinalizacionOferta);
-            param.Add("vencimiento_canje", cupon.FechaVencimiento);
-            param.Add("fecha_publicacion", cupon.FechaPublicacion);
-            try
-            {
-                spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_agregar_cupon", param);
+                SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_existe_cuit", param, out command);
+                return (int) Int32.Parse(command.Parameters["@existe"].Value.ToString());
             }
             catch(Exception e)
             {
                 spManager.Close();
-                return "Ocurrio un error cuando se quizo crear el cupon";
+                return 0;
             }
+
             spManager.Close();
-            return "Se creó correctamente el cupón";
+            return 1;
+
         }
 
+        public static List<Cupon> obtenerCupones(String dni, DateTime fecha)
+        {
+            List<Cupon> cupones = new List<Cupon>();
+            DataAccess.SPManager spManager = new GrouponDesktop.DataAccess.SPManager();
+            Dictionary<String, Object> parameters = new Dictionary<string, object>();
+            parameters.Add("dni", Int32.Parse(dni));
+            parameters.Add("fecha", fecha);
+
+            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_ver_cupones_habilitados", parameters))
+            {
+                while (reader.Read())
+                {
+                    Cupon cupon = new Cupon();
+                    cupon.Codigo = ((String)reader["codigo"]).Trim();
+                    cupon.Descripcion = ((String)reader["descripcion"]).Trim();
+                    cupones.Add(cupon);
+                }
+                reader.Close();
+            }
+            return cupones;
+        }
     }
+
+    
 }

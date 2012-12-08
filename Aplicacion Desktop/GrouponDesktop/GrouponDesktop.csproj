@@ -137,6 +137,12 @@
     <Compile Include="UI\ModificacionRol.Designer.cs">
       <DependentUpon>ModificacionRol.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\PublicarCupon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\PublicarCupon.Designer.cs">
+      <DependentUpon>PublicarCupon.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\RegistroCliente.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -223,6 +229,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ListadoRoles.resx">
       <DependentUpon>ListadoRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PublicarCupon.resx">
+      <DependentUpon>PublicarCupon.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\RegistroCliente.resx">
       <DependentUpon>RegistroCliente.cs</DependentUpon>

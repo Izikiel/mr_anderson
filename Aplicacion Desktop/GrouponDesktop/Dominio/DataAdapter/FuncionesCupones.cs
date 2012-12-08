@@ -56,6 +56,68 @@ namespace GrouponDesktop.Dominio.DataAdapter
             return "";
         }
 
+        
+    }
+    public class CuponArmado
+    {
+        public Cupon cupon;
+
+        public CuponArmado()
+        {
+            cupon = new Cupon();
+        }
+        public CuponArmado(Cupon cupon)
+        {
+            this.cupon = cupon;
+            cupon.Codigo = generarCodigoCupon();
+        }
+
+
+        private String generarCodigoCupon()
+        {
+            String strToEncrypt = cupon.Descripcion.ToString() + cupon.FechaVencimiento.ToString()
+                 + AdministradorConfiguracion.obtenerFecha().ToShortDateString() + new Random(DateTime.Now.Second);
+            strToEncrypt = Utilidades.SHA256Encrypt(strToEncrypt);
+            strToEncrypt = strToEncrypt.Substring(0, 12);
+            return strToEncrypt.ToUpper();
+
+        }
+        public String guardar()
+        {
+            String result = "";
+            DataAccess.SPManager spManager;
+            try
+            {
+                spManager = new DataAccess.SPManager();
+            }
+            catch
+            {
+                return "Problema Conexion DB";
+            }
+            Dictionary<String, Object> param = new Dictionary<String, Object>();
+            param.Add("codigo", cupon.Codigo);
+            param.Add("precio_real", cupon.PrecioReal);
+            param.Add("precio_fict", cupon.PrecioFicticio);
+            param.Add("cantidad_x_usuario", cupon.CantidadMaximaPorUsuario);
+            param.Add("descripcion", cupon.Descripcion);
+            param.Add("stock_disponible", cupon.Stock);
+            param.Add("provee_cuit", cupon.CuitProveedor);
+            param.Add("vencimiento_oferta", cupon.FechaFinalizacionOferta);
+            param.Add("vencimiento_canje", cupon.FechaVencimiento);
+            param.Add("fecha_publicacion", cupon.FechaPublicacion);
+            try
+            {
+                spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_agregar_cupon", param);
+            }
+            catch (Exception e)
+            {
+                spManager.Close();
+                return "Ocurrio un error cuando se quizo crear el cupon";
+            }
+            spManager.Close();
+            return "Se creó correctamente el cupón";
+        }
 
     }
+
 }
