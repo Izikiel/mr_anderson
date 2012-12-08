@@ -58,8 +58,8 @@ namespace GrouponDesktop
                     comprarCupon.Show();
                     break;
                 case "Pedir Devolucion":
-                    /*DevolverCupon devolverCupon = new DevolverCupon(loginWindow);
-                    devolverCupon.Show();*/
+                    DevolverCupon devolverCupon = new DevolverCupon(loginWindow);
+                    devolverCupon.Show();
                     break;
                 case "Simular Usuario":
                     new SimularOtroUsuario(loginWindow).Show();

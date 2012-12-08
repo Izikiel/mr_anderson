@@ -15,7 +15,7 @@ namespace GrouponDesktop
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new UI.PublicarCupon());
+            //Application.Run(new DevolverCupon());
 
             Application.Run(new LoginWindow());
 

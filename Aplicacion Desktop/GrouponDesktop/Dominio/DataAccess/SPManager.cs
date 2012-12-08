@@ -103,7 +103,7 @@ namespace GrouponDesktop.DataAccess
             }
             catch (Exception e)
             {
-                throw new Exception("no se pudo ejecutar el StoredProcedure por: " + e);
+                throw e;
             }
         }
     }

@@ -95,20 +95,20 @@ namespace GrouponDesktop.Dominio.DataAdapter
 
         }
 
-        public static List<Cupon> obtenerCupones(String dni, DateTime fecha)
+        public static List<Cupon> getCuponesAPublicar(String cuit, DateTime fecha)
         {
             List<Cupon> cupones = new List<Cupon>();
             DataAccess.SPManager spManager = new GrouponDesktop.DataAccess.SPManager();
             Dictionary<String, Object> parameters = new Dictionary<string, object>();
-            parameters.Add("dni", Int32.Parse(dni));
+            parameters.Add("provee_cuit", cuit);
             parameters.Add("fecha", fecha);
 
-            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_ver_cupones_habilitados", parameters))
+            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_cupones_a_publicar", parameters))
             {
                 while (reader.Read())
                 {
                     Cupon cupon = new Cupon();
-                    cupon.Codigo = ((String)reader["codigo"]).Trim();
+                    cupon.CuponCodigo = ((String)reader["codigo"]).Trim();
                     cupon.Descripcion = ((String)reader["descripcion"]).Trim();
                     cupones.Add(cupon);
                 }

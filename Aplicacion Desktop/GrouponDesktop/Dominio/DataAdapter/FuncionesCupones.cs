@@ -23,7 +23,7 @@ namespace GrouponDesktop.Dominio.DataAdapter
                 while (reader.Read())
                 {
                     Cupon cupon = new Cupon();
-                    cupon.Codigo = ((String)reader["codigo"]).Trim();
+                    cupon.CuponCodigo = ((String)reader["codigo"]).Trim();
                     cupon.Descripcion = ((String)reader["descripcion"]).Trim();
                     cupones.Add(cupon);
                 }
@@ -51,9 +51,45 @@ namespace GrouponDesktop.Dominio.DataAdapter
             }
         }
 
-        public string devolverCupon(String dni, String codigo, int cantidad, DateTime fecha)
+        public string publicarCupon(String codigo)
         {
-            return "";
+            DataAccess.SPManager spManager = new GrouponDesktop.DataAccess.SPManager();
+            Dictionary<String, Object> parameters = new Dictionary<string, object>();
+            parameters.Add("codigo", codigo);
+
+            try
+            {
+                spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_publicar_cupon", parameters);
+                return "Publicación exitosa";
+            }
+            catch (Exception e)
+            {
+                return "Error en compra";
+            }
+        }
+        /*
+         * create procedure MR_ANDERSON.sp_pedir_devolucion (@ numeric(18), @codigo nvarchar(50), @ DATETIME,
+                                @ NVARCHAR(255), @ numeric )
+         * */
+        public string devolverCupon(String dni, String codigo, DateTime fecha, String motivo, String idCompra)
+        {
+            DataAccess.SPManager spManager = new GrouponDesktop.DataAccess.SPManager();
+            Dictionary<String, Object> parameters = new Dictionary<string, object>();
+            parameters.Add("codigo", codigo);
+            parameters.Add("dni", Int32.Parse(dni));
+            parameters.Add("fecha_devolucion", fecha);
+            parameters.Add("motivo", motivo);
+            parameters.Add("id_compra", Int32.Parse(idCompra));
+
+            try
+            {
+                spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_pedir_devolucion", parameters);
+                return "Devolución exitosa";
+            }
+            catch (SqlException e)
+            {
+                return "Error en la devolución: " + e.Message;
+            }
         }
 
         
@@ -69,7 +105,7 @@ namespace GrouponDesktop.Dominio.DataAdapter
         public CuponArmado(Cupon cupon)
         {
             this.cupon = cupon;
-            cupon.Codigo = generarCodigoCupon();
+            cupon.CuponCodigo = generarCodigoCupon();
         }
 
 
@@ -95,7 +131,7 @@ namespace GrouponDesktop.Dominio.DataAdapter
                 return "Problema Conexion DB";
             }
             Dictionary<String, Object> param = new Dictionary<String, Object>();
-            param.Add("codigo", cupon.Codigo);
+            param.Add("codigo", cupon.CuponCodigo);
             param.Add("precio_real", cupon.PrecioReal);
             param.Add("precio_fict", cupon.PrecioFicticio);
             param.Add("cantidad_x_usuario", cupon.CantidadMaximaPorUsuario);

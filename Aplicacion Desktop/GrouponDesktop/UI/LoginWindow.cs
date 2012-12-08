@@ -28,7 +28,6 @@ namespace GrouponDesktop
         {
             InitializeComponent();
            // this.usuarioActivo = new User.User();
-           
         }
 
        

@@ -1534,7 +1534,7 @@ create procedure MR_ANDERSON.sp_pedir_devolucion (@dni numeric(18), @codigo nvar
         begin
             if @fecha_devolucion > (select vencimiento_canje from MR_ANDERSON.Cupones where codigo = @codigo)
                 begin
-                    RAISERROR('No se puede devolver',10,1)
+                    RAISERROR('No se puede devolver',12,1)
                     return
                 end
 
@@ -1736,18 +1736,18 @@ GO
 create procedure MR_ANDERSON.sp_cupones_a_publicar (@fecha DATETIME, @provee_cuit NVARCHAR(20))
     as
         begin
-            if @provee_cuit is null
+            if @provee_cuit = '' 
                 begin
-                    return select codigo, descripcion from MR_ANDERSON.Cupones where publicado = 0 and fecha_publicacion = @fecha
+                     select codigo, descripcion from MR_ANDERSON.Cupones where publicado = 0 and fecha_publicacion = @fecha
                 end
 
-            return  select codigo, descripcion 
+                select codigo, descripcion 
                         from MR_ANDERSON.Cupones Cupones
 
-                        join MR_ANDERSON.Proveedores Proveedores
+                        join MR_ANDERSON.Datos_Proveedores Proveedores
                             on   Cupones.provee_cuit = Proveedores.provee_cuit
                         
-                    where publicado = 0 and fecha_publicacion = @fecha and provee_cuit = @provee_cuit
+                    where publicado = 0 and fecha_publicacion = @fecha and Proveedores.provee_cuit = @provee_cuit
         end
 GO
 
@@ -1824,16 +1824,24 @@ create procedure MR_ANDERSON.sp_buscador_proveedores (@provee_rs NVARCHAR(100), 
         end
 GO
 
-create function MR_ANDERSON.fn_existe_cuit (@provee_cuit NVARCHAR(20))
 
-    returns BIT
-
+alter procedure MR_ANDERSON.sp_existe_cuit (@provee_cuit NVARCHAR(20), @existe int output)
     as
         begin
             if exists (select provee_cuit from MR_ANDERSON.Datos_Proveedores where provee_cuit = @provee_cuit)
                 begin
+                    set @existe = 1
                     return 1
                 end
+            set @existe = 0
             return 0
         end
 GO
+
+create function MR_ANDERSON.fn_existe_cuit ()
+
+    returns BIT
+
+    
+GO
+
