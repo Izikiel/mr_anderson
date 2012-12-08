@@ -1814,3 +1814,15 @@ create procedure MR_ANDERSON.sp_buscador_clientes (@nombre NVARCHAR(255), @apell
                         or dni = @dni or mail like ('%' + @mail + '%')
         end
 GO
+
+create procedure MR_ANDERSON.sp_buscador_proveedores (@provee_rs NVARCHAR(100), @provee_cuit NVARCHAR(20), 
+                                @provee_email NVARCHAR(255) )
+    as
+        begin
+            select provee_rs, provee_cuit, provee_email 
+                from Datos_Proveedores Proveedores
+
+                where provee_rs like ('%' + @provee_rs + '%') or provee_cuit = @provee_cuit
+                        or provee_email like ('%' + @provee_email + '%')
+        end
+GO
