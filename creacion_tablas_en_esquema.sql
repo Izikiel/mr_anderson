@@ -2041,3 +2041,36 @@ create procedure MR_ANDERSON.sp_estadistico_devoluciones (@year numeric(4,0), @s
             order by sum(Compras.cantidad * Cupones.precio) desc
         end
 GO
+
+/*
+el nombre del usuario y la cantidad de giftcards acreditadas
+los nombres de los parametros recibidos son los mismos
+y los nombres de lo q me retornas
+nombre_usuario
+
+cantidad
+
+*/
+
+create procedure MR_ANDERSON.sp_estadistico_usuarios (@year numeric(4,0), @semestre int)
+    as
+        begin
+            
+            select top 5  Clientes.username as 'nombre_usuario', COUNT(Giftcard.id_destino) as 'cantidad'
+                from MR_ANDERSON.Datos_Clientes Clientes
+
+            join MR_ANDERSON.Cliente_Destino Destino
+                on   Clientes.dni = Destino.dni
+            
+            join MR_ANDERSON.Giftcard Giftcard
+                on   Destino.id_destino = Giftcard.id_destino
+
+            group by Clientes.username, Giftcard.fecha
+
+            having YEAR(Giftcard.fecha) = @year and MR_ANDERSON.fn_in_semester(@semestre, Giftcard.fecha) = 1
+
+            order by sum(Giftcard.monto) desc
+
+
+        end
+GO
