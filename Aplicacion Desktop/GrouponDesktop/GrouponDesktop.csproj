@@ -51,9 +51,12 @@
   <ItemGroup>
     <Compile Include="Dominio\Cupones\Cupones.cs" />
     <Compile Include="Dominio\DataAdapter\AdapterFuncionesUsuario.cs" />
+    <Compile Include="Dominio\DataAdapter\DevolucionCuponesStringContainer.cs" />
     <Compile Include="Dominio\DataAdapter\FuncionesCupones.cs" />
+    <Compile Include="Dominio\DataAdapter\ListadoEstadistico.cs" />
     <Compile Include="Dominio\DataAdapter\RolStringContainer.cs" />
     <Compile Include="Dominio\DataAdapter\UserStringContainer.cs" />
+    <Compile Include="Dominio\DataAdapter\UsuariosGiftCardsStringContainer.cs" />
     <Compile Include="Dominio\Utilidades\Utilidades.cs" />
     <Compile Include="UI\ABMRol.cs">
       <SubType>Form</SubType>
@@ -118,6 +121,12 @@
     </Compile>
     <Compile Include="UI\DevolverCupon.Designer.cs">
       <DependentUpon>DevolverCupon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ListadoEstadistico.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ListadoEstadistico.Designer.cs">
+      <DependentUpon>ListadoEstadistico.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\ListadoUsuarios.cs">
       <SubType>Form</SubType>
@@ -224,6 +233,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\DevolverCupon.resx">
       <DependentUpon>DevolverCupon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ListadoEstadistico.resx">
+      <DependentUpon>ListadoEstadistico.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ListadoUsuarios.resx">
       <DependentUpon>ListadoUsuarios.cs</DependentUpon>

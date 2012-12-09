@@ -14,7 +14,6 @@ namespace GrouponDesktop
     {
         string selectedRolName;
         List<String> funcionalidadesRol;
-        List<String> funcionalidadesDisponibles;
         HomeRoles home;
         Rol.Rol selectedRol;
 
@@ -25,23 +24,20 @@ namespace GrouponDesktop
             this.home = new HomeRoles();
             this.selectedRol = home.getRol(this.selectedRolName);
             
-            Rol.Rol adminRol = home.getRol("Administrador General");
-            this.funcionalidadesDisponibles = adminRol.getFuncionalidades();
-            if(!this.selectedRol.TipoUsuario.Contains("Administrador"))
-            this.funcionalidadesDisponibles.Remove("Simular Usuario");
+            
             this.fill();
             
         }
 
         public void fill()
         {
-           
+            this.selectedRol = home.getRol(this.selectedRolName);
             this.funcionalidadesRol = this.selectedRol.getFuncionalidades();
 
             this.textBox1.Text = this.selectedRolName;
             this.listBox1.DataSource = funcionalidadesRol;
-            this.listBox2.DataSource = funcionalidadesDisponibles;
-
+            if (this.selectedRol.TipoUsuario.Contains("Administrador"))
+                this.listBox2.Items.Add("Simular Usuario");
             this.checkBox1.Checked = this.selectedRol.estaHabilitado();
         }
 
@@ -49,9 +45,9 @@ namespace GrouponDesktop
         {
             foreach (String f in funcionalidadesRol)
             {
-                if (f.Equals(this.listBox2.SelectedValue.ToString())) return;
+                if (f.Equals(this.listBox2.Text)) return;
             }
-            this.home.addFuncionalidad(this.selectedRolName,this.listBox2.SelectedValue.ToString());
+            this.home.addFuncionalidad(this.selectedRolName,this.listBox2.Text);
             
             this.fill();
         }

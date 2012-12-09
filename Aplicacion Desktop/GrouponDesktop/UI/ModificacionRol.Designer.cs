@@ -71,6 +71,18 @@
             // listBox2
             // 
             this.listBox2.FormattingEnabled = true;
+            this.listBox2.Items.AddRange(new object[] {
+            "ABM Rol",
+            "ABM Usuario",
+            "Armar Cupon",
+            "Cargar Credito",
+            "Comprar Giftcard",
+            "Facturar Proveedor",
+            "Listado Estadistico",
+            "Pedir Devolucion",
+            "Publicar Cupones",
+            "Ver Cupones",
+            "Ver Historial"});
             this.listBox2.Location = new System.Drawing.Point(12, 232);
             this.listBox2.Name = "listBox2";
             this.listBox2.Size = new System.Drawing.Size(120, 95);
