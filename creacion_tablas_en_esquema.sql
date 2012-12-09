@@ -1511,7 +1511,7 @@ create procedure MR_ANDERSON.sp_comprar_cupon (@dni numeric(18), @codigo NVARCHA
                 set stock_disponible = stock_disponible - @cantidad
                 where codigo = @codigo
 
-            update MR_ANDERSON.Datos_Clientes saldo = saldo - (select precio* @cantidad from MR_ANDERSON.Cupones where codigo = @codigo) 
+            update MR_ANDERSON.Datos_Clientes set saldo = saldo - (select precio* @cantidad from MR_ANDERSON.Cupones where codigo = @codigo) 
                 where dni = @dni
         end
 GO
@@ -1833,7 +1833,7 @@ create procedure MR_ANDERSON.sp_buscador_proveedores (@provee_rs NVARCHAR(100), 
 GO
 
 
-alter procedure MR_ANDERSON.sp_existe_cuit (@provee_cuit NVARCHAR(20), @existe int output)
+create procedure MR_ANDERSON.sp_existe_cuit (@provee_cuit NVARCHAR(20), @existe int output)
     as
         begin
             if exists (select provee_cuit from MR_ANDERSON.Datos_Proveedores where provee_cuit = @provee_cuit)
@@ -1983,9 +1983,60 @@ create procedure MR_ANDERSON.sp_cambiar_password (@password NVARCHAR(255), @user
             if (select user_password from MR_ANDERSON.Login where username = @username) is null
                 begin
                     Update MR_ANDERSON.Login set user_password = @password where username = @username
+                end
+        end
+GO
+
+
+
+--Punto 15 Dale que termina!
+
+/*
+cantidad_vendidos
+cantidad_devueltos
+porcentaje_devueltos
+nombre_usuario
+*/
+
+create function MR_ANDERSON.fn_in_semester (@semestre int, @fecha DATETIME)
+
+    returns BIT
+
+    as
+        begin
+            if Month(@fecha) < 7 and @semestre = 1
+                begin
                     return 1
                 end
+
+            if Month(@fecha) > 6 and @semestre = 2
+                begin
+                    return 1
+                end
+
             return 0
         end
 GO
 
+create procedure MR_ANDERSON.sp_estadistico_devoluciones (@year numeric(4,0), @semestre int)
+    as
+        begin
+            select top 5 sum(Compras.cantidad) as 'comprados' , sum(case when Devoluciones.cantidad is null then 0 else Devoluciones.cantidad end ) as 'devueltos',
+                    sum(case when Devoluciones.cantidad is null then 0 else Devoluciones.cantidad end)*100/sum(Compras.cantidad), Proveedores.username
+                from MR_ANDERSON.Compras Compras
+
+                left join MR_ANDERSON.Devoluciones Devoluciones
+                    on   Compras.codigo = Devoluciones.codigo
+
+                join MR_ANDERSON.Cupones Cupones
+                    on   Compras.codigo = Cupones.codigo
+                
+                join MR_ANDERSON.Datos_Proveedores Proveedores
+                    on   Cupones.provee_cuit = Proveedores.provee_cuit
+
+            group by Proveedores.username, Compras.fecha
+
+            having YEAR(Compras.fecha) = @year and MR_ANDERSON.fn_in_semester(@semestre,Compras.fecha) = 1
+            order by sum(Compras.cantidad * Cupones.precio) desc
+        end
+GO

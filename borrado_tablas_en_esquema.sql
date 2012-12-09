@@ -10,6 +10,22 @@
 USE [GD2C2012]
 GO
 
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_existe_cuit]    Script Date: 12/09/2012 17:43:02 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_existe_cuit]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_existe_cuit]
+GO
+
+
+/****** Object:  UserDefinedFunction [MR_ANDERSON].[fn_in_semester]    Script Date: 12/09/2012 17:24:11 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[fn_in_semester]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [MR_ANDERSON].[fn_in_semester]
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_estadistico_devoluciones]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_estadistico_devoluciones]
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_cambiar_password]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [MR_ANDERSON].[sp_cambiar_password]
 GO
