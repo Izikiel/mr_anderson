@@ -25,10 +25,23 @@ namespace GrouponDesktop.DataAdapter
            reader.Close();
            spManager.Close();
 
+
            if (!resultado.Equals("LOGIN_OK"))
            {
                throw new Exception(resultado);
            }
+
+       }
+
+       public void setPasswordOldUser()
+       {
+           DataAccess.SPManager spManager = new GrouponDesktop.DataAccess.SPManager();
+           Dictionary<String, Object> parameters = new Dictionary<string, object>();
+           parameters.Add("username", this.userName);
+           parameters.Add("password", this.password);
+           spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_cambiar_password", parameters);
+           spManager.Close();
+
 
        }
 
