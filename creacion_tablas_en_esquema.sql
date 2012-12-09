@@ -2074,3 +2074,22 @@ create procedure MR_ANDERSON.sp_estadistico_usuarios (@year numeric(4,0), @semes
 
         end
 GO
+
+
+-- Desde sql: Hacer sp para guardar ciudades cupon
+
+
+create procedure MR_ANDERSON.sp_guardar_ciudades_cupon (@ciudad NVARCHAR(255), @codigo NVARCHAR(50))
+    as
+        begin
+            if not exists(select ciudad, codigo from MR_ANDERSON.Ciudades_Cupon where ciudad = @ciudad and codigo = @codigo)
+                begin
+                    if @codigo in (select codigo from MR_ANDERSON.Cupones)
+                        begin
+                            insert into MR_ANDERSON.Ciudades_Cupon(ciudad,codigo)
+                                values(@ciudad,@codigo)
+                        end
+                end
+
+        end
+GO
