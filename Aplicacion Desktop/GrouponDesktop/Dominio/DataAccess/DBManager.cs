@@ -24,7 +24,7 @@ namespace GrouponDesktop.DataAccess
                 connection = new SqlConnection(connectionString);
                 connection.Open();
             }
-            catch
+            catch(Exception e)
             {
                 throw new Exception("Error al querer abrir la DB");
             }
