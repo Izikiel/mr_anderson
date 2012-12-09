@@ -2021,8 +2021,9 @@ GO
 create procedure MR_ANDERSON.sp_estadistico_devoluciones (@year numeric(4,0), @semestre int)
     as
         begin
-            select top 5 sum(Compras.cantidad) as 'comprados' , sum(case when Devoluciones.cantidad is null then 0 else Devoluciones.cantidad end ) as 'devueltos',
-                    sum(case when Devoluciones.cantidad is null then 0 else Devoluciones.cantidad end)*100/sum(Compras.cantidad), Proveedores.username
+            select top 5 sum(Compras.cantidad) as 'vendidos' , sum(case when Devoluciones.cantidad is null then 0 else Devoluciones.cantidad end ) as 'devueltos',
+                    sum(case when Devoluciones.cantidad is null then 0 else Devoluciones.cantidad end)*100/sum(Compras.cantidad) as 'porcentaje_devueltos', 
+                    Proveedores.username
                 from MR_ANDERSON.Compras Compras
 
                 left join MR_ANDERSON.Devoluciones Devoluciones
