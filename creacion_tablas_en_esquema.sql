@@ -1676,16 +1676,6 @@ create procedure MR_ANDERSON.sp_agregar_cupon (@codigo NVARCHAR(50), @precio_rea
                                 @vencimiento_canje DATETIME, @fecha_publicacion DATETIME)
     as
         begin
-            declare @fecha_actual DATETIME
-
-            set @fecha_actual = (select GETDATE())
-            
-            if @fecha_publicacion < @fecha_actual or @vencimiento_canje < @fecha_actual or @vencimiento_oferta < @fecha_actual  
-                 begin
-                     RAISERROR('Error en las fechas!',13,1)
-                     return
-                 end 
-
             if @provee_cuit not in (select provee_cuit from MR_ANDERSON.Proveedores)
                 begin
                     RAISERROR('No existe el proveedor',13,1)
@@ -1770,13 +1760,10 @@ GO
 -- Punto 14
 
 
-create procedure MR_ANDERSON.sp_facturar_proveedor (@fecha_inicio DATETIME, @fecha_final DATETIME, @provee_cuit nvarchar(20), 
+create procedure MR_ANDERSON.sp_facturar_proveedor (@fecha_actual DATETIME, @fecha_inicio DATETIME, @fecha_final DATETIME, @provee_cuit nvarchar(20), 
             @nro_factura numeric(18,0) output, @importe_factura numeric(18,0) output)
     as
         begin
-            declare @fecha_actual DATETIME
-            set @fecha_actual = (select GETDATE())
-
             set @nro_factura = (select top 1 factura_nro from MR_ANDERSON.Factura order by factura_nro DESC) + 1
             set @importe_factura = (select SUM(CP.precio)
                                         from MR_ANDERSON.Consumos C
@@ -2093,3 +2080,5 @@ create procedure MR_ANDERSON.sp_guardar_ciudades_cupon (@ciudad NVARCHAR(255), @
 
         end
 GO
+
+-- 
