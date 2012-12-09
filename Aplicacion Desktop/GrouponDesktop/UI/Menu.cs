@@ -28,6 +28,11 @@ namespace GrouponDesktop
                     w.Show();
                     break;
                 case "Cargar Credito":
+                    if (this.loginWindow.UsuarioActivo.DatosCliente == null)
+                    {
+                        MessageBox.Show("Ingrese como un cliente");
+                        return;
+                    }
                     CargarCredito creditoWindow = new CargarCredito(loginWindow);
                     creditoWindow.Show();
                     break;
@@ -50,6 +55,11 @@ namespace GrouponDesktop
                     break;
                    
                 case "Comprar Giftcard":
+                    if (this.loginWindow.UsuarioActivo.DatosCliente == null)
+                    {
+                        MessageBox.Show("Ingrese como un cliente");
+                        return;
+                    }
                     ComprarGiftCard comprarGiftCard = new ComprarGiftCard(loginWindow);
                     comprarGiftCard.Show();
                     break;
@@ -58,6 +68,11 @@ namespace GrouponDesktop
                     comprarCupon.Show();
                     break;
                 case "Pedir Devolucion":
+                    if (this.loginWindow.UsuarioActivo.DatosCliente == null)
+                    {
+                        MessageBox.Show("Ingrese como un cliente");
+                        return;
+                    }
                     DevolverCupon devolverCupon = new DevolverCupon(loginWindow);
                     devolverCupon.Show();
                     break;
@@ -65,6 +80,11 @@ namespace GrouponDesktop
                     new SimularOtroUsuario(loginWindow).Show();
                     break;
                 case "Armar Cupon":
+                    if (this.loginWindow.UsuarioActivo.DatosProveedor == null)
+                    {
+                        MessageBox.Show("Ingrese como un proveedor");
+                        return;
+                    }
                     new ArmarCupon(loginWindow).Show();
                     break;
                 case "Registro Consumo":
@@ -76,7 +96,14 @@ namespace GrouponDesktop
                 case "Listado Estadistico":
                     new ListadoEstadistico().Show();
                     break;
-
+                case "Ver Historial":
+                    if (this.loginWindow.UsuarioActivo.DatosCliente == null)
+                    {
+                        MessageBox.Show("Ingrese como un cliente");
+                        return;
+                    }
+                    new ListadoHistorialCupones(loginWindow).Show();
+                    break;
             }
         }
 

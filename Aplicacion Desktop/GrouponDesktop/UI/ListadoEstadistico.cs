@@ -46,6 +46,7 @@ namespace GrouponDesktop.UI
         {
             if(!this.checkearDatosValidos()) return;
             
+            
             GrouponDesktop.Dominio.DataAdapter.ListadoEstadistico listado = new GrouponDesktop.Dominio.DataAdapter.ListadoEstadistico();
             
             switch (this.comboBox1.Text)
