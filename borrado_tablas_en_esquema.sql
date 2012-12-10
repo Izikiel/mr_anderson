@@ -10,6 +10,16 @@
 USE [GD2C2012]
 GO
 
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_facturar_proveedor_nfactura]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_facturar_proveedor_nfactura]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_factura_proveedor_importe]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_factura_proveedor_importe]
+GO
+
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_guardar_ciudades_cupon]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [MR_ANDERSON].[sp_guardar_ciudades_cupon]
 GO

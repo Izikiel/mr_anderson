@@ -1,5 +1,3 @@
-﻿
----Creacion de modelo de datos
 /* ---------------------------------------------------------------------- */
 /* Tables                                                                 */
 /* ---------------------------------------------------------------------- */
@@ -1279,7 +1277,7 @@ GO
 
 
 
-alter procedure MR_ANDERSON.sp_compra_giftcard (@cliente_origen NUMERIC(18), @cliente_destino NUMERIC(18),  
+create procedure MR_ANDERSON.sp_compra_giftcard (@cliente_origen NUMERIC(18), @cliente_destino NUMERIC(18),  
                                 @monto int, @fecha DATETIME, @result NVARCHAR(20) output)
     as
         begin
