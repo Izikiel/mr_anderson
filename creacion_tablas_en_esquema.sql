@@ -1760,17 +1760,11 @@ GO
 -- Punto 14
 
 
-create procedure MR_ANDERSON.sp_facturar_proveedor (@fecha_actual DATETIME, @fecha_inicio DATETIME, @fecha_final DATETIME, @provee_cuit nvarchar(20), 
-            @nro_factura numeric(18,0) output, @importe_factura numeric(18,0) output)
+create procedure MR_ANDERSON.sp_facturar_proveedor (@fecha_actual DATETIME, @fecha_inicio DATETIME, @fecha_final DATETIME, @provee_cuit nvarchar(20))
     as
         begin
+            declare @nro_factura numeric(18,0)
             set @nro_factura = (select top 1 factura_nro from MR_ANDERSON.Factura order by factura_nro DESC) + 1
-            set @importe_factura = (select SUM(CP.precio)
-                                        from MR_ANDERSON.Consumos C
-                                        join MR_ANDERSON.Cupones CP
-                                            on   C.codigo = CP.codigo
-                                        where CP.provee_cuit = @provee_cuit
-                                        and C.fecha_consumo >= @fecha_inicio and C.fecha_consumo <= @fecha_final)
 
             if exists(select COUNT(C.codigo), @nro_factura, C.codigo
                                                                     from MR_ANDERSON.Consumos C
@@ -1807,6 +1801,31 @@ create procedure MR_ANDERSON.sp_facturar_proveedor (@fecha_actual DATETIME, @fec
 
         end
 
+GO
+
+create procedure MR_ANDERSON.sp_facturar_proveedor_nfactura (@fecha_actual DATETIME, @fecha_inicio DATETIME, @fecha_final DATETIME, @provee_cuit nvarchar(20), 
+                                @nro_factura numeric(18,0) output)
+    as
+        begin
+            set @nro_factura = (select top 1 factura_nro from MR_ANDERSON.Factura order by factura_nro DESC) + 1
+            return @nro_factura
+            
+        end
+GO
+
+create procedure MR_ANDERSON.sp_factura_proveedor_importe (@fecha_actual DATETIME, @fecha_inicio DATETIME, @fecha_final DATETIME, @provee_cuit nvarchar(20),
+                                    @importe_factura numeric(18,0) output)
+    as
+        begin
+                    set @importe_factura = (select SUM(CP.precio)
+                                        from MR_ANDERSON.Consumos C
+                                        join MR_ANDERSON.Cupones CP
+                                            on   C.codigo = CP.codigo
+                                        where CP.provee_cuit = @provee_cuit
+                                        and C.fecha_consumo >= @fecha_inicio and C.fecha_consumo <= @fecha_final)
+                    return @importe_factura
+            
+        end
 GO
 
 -- generar sp para buscadores
