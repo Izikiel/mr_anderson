@@ -274,7 +274,8 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
     CREATE TABLE [Consumos] (
         [fecha_consumo] DATETIME NOT NULL,
         [codigo] NVARCHAR(50),
-        [dni] NUMERIC(18)
+        [dni] NUMERIC(18),
+        [facturado] bit
     )
     
 
@@ -642,6 +643,8 @@ begin tran trn_inserts_tablas
                     on   master.Cli_Dni = Cliente.dni
                 
                 where master.Groupon_Entregado_Fecha is not null
+
+        update MR_ANDERSON.Consumos set facturado = 1
 
         insert into MR_ANDERSON.Factura(factura_nro,factura_fecha,provee_cuit)
 
@@ -1591,7 +1594,7 @@ create procedure MR_ANDERSON.sp_registra_consumo_cupon (@fecha_actual DATETIME,@
                 return 
             end
 
-            insert into MR_ANDERSON.Consumos VALUES (@fecha_actual, @cod_cupon, @dni_cliente)
+            insert into MR_ANDERSON.Consumos VALUES (@fecha_actual, @cod_cupon, @dni_cliente, 0)
             delete MR_ANDERSON.Compras where MR_ANDERSON.Compras.dni = @dni_cliente and MR_ANDERSON.Compras.codigo = @cod_cupon
 
         end
@@ -1775,6 +1778,7 @@ create procedure MR_ANDERSON.sp_facturar_proveedor (@fecha_actual DATETIME, @fec
                                                                         on   C.codigo = CP.codigo
                                                                     where CP.provee_cuit = @provee_cuit
                                                                         and C.fecha_consumo >= @fecha_inicio and C.fecha_consumo <= @fecha_final
+                                                                        and C.facturado = 0
                                                                     group by C.codigo, CP.provee_cuit)
             begin
                     insert into MR_ANDERSON.Factura VALUES (@nro_factura, @fecha_actual, @provee_cuit)
@@ -1784,6 +1788,7 @@ create procedure MR_ANDERSON.sp_facturar_proveedor (@fecha_actual DATETIME, @fec
                                                                                 on   C.codigo = CP.codigo
                                                                             where CP.provee_cuit = @provee_cuit
                                                                                 and C.fecha_consumo >= @fecha_inicio and C.fecha_consumo <= @fecha_final
+                                                                                and C.facturado = 0
                                                                             group by C.codigo, CP.provee_cuit
 
                     select C.codigo, COUNT(C.codigo) as Cantidad
@@ -1792,13 +1797,23 @@ create procedure MR_ANDERSON.sp_facturar_proveedor (@fecha_actual DATETIME, @fec
                             on   C.codigo = CP.codigo
                         where CP.provee_cuit = @provee_cuit
                         and C.fecha_consumo >= @fecha_inicio and C.fecha_consumo <= @fecha_final
+                        and C.facturado = 0
                         group by C.codigo, CP.provee_cuit
+
+                     update MR_ANDERSON.Consumos set MR_ANDERSON.Consumos.facturado = 1
+                                                from MR_ANDERSON.Consumos
+                                                 join MR_ANDERSON.Cupones
+                                                    on   MR_ANDERSON.Consumos.codigo = MR_ANDERSON.Cupones.codigo
+                                                    where MR_ANDERSON.Cupones.provee_cuit = @provee_cuit
+                                                    and MR_ANDERSON.Consumos.fecha_consumo >= @fecha_inicio and MR_ANDERSON.Consumos.fecha_consumo <= @fecha_final
+                                                    and MR_ANDERSON.Consumos.facturado = 0
+
 
             end
 
             else 
                 begin
-                    RAISERROR('No se encontraron cupones',13,1)
+                    RAISERROR('No se encontraron cupones a facturar',13,1)
                     return
                 end
 
@@ -1826,7 +1841,8 @@ create procedure MR_ANDERSON.sp_factura_proveedor_importe (@fecha_actual DATETIM
                                         join MR_ANDERSON.Cupones CP
                                             on   C.codigo = CP.codigo
                                         where CP.provee_cuit = @provee_cuit
-                                        and C.fecha_consumo >= @fecha_inicio and C.fecha_consumo <= @fecha_final)
+                                        and C.fecha_consumo >= @fecha_inicio and C.fecha_consumo <= @fecha_final
+                                        and C.facturado = 0)
                     return @importe_factura
             
         end
