@@ -71,7 +71,8 @@ namespace GrouponDesktop.UI
         private void button1_Click(object sender, EventArgs e)
         {
             String codigoCupon = (String)dataGridView1["Codigo del Cupon", rowSelectedIndex].Value;
-            cupones.publicar(codigoCupon);
+            String result = cupones.publicar(codigoCupon);
+            MessageBox.Show(result);
 
         }
         int rowSelectedIndex = 0;

@@ -124,6 +124,12 @@
     <Compile Include="UI\DevolverCupon.Designer.cs">
       <DependentUpon>DevolverCupon.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\FacturarProveedor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FacturarProveedor.Designer.cs">
+      <DependentUpon>FacturarProveedor.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\ListadoEstadistico.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -241,6 +247,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\DevolverCupon.resx">
       <DependentUpon>DevolverCupon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FacturarProveedor.resx">
+      <DependentUpon>FacturarProveedor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ListadoEstadistico.resx">
       <DependentUpon>ListadoEstadistico.cs</DependentUpon>

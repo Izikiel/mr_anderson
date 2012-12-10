@@ -90,11 +90,14 @@ namespace GrouponDesktop
                 case "Registro Consumo":
                     new RegistroConsumo(loginWindow).Show();
                     break;
-                case "Publicar Cupon":
-            //        new PublicarCupon(loginWindow).Show();
+                case "Publicar Cupones":
+                    new PublicarCupon().Show();
                     break;
                 case "Listado Estadistico":
                     new ListadoEstadistico().Show();
+                    break;
+                case "Facturar Proveedor":
+                    new FacturarProveedor().Show();
                     break;
                 case "Ver Historial":
                     if (this.loginWindow.UsuarioActivo.DatosCliente == null)

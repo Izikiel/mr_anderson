@@ -125,14 +125,21 @@ namespace GrouponDesktop.User
 
             using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_get_datos_cliente", param))
             {
-                reader.Read();
-                datosCliente.Apellido = (string)reader["apellido"];
-                datosCliente.Nombre = (string)reader["nombre"];
-                datosCliente.Saldo = Convert.ToInt32(reader["saldo"]);
-                datosCliente.Telefono = Convert.ToString(reader["telefono"]);
-                datosCliente.Mail = (string)reader["mail"];
-                datosCliente.FechaNac = Convert.ToString(reader["fecha_nac"]);
-                datosCliente.Dni = Convert.ToString(reader["dni"]);
+                try
+                {
+                    reader.Read();
+                    datosCliente.Apellido = (string)reader["apellido"];
+                    datosCliente.Nombre = (string)reader["nombre"];
+                    datosCliente.Saldo = Convert.ToInt32(reader["saldo"]);
+                    datosCliente.Telefono = Convert.ToString(reader["telefono"]);
+                    datosCliente.Mail = (string)reader["mail"];
+                    datosCliente.FechaNac = Convert.ToString(reader["fecha_nac"]);
+                    datosCliente.Dni = Convert.ToString(reader["dni"]);
+                }
+                catch
+                {
+                    datosCliente = null;
+                }
             }
             spManager.Close();
             return datosCliente;

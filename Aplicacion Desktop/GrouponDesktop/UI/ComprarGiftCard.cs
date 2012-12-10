@@ -42,6 +42,15 @@ namespace GrouponDesktop
                 else MessageBox.Show("Su saldo no es suficiente");
                 return;
             }
+            User.DatosCliente clienteDestino = usuarios.getDatosCliente(TxtBoxUsuarioDestino.Text);
+
+            String result = Dominio.DataAdapter.GiftCard.comprarGiftCard(login.UsuarioActivo.DatosCliente.Dni,
+                clienteDestino.Dni, Int32.Parse(TxtBoxMontoGift.Text), AdministradorConfiguracion.obtenerFecha());
+            MessageBox.Show(result);
+
+            /*
+create procedure MR_ANDERSON.sp_compra_giftcard (@cliente_origen NUMERIC(18), @cliente_destino NUMERIC(18),  
+                                @monto int, @fecha DATETIME, @result NVARCHAR(20))*/
             //Do SP
         }
 

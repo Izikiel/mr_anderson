@@ -30,9 +30,9 @@ namespace GrouponDesktop.Dominio
             return funcionesCupones.comprarCupones(dni, codigo, cantidad, AdministradorConfiguracion.obtenerFecha());
         }
 
-        public void publicar(String codigoCupon)
+        public String publicar(String codigoCupon)
         {
-            funcionesCupones.publicarCupon(codigoCupon);
+            return funcionesCupones.publicarCupon(codigoCupon);
         }
 
         public string devolver(String dni, String codigo, DateTime fecha, String motivo, String idCompra)
@@ -46,6 +46,10 @@ namespace GrouponDesktop.Dominio
     public class Cupon
     {
         String cuponCodigo;
+        public Cupon()
+        {
+            ciudades = new List<string>();
+        }
         public String CuponCodigo
         {
             get { return cuponCodigo; }
@@ -115,7 +119,12 @@ namespace GrouponDesktop.Dominio
             get { return cuitProveedor; }
             set { cuitProveedor = value; }
         }
-
+        List<String> ciudades;
+        public List<String> Ciudades
+        {
+            get { return ciudades; }
+            set { ciudades = value; }
+        }
         
 
 

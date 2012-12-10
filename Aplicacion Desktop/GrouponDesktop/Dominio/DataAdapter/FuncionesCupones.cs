@@ -25,6 +25,7 @@ namespace GrouponDesktop.Dominio.DataAdapter
                     Cupon cupon = new Cupon();
                     cupon.CuponCodigo = ((String)reader["codigo"]).Trim();
                     cupon.Descripcion = ((String)reader["descripcion"]).Trim();
+                    cupon.PrecioReal = Double.Parse(((Decimal)reader["precio"]).ToString());
                     cupones.Add(cupon);
                 }
                 reader.Close();
@@ -112,7 +113,7 @@ namespace GrouponDesktop.Dominio.DataAdapter
         private String generarCodigoCupon()
         {
             String strToEncrypt = cupon.Descripcion.ToString() + cupon.FechaVencimiento.ToString()
-                 + AdministradorConfiguracion.obtenerFecha().ToShortDateString() + new Random(DateTime.Now.Second);
+                 + AdministradorConfiguracion.obtenerFecha().ToShortDateString() + new Random(DateTime.Now.Second).Next();
             strToEncrypt = Utilidades.SHA256Encrypt(strToEncrypt);
             strToEncrypt = strToEncrypt.Substring(0, 12);
             return strToEncrypt.ToUpper();
@@ -136,7 +137,7 @@ namespace GrouponDesktop.Dominio.DataAdapter
             param.Add("precio_fict", cupon.PrecioFicticio);
             param.Add("cantidad_x_usuario", cupon.CantidadMaximaPorUsuario);
             param.Add("descripcion", cupon.Descripcion);
-            param.Add("stock_disponible", cupon.Stock);
+            param.Add("stock_disponible", cupon.CantidadDisponible);
             param.Add("provee_cuit", cupon.CuitProveedor);
             param.Add("vencimiento_oferta", cupon.FechaFinalizacionOferta);
             param.Add("vencimiento_canje", cupon.FechaVencimiento);
@@ -149,6 +150,13 @@ namespace GrouponDesktop.Dominio.DataAdapter
             {
                 spManager.Close();
                 return "Ocurrio un error cuando se quizo crear el cupon";
+            }
+            foreach(String ciudad in cupon.Ciudades)
+            {                
+                param = new Dictionary<string, object>();
+                param.Add("ciudad", ciudad);
+                param.Add("codigo", cupon.CuponCodigo);
+                spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_guardar_ciudades_cupon", param);
             }
             spManager.Close();
             return "Se creó correctamente el cupón";

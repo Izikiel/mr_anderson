@@ -1,4 +1,4 @@
-
+﻿
 ---Creacion de modelo de datos
 /* ---------------------------------------------------------------------- */
 /* Tables                                                                 */
@@ -1276,8 +1276,8 @@ GO
 
 
 
-create procedure MR_ANDERSON.sp_compra_giftcard (@cliente_origen NUMERIC(18), @cliente_destino NUMERIC(18),  
-                                @monto int, @fecha DATETIME, @result NVARCHAR(20))
+alter procedure MR_ANDERSON.sp_compra_giftcard (@cliente_origen NUMERIC(18), @cliente_destino NUMERIC(18),  
+                                @monto int, @fecha DATETIME, @result NVARCHAR(20) output)
     as
         begin
             
@@ -1469,7 +1469,7 @@ GO
 create procedure MR_ANDERSON.sp_ver_cupones_habilitados (@dni numeric(18), @fecha DATETIME )
     as
         begin
-            select Cupones.codigo, Cupones.descripcion 
+            select Cupones.codigo, Cupones.descripcion, Cupones.precio 
                 from MR_ANDERSON.Cupones Cupones
 
                 join MR_ANDERSON.Ciudades_Cupon Ciudades_Cupon
@@ -1676,7 +1676,7 @@ create procedure MR_ANDERSON.sp_agregar_cupon (@codigo NVARCHAR(50), @precio_rea
                                 @vencimiento_canje DATETIME, @fecha_publicacion DATETIME)
     as
         begin
-            if @provee_cuit not in (select provee_cuit from MR_ANDERSON.Proveedores)
+            if @provee_cuit not in (select provee_cuit from MR_ANDERSON.Datos_Proveedores)
                 begin
                     RAISERROR('No existe el proveedor',13,1)
                     return
@@ -1704,9 +1704,10 @@ begin tran insertar_funcionalidades
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Proveedor',@Funcionalidad = 'Registro Consumo'
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Proveedor',@Funcionalidad = 'Publicar Cupon'
 
+
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Proveedor',@Funcionalidad = 'Facturar Proveedor'
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'ABM Rol'
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'ABM Usuario'
-    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'Facturar Proveedor'
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'Publicar Cupones'
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'Cargar Credito'
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'Comprar GiftCard'
@@ -1760,7 +1761,9 @@ GO
 -- Punto 14
 
 
+
 create procedure MR_ANDERSON.sp_facturar_proveedor (@fecha_actual DATETIME, @fecha_inicio DATETIME, @fecha_final DATETIME, @provee_cuit nvarchar(20))
+
     as
         begin
             declare @nro_factura numeric(18,0)
@@ -1799,12 +1802,13 @@ create procedure MR_ANDERSON.sp_facturar_proveedor (@fecha_actual DATETIME, @fec
                     return
                 end
 
+            return
         end
 
 GO
 
 create procedure MR_ANDERSON.sp_facturar_proveedor_nfactura (@fecha_actual DATETIME, @fecha_inicio DATETIME, @fecha_final DATETIME, @provee_cuit nvarchar(20), 
-                                @nro_factura numeric(18,0) output)
+                                @nro_factura numeric(18,0) output, @importe_factura numeric(18,0) output)
     as
         begin
             set @nro_factura = (select top 1 factura_nro from MR_ANDERSON.Factura order by factura_nro DESC) + 1
@@ -1814,7 +1818,7 @@ create procedure MR_ANDERSON.sp_facturar_proveedor_nfactura (@fecha_actual DATET
 GO
 
 create procedure MR_ANDERSON.sp_factura_proveedor_importe (@fecha_actual DATETIME, @fecha_inicio DATETIME, @fecha_final DATETIME, @provee_cuit nvarchar(20),
-                                    @importe_factura numeric(18,0) output)
+                                    @importe_factura numeric(18,0) output, @nro_factura numeric(18,0) output)
     as
         begin
                     set @importe_factura = (select SUM(CP.precio)

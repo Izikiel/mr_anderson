@@ -33,7 +33,7 @@ namespace GrouponDesktop
             cupones = new Dominio.Cupones();
 
             List<Dominio.Cupon> cuponesList = cupones.obtenerCuponesEnFecha(login.UsuarioActivo.DatosCliente.Dni, AdministradorConfiguracion.obtenerFecha());
-            
+
             foreach (Dominio.Cupon cupon in cuponesList)
             {
                 bindingSource1.Add(cupon);
@@ -50,6 +50,12 @@ namespace GrouponDesktop
             column = new DataGridViewTextBoxColumn();
             column.DataPropertyName = "Descripcion";
             column.Name = "Descripcion";
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DataGrid_Cupones.Columns.Add(column);
+            
+            column = new DataGridViewTextBoxColumn();
+            column.DataPropertyName = "PrecioReal";
+            column.Name = "Precio";
             column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
             DataGrid_Cupones.Columns.Add(column);
