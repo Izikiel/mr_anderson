@@ -1772,23 +1772,39 @@ create procedure MR_ANDERSON.sp_facturar_proveedor (@fecha_actual DATETIME, @fec
                                         where CP.provee_cuit = @provee_cuit
                                         and C.fecha_consumo >= @fecha_inicio and C.fecha_consumo <= @fecha_final)
 
-            insert into MR_ANDERSON.Factura VALUES (@nro_factura, @fecha_actual, @provee_cuit)
-
-            insert into MR_ANDERSON.Factura_Renglon select COUNT(C.codigo), @nro_factura, C.codigo
+            if exists(select COUNT(C.codigo), @nro_factura, C.codigo
                                                                     from MR_ANDERSON.Consumos C
                                                                     join MR_ANDERSON.Cupones CP
                                                                         on   C.codigo = CP.codigo
                                                                     where CP.provee_cuit = @provee_cuit
                                                                         and C.fecha_consumo >= @fecha_inicio and C.fecha_consumo <= @fecha_final
-                                                                    group by C.codigo, CP.provee_cuit
+                                                                    group by C.codigo, CP.provee_cuit)
+            begin
+                    insert into MR_ANDERSON.Factura VALUES (@nro_factura, @fecha_actual, @provee_cuit)
+                    insert into MR_ANDERSON.Factura_Renglon select COUNT(C.codigo), @nro_factura, C.codigo
+                                                                            from MR_ANDERSON.Consumos C
+                                                                            join MR_ANDERSON.Cupones CP
+                                                                                on   C.codigo = CP.codigo
+                                                                            where CP.provee_cuit = @provee_cuit
+                                                                                and C.fecha_consumo >= @fecha_inicio and C.fecha_consumo <= @fecha_final
+                                                                            group by C.codigo, CP.provee_cuit
 
-            select C.codigo, COUNT(C.codigo) as Cantidad
-                from MR_ANDERSON.Consumos C
-                join MR_ANDERSON.Cupones CP
-                    on   C.codigo = CP.codigo
-                where CP.provee_cuit = @provee_cuit
-                and C.fecha_consumo >= @fecha_inicio and C.fecha_consumo <= @fecha_final
-                group by C.codigo, CP.provee_cuit
+                    select C.codigo, COUNT(C.codigo) as Cantidad
+                        from MR_ANDERSON.Consumos C
+                        join MR_ANDERSON.Cupones CP
+                            on   C.codigo = CP.codigo
+                        where CP.provee_cuit = @provee_cuit
+                        and C.fecha_consumo >= @fecha_inicio and C.fecha_consumo <= @fecha_final
+                        group by C.codigo, CP.provee_cuit
+
+            end
+
+            else 
+                begin
+                    RAISERROR('No se encontraron cupones',13,1)
+                    return
+                end
+
         end
 
 GO
