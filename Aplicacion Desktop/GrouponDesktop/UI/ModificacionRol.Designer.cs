@@ -81,7 +81,7 @@
             "Listado Estadistico",
             "Pedir Devolucion",
             "Publicar Cupones",
-            "Ver Cupones",
+            "Comprar Cupon",
             "Ver Historial"});
             this.listBox2.Location = new System.Drawing.Point(12, 232);
             this.listBox2.Name = "listBox2";

@@ -154,9 +154,9 @@
             this.checkBoxVerCupones.Enabled = false;
             this.checkBoxVerCupones.Location = new System.Drawing.Point(204, 196);
             this.checkBoxVerCupones.Name = "checkBoxVerCupones";
-            this.checkBoxVerCupones.Size = new System.Drawing.Size(87, 17);
+            this.checkBoxVerCupones.Size = new System.Drawing.Size(99, 17);
             this.checkBoxVerCupones.TabIndex = 9;
-            this.checkBoxVerCupones.Text = "Ver Cupones";
+            this.checkBoxVerCupones.Text = "Comprar Cupon";
             this.checkBoxVerCupones.UseVisualStyleBackColor = true;
             this.checkBoxVerCupones.CheckedChanged += new System.EventHandler(this.allCheckBoxes_CheckedChanged);
             // 
