@@ -64,6 +64,11 @@ namespace GrouponDesktop
                     comprarGiftCard.Show();
                     break;
                 case "Comprar Cupon":
+                    if (this.loginWindow.UsuarioActivo.DatosCliente == null)
+                    {
+                        MessageBox.Show("Ingrese como un cliente");
+                        return;
+                    }
                     ComprarCupon comprarCupon = new ComprarCupon(loginWindow);
                     comprarCupon.Show();
                     break;
