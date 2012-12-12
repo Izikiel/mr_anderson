@@ -17,6 +17,22 @@ namespace GrouponDesktop.UI
         public ListadoEstadistico()
         {
             InitializeComponent();
+            this.label_descripcion.Text = "";
+        }
+
+        private void top5Changed(object sender, EventArgs e)
+        {
+            this.label_descripcion.Text = "";
+
+            switch (this.comboBox1.Text)
+            {
+                case "Devolucion Cupones":
+                    this.label_descripcion.Text = "Muestra los primeros cinco\nprovedores con mayor\nporcentaje de cupones devueltos.";
+                    break;
+                case "Acreditacion GiftCards":
+                    this.label_descripcion.Text = "Muestra los primeros cinco\nclientes con mayor cantidad\nde Giftcards acreditadas.";
+                    break;
+            } 
         }
 
         private Boolean checkearDatosValidos()

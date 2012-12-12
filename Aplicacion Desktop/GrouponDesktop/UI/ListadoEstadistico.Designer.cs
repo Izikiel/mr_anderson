@@ -38,6 +38,7 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.label_descripcion = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -114,15 +115,16 @@
             this.comboBox1.Items.AddRange(new object[] {
             "Devolucion Cupones",
             "Acreditacion GiftCards"});
-            this.comboBox1.Location = new System.Drawing.Point(131, 58);
+            this.comboBox1.Location = new System.Drawing.Point(93, 59);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 7;
+            this.comboBox1.SelectedValueChanged += new System.EventHandler(this.top5Changed);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(75, 61);
+            this.label3.Location = new System.Drawing.Point(37, 62);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(35, 13);
             this.label3.TabIndex = 8;
@@ -137,11 +139,21 @@
             this.label4.TabIndex = 9;
             this.label4.Text = "Formato AAAA";
             // 
+            // label_descripcion
+            // 
+            this.label_descripcion.AutoSize = true;
+            this.label_descripcion.Location = new System.Drawing.Point(235, 59);
+            this.label_descripcion.Name = "label_descripcion";
+            this.label_descripcion.Size = new System.Drawing.Size(63, 13);
+            this.label_descripcion.TabIndex = 10;
+            this.label_descripcion.Text = "Descripcion";
+            // 
             // ListadoEstadistico
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(394, 344);
+            this.Controls.Add(this.label_descripcion);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.comboBox1);
@@ -172,5 +184,6 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label_descripcion;
     }
 }
