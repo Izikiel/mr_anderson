@@ -68,7 +68,8 @@ GO
 create procedure MR_ANDERSON.sp_get_roles_para_tipo (@tipo varchar(100))
 	as
 		begin
-			select rol from MR_ANDERSON.Rol_Tipo
+			select rt.rol, r.Habilitado from MR_ANDERSON.Rol_Tipo rt
+			join MR_ANDERSON.Roles r on r.Rol = rt.Rol
 			where tipo = @tipo
 			
 		end

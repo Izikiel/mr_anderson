@@ -84,6 +84,7 @@ namespace GrouponDesktop.Rol
 
                 while (reader.Read())
                 {
+                    if(Convert.ToByte(reader["Habilitado"]) == 1)
                     listaRoles.Add((string)reader["Rol"]);
                 }
             }
