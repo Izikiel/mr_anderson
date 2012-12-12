@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using GrouponDesktop.Cupones;
 using GrouponDesktop.User;
 using GrouponDesktop.DataAdapter;
+using GrouponDesktop.Rol;
 
 namespace GrouponDesktop.UI
 {
@@ -18,6 +19,7 @@ namespace GrouponDesktop.UI
         List<String> ciudadesOriginales = new List<string>();
         HomeCiudades homeCiudades = new HomeCiudades();
         HomeUsuarios homeUsr = new HomeUsuarios();
+        HomeRoles homeRol = new HomeRoles();
         User.User clienteSeleccionado = new User.User();
         Boolean modificarCiudades = false;
         
@@ -29,12 +31,14 @@ namespace GrouponDesktop.UI
             l.UserName = username;
             this.clienteSeleccionado = homeUsr.getUsuario(l);
             homeUsr.setInformacionAlUsuario(this.clienteSeleccionado);
+            this.comboBox1.DataSource = this.homeRol.getRolesParaTipo(this.clienteSeleccionado.Rol.TipoUsuario);
             this.fill();
         }
 
         private void fill()
         {
             this.ciudadesSeleccionadas.AddRange(homeCiudades.getCiudadesUsuario(clienteSeleccionado.DatosCliente.Dni));
+            this.comboBox1.Text = this.clienteSeleccionado.Rol.Nombre;
             this.ciudadesOriginales.AddRange(ciudadesSeleccionadas);
             this.listBox1.DataSource = ciudadesSeleccionadas;
             this.listBox2.DataSource = homeCiudades.getCiudades();

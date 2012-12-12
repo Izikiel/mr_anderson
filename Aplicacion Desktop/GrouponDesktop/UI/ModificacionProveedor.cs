@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using GrouponDesktop.Cupones;
 using GrouponDesktop.User;
 using GrouponDesktop.DataAdapter;
+using GrouponDesktop.Rol;
 
 namespace GrouponDesktop.UI
 {
@@ -16,6 +17,7 @@ namespace GrouponDesktop.UI
     {
         HomeCiudades homeCiudades = new HomeCiudades();
         HomeUsuarios homeUsr = new HomeUsuarios();
+        HomeRoles homeRol = new HomeRoles();
         User.User proveedorSeleccionado = new User.User();
 
         public ModificacionProveedor(String username)
@@ -24,11 +26,14 @@ namespace GrouponDesktop.UI
             Login login = new Login();
             login.UserName = username;
             this.proveedorSeleccionado = homeUsr.getProveedor(login);
+            this.comboBox1.DataSource = this.homeRol.getRolesParaTipo(this.proveedorSeleccionado.Rol.TipoUsuario);
             this.fill();
         }
 
         private void fill()
         {
+            this.comboBox1.Text = this.proveedorSeleccionado.Rol.Nombre;
+
             this.checkBox1.Checked = this.proveedorSeleccionado.DatosLogin.Habilitado;
 
             this.textBox4.Text = this.proveedorSeleccionado.DatosProveedor.Cuit;
