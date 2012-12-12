@@ -112,6 +112,9 @@ namespace GrouponDesktop
                     }
                     new ListadoHistorialCupones(loginWindow).Show();
                     break;
+                case "Cambiar Password":
+                    new CambiarPassword(loginWindow).Show();
+                    break;
             }
         }
 

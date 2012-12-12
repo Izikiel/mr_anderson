@@ -1699,10 +1699,12 @@ begin tran insertar_funcionalidades
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Cliente',@Funcionalidad = 'Cargar Credito'
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Cliente',@Funcionalidad = 'Comprar GiftCard'
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Cliente',@Funcionalidad = 'Comprar Cupon'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Cliente',@Funcionalidad = 'Cambiar Password'
 
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Proveedor',@Funcionalidad = 'Armar Cupon'
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Proveedor',@Funcionalidad = 'Registro Consumo'
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Proveedor',@Funcionalidad = 'Publicar Cupon'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Proveedor',@Funcionalidad = 'Cambiar Password'
 
 
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Proveedor',@Funcionalidad = 'Facturar Proveedor'
@@ -1713,7 +1715,7 @@ begin tran insertar_funcionalidades
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'Comprar GiftCard'
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'Comprar Cupon'
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'Simular Usuario'
-
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador',@Funcionalidad = 'Cambiar Password'
 
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Cargar Credito'
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Comprar Giftcard'
@@ -1727,6 +1729,7 @@ begin tran insertar_funcionalidades
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Facturar Proveedor'
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Publicar Cupones'
     exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Simular Usuario'
+    exec MR_ANDERSON.sp_add_func_rol @nombre_rol = 'Administrador General',@Funcionalidad = 'Cambiar Password'
 commit tran insertar_funcionalidades
 GO
 
@@ -2019,10 +2022,9 @@ GO
 create procedure MR_ANDERSON.sp_cambiar_password (@password NVARCHAR(255), @username NVARCHAR(100))
     as
         begin
-            if (select user_password from MR_ANDERSON.Login where username = @username) is null
-                begin
+            
                     Update MR_ANDERSON.Login set user_password = @password where username = @username
-                end
+                
         end
 GO
 

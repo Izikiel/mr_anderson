@@ -83,7 +83,7 @@ namespace GrouponDesktop
                 boton.Click += new EventHandler(this.buttonClicked);
                 menu.Controls.Add(boton);
                 i = i + 35;
-                if (i > 35 * 5)
+                if (i > 35 * 6)
                 {
                     i = 0;
                     j = j + 110;

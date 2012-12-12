@@ -68,6 +68,7 @@ namespace GrouponDesktop
                 return;
             }
 
+            funcionalidades.Add("Cambiar Password");
             
             Rol.Rol unRol = new Rol.Rol();
             try

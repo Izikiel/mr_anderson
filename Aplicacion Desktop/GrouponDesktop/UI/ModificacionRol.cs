@@ -55,6 +55,7 @@ namespace GrouponDesktop
         private void button1_Click(object sender, EventArgs e)
         {
             if (funcionalidadesRol.Count() == 1) return;
+            if(this.listBox1.SelectedValue.Equals("Cambiar Password")) return;
             
             this.home.deleteFuncionalidad(this.selectedRolName, this.listBox1.SelectedValue.ToString());
             this.fill();

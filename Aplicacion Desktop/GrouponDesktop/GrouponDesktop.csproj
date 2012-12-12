@@ -85,6 +85,12 @@
     <Compile Include="UI\ArmarCupon.Designer.cs">
       <DependentUpon>ArmarCupon.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\CambiarPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\CambiarPassword.Designer.cs">
+      <DependentUpon>CambiarPassword.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\CargarCredito.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -229,6 +235,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ArmarCupon.resx">
       <DependentUpon>ArmarCupon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\CambiarPassword.resx">
+      <DependentUpon>CambiarPassword.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\CargarCredito.resx">
       <DependentUpon>CargarCredito.cs</DependentUpon>
