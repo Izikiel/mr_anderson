@@ -1214,6 +1214,19 @@ create procedure MR_ANDERSON.sp_cargar_credito (@monto int, @dni NUMERIC(18),
                         begin
                             if @tipo_pago != 'EFECTIVO'
                                 begin
+
+                                    if @fecha > @fecha_vencimiento
+                                        begin
+                                            set @result = 'Tarjeta Vencida!'
+                                            return
+                                        end
+
+                                    if @fecha < @fecha_emision
+                                        begin
+                                            set @result = 'Tarjeta no emitida! Error!'
+                                            return
+                                        end
+                                        
                                     declare @res BIT
                                     
                                     exec MR_ANDERSON.sp_agregar_tarjeta @dni = @dni,
@@ -1462,7 +1475,7 @@ create procedure MR_ANDERSON.historial_compra (@dni numeric(18,0), @fecha_inicio
                     on   Compras.id_compra = D.id_compra
                 
                 where Compras.dni = @dni and D.fecha_devolucion >= @fecha_inicio and D.fecha_devolucion <= @fecha_final
-                
+
             order by Estado
         end
 GO
