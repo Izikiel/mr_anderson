@@ -428,7 +428,7 @@ begin tran trn_inserts_tablas
 			
 		-- Insertamos el administrador a la tabla de Login (pass: gdadmin2012)	
 		insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,Habilitado,Rol,Tipo) 
-			VALUES('administrador','914B8A5A8AD525437A7723C688AED4E72E7F7893184BF087C6E91C93E102891B',NULL,0,1,'Administrador General','Administrador')
+			VALUES('admin','e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7',NULL,0,1,'Administrador General','Administrador')
 		
 		-- Insertamos los datos de los clientes al Login
         insert into MR_ANDERSON.Login(username,user_password,last_login,intentos_fallidos,Habilitado,Rol,Tipo)
