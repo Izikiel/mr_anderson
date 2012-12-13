@@ -1264,6 +1264,12 @@ create procedure MR_ANDERSON.sp_compra_giftcard (@cliente_origen NUMERIC(18), @c
     as
         begin
             
+            if @monto > (select saldo from MR_ANDERSON.Datos_Clientes where dni = @cliente_origen)
+                begin
+                    set @result = 'saldo insuficiente'
+                    return
+                end
+
             if @cliente_origen = @cliente_destino
                 begin
                     set @result = 'origen=destino'
