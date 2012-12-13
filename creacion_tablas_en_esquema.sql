@@ -1506,8 +1506,7 @@ create procedure MR_ANDERSON.sp_comprar_cupon (@dni numeric(18), @codigo NVARCHA
             insert into MR_ANDERSON.Compras(dni,fecha,codigo)
                 VALUES(@dni,@fecha_compra,@codigo)
 
-            set @id_compra = (select top 1 id_compra from MR_ANDERSON.Compras where codigo = @codigo and dni = @dni 
-                                                                        order by id_compra desc)
+            set @id_compra = (select max(id_compra) from MR_ANDERSON.Compras where codigo = @codigo and dni = @dni)
               
         end
 GO
@@ -1538,7 +1537,8 @@ create procedure MR_ANDERSON.sp_pedir_devolucion (@dni numeric(18),@fecha_devolu
             update MR_ANDERSON.Datos_Clientes
                 set saldo = saldo + (select precio from MR_ANDERSON.Cupones Cupones
 									join MR_ANDERSON.Compras Compras
-									on Cupones.codigo = Compras.codigo and Compras.id_compra = @id_compra)
+									on Cupones.codigo = Compras.codigo 
+                                    where Compras.id_compra = @id_compra)
                 where dni = @dni
 
             update MR_ANDERSON.Cupones
