@@ -55,6 +55,7 @@ namespace GrouponDesktop.UI
             Dominio.DataAdapter.CuponArmado cuponArmado = new GrouponDesktop.Dominio.DataAdapter.CuponArmado(cupon);
             String result = cuponArmado.guardar();
             MessageBox.Show(result);
+            this.Close();
         }
 
         private bool checkearTextBoxs()
