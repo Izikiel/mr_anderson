@@ -1763,38 +1763,46 @@ create procedure MR_ANDERSON.sp_facturar_proveedor (@fecha_actual DATETIME, @fec
             declare @nro_factura numeric(18,0)
             set @nro_factura = (select top 1 factura_nro from MR_ANDERSON.Factura order by factura_nro DESC) + 1
 
-            if exists(select COUNT(C.codigo), @nro_factura, C.codigo
+            if exists(select COUNT(CPR.codigo), @nro_factura, CPR.codigo
                                                                     from MR_ANDERSON.Consumos C
+                                                                    join MR_ANDERSON.Compras CPR
+                                                                        on C.id_compra = CPR.id_compra
                                                                     join MR_ANDERSON.Cupones CP
-                                                                        on   C.codigo = CP.codigo
+                                                                        on   CPR.codigo = CP.codigo
                                                                     where CP.provee_cuit = @provee_cuit
                                                                         and C.fecha_consumo >= @fecha_inicio and C.fecha_consumo <= @fecha_final
                                                                         and C.facturado = 0
-                                                                    group by C.codigo, CP.provee_cuit)
+                                                                    group by CPR.codigo, CP.provee_cuit)
             begin
                     insert into MR_ANDERSON.Factura VALUES (@nro_factura, @fecha_actual, @provee_cuit)
-                    insert into MR_ANDERSON.Factura_Renglon select COUNT(C.codigo), @nro_factura, C.codigo
+                    insert into MR_ANDERSON.Factura_Renglon select COUNT(CPR.codigo), @nro_factura, CPR.codigo
                                                                             from MR_ANDERSON.Consumos C
+                                                                           join MR_ANDERSON.Compras CPR
+                                                                                on C.id_compra = CPR.id_compra
                                                                             join MR_ANDERSON.Cupones CP
-                                                                                on   C.codigo = CP.codigo
+                                                                                on   CPR.codigo = CP.codigo
                                                                             where CP.provee_cuit = @provee_cuit
                                                                                 and C.fecha_consumo >= @fecha_inicio and C.fecha_consumo <= @fecha_final
                                                                                 and C.facturado = 0
-                                                                            group by C.codigo, CP.provee_cuit
+                                                                            group by CPR.codigo, CP.provee_cuit
 
-                    select C.codigo, COUNT(C.codigo) as Cantidad
+                    select CPR.codigo, COUNT(CPR.codigo) as Cantidad
                         from MR_ANDERSON.Consumos C
+                        join MR_ANDERSON.Compras CPR
+                            on C.id_compra = CPR.id_compra
                         join MR_ANDERSON.Cupones CP
-                            on   C.codigo = CP.codigo
+                            on   CPR.codigo = CP.codigo
                         where CP.provee_cuit = @provee_cuit
                         and C.fecha_consumo >= @fecha_inicio and C.fecha_consumo <= @fecha_final
                         and C.facturado = 0
-                        group by C.codigo, CP.provee_cuit
+                        group by CPR.codigo, CP.provee_cuit
 
                      update MR_ANDERSON.Consumos set MR_ANDERSON.Consumos.facturado = 1
                                                 from MR_ANDERSON.Consumos
-                                                 join MR_ANDERSON.Cupones
-                                                    on   MR_ANDERSON.Consumos.codigo = MR_ANDERSON.Cupones.codigo
+                                                    join MR_ANDERSON.Compras
+                                                        on MR_ANDERSON.Consumos.id_compra = MR_ANDERSON.Compras.id_compra
+                                                    join MR_ANDERSON.Cupones
+                                                        on   MR_ANDERSON.Compras.codigo = MR_ANDERSON.Cupones.codigo
                                                     where MR_ANDERSON.Cupones.provee_cuit = @provee_cuit
                                                     and MR_ANDERSON.Consumos.fecha_consumo >= @fecha_inicio and MR_ANDERSON.Consumos.fecha_consumo <= @fecha_final
                                                     and MR_ANDERSON.Consumos.facturado = 0
@@ -1829,8 +1837,10 @@ create procedure MR_ANDERSON.sp_factura_proveedor_importe (@fecha_actual DATETIM
         begin
                     set @importe_factura = (select SUM(CP.precio)
                                         from MR_ANDERSON.Consumos C
+                                        join MR_ANDERSON.Compras CPR
+                                            on C.id_compra = CPR.id_compra
                                         join MR_ANDERSON.Cupones CP
-                                            on   C.codigo = CP.codigo
+                                            on   CPR.codigo = CP.codigo
                                         where CP.provee_cuit = @provee_cuit
                                         and C.fecha_consumo >= @fecha_inicio and C.fecha_consumo <= @fecha_final
                                         and C.facturado = 0)
