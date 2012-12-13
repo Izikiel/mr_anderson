@@ -100,19 +100,24 @@ namespace GrouponDesktop.Rol
 
             Dictionary<String, Object> param = new Dictionary<string, object>();
             param.Add("nombre_rol", unRol.getNombreRol());
-            param.Add("tipo", unRol.TipoUsuario);
+
+            SqlTransaction tran = spManager.DbManager.Connection.BeginTransaction();
 
             try
             {
 
-                spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_new_rol", param);
+                spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_new_rol", param,tran);
+                param.Add("tipo", unRol.TipoUsuario);
+                spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_new_rol_tipo", param,tran);
             }
             catch (Exception e)
             {
+                tran.Rollback();
                 spManager.Close();
                 throw new Exception("No se pudo dar de alta al rol. Motivo: " + e.ToString());
             }
 
+            tran.Commit();
             spManager.Close();
 
             Dictionary<String, Object> param_funcs = new Dictionary<string, object>();

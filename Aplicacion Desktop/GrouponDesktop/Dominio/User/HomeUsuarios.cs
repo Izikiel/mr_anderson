@@ -35,7 +35,7 @@ namespace GrouponDesktop.User
             else usuario.DatosLogin.Habilitado = false;
             spManagerLogin.Close();
 
-                
+
             return usuario;
         }
         /// <summary>
@@ -95,7 +95,6 @@ namespace GrouponDesktop.User
         }
 
         public void setDatosUsuarioAlUsuario(User usuario)
-
         {
             if (usuario.Rol.TipoUsuario == "Cliente")
             {
@@ -193,10 +192,10 @@ namespace GrouponDesktop.User
                 usuario.DatosProveedor.RazonSocial = (string)reader["provee_rs"];
                 usuario.DatosProveedor.Telefono = Convert.ToString(reader["provee_telefono"]);
                 usuario.DatosProveedor.Rubro = (string)reader["provee_rubro"];
-                if(!Convert.IsDBNull(reader["nombre_contacto"]))
+                if (!Convert.IsDBNull(reader["nombre_contacto"]))
                     usuario.DatosProveedor.NombreContacto = (string)reader["nombre_contacto"];
                 if (!Convert.IsDBNull(reader["provee_email"]))
-                usuario.DatosProveedor.Mail = (string)reader["provee_email"];
+                    usuario.DatosProveedor.Mail = (string)reader["provee_email"];
 
             }
             spManager.Close();
@@ -211,7 +210,7 @@ namespace GrouponDesktop.User
             usuario.DatosCliente.Saldo = 100;
         }
 
-     
+
 
         public List<UserStringContainer> getNombreUsuarios(String tipo)
         {//retorna los usuarios de un tipo
@@ -245,10 +244,10 @@ namespace GrouponDesktop.User
 
             Dictionary<String, Object> param = new Dictionary<String, Object>();
             param.Add("tipo", tipo);
-            if(filtro1 != null) param.Add("filtro1", "%" + filtro1 + "%");
-            if(filtro2 != null) param.Add("filtro2", "%" + filtro2 + "%");
-            if(filtro3 != null) param.Add("filtro3", "%" + filtro3 + "%");
-            if(filtro4 != null) param.Add("filtro4", "%" + filtro4 + "%");
+            if (filtro1 != null) param.Add("filtro1", "%" + filtro1 + "%");
+            if (filtro2 != null) param.Add("filtro2", "%" + filtro2 + "%");
+            if (filtro3 != null) param.Add("filtro3", "%" + filtro3 + "%");
+            if (filtro4 != null) param.Add("filtro4", "%" + filtro4 + "%");
 
             using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_get_usrs_filtrados", param))
             {
@@ -263,7 +262,7 @@ namespace GrouponDesktop.User
             spManager.Close();
             return usuarios;
 
-            
+
         }
 
         ////PERSISTENCIA////
@@ -286,11 +285,12 @@ namespace GrouponDesktop.User
 
             DataAccess.SPManager spManager = new DataAccess.SPManager();
 
-            if(usuario.DatosCliente != null){
+            if (usuario.DatosCliente != null)
+            {
                 Dictionary<String, Object> param_user = new Dictionary<String, Object>();
-                
+
                 param_user.Add("dni_sended", usuario.DatosCliente.Dni);
-                param_user.Add("apellido_sended",usuario.DatosCliente.Apellido);
+                param_user.Add("apellido_sended", usuario.DatosCliente.Apellido);
                 param_user.Add("telefono_sended", usuario.DatosCliente.Telefono);
                 param_user.Add("mail_sended", usuario.DatosCliente.Mail);
                 param_user.Add("fecha_nac_sended", usuario.DatosCliente.FechaNac);
@@ -304,7 +304,7 @@ namespace GrouponDesktop.User
                 {
                     throw new Exception(resultado);
                 }
-                
+
 
                 DataAccess.SPManager spManager3 = new DataAccess.SPManager();
 
@@ -314,11 +314,13 @@ namespace GrouponDesktop.User
                     Dictionary<String, Object> param_ciudades = new Dictionary<string, object>();
                     param_ciudades.Add("ciudad", c);
                     param_ciudades.Add("dni", usuario.DatosCliente.Dni);
-                    spManager3.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_add_ciudad_user",param_ciudades);
+                    spManager3.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_add_ciudad_user", param_ciudades);
                 }
 
                 spManager3.Close();
-            }else{
+            }
+            else
+            {
                 Dictionary<String, Object> param_prov = new Dictionary<String, Object>();
                 param_prov.Add("provee_cuit_sended", usuario.DatosProveedor.Cuit);
                 param_prov.Add("provee_rs_sended", usuario.DatosProveedor.RazonSocial);
@@ -329,17 +331,17 @@ namespace GrouponDesktop.User
                 param_prov.Add("provee_email_sended", usuario.DatosProveedor.Mail);
                 param_prov.Add("result output", "");
                 SqlCommand command_prov;
-                spManager.executeSPWithParameters("MR_ANDERSON.sp_insert_proveedor", param_prov,out command_prov);
+                spManager.executeSPWithParameters("MR_ANDERSON.sp_insert_proveedor", param_prov, out command_prov);
                 String resultado_prov = command_prov.Parameters["@result"].Value.ToString();
                 if (!resultado_prov.Equals("PROV_REG_OK"))
                 {
-                    throw new Exception(resultado_prov); 
+                    throw new Exception(resultado_prov);
                 }
 
             }
             spManager.Close();
-            
-            
+
+
 
             DataAccess.SPManager spManager4 = new DataAccess.SPManager();
 
@@ -354,7 +356,7 @@ namespace GrouponDesktop.User
             param_direccion.Add("result output", "");
 
             SqlCommand command2;
-            spManager4.executeSPWithParameters("MR_ANDERSON.sp_insert_direccion",param_direccion, out command2);
+            spManager4.executeSPWithParameters("MR_ANDERSON.sp_insert_direccion", param_direccion, out command2);
 
             String resultado2 = command2.Parameters["@result"].Value.ToString();
             if (!resultado2.Equals("OK"))
@@ -364,7 +366,7 @@ namespace GrouponDesktop.User
 
             spManager4.Close();
 
-         
+
         }
 
         public void modificarRol(String nombreViejo, String nombreNuevo)
@@ -373,7 +375,7 @@ namespace GrouponDesktop.User
             Dictionary<String, Object> param = new Dictionary<string, object>();
             param.Add("nombre_rol", nombreViejo);
             param.Add("nuevo_nombre_rol", nombreNuevo);
-            spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_change_rol_name_a_usuarios", param);
+            spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_modificar_rol_usr", param);
             spManager.Close();
         }
 
@@ -427,10 +429,10 @@ namespace GrouponDesktop.User
         public void modificarDatosCliente(User clienteViejo, User clienteNuevo)
         {
             DataAccess.SPManager spManager = new DataAccess.SPManager();
-            
+
 
             Dictionary<String, Object> param = new Dictionary<String, Object>();
-            param.Add("nombre_sended",clienteNuevo.DatosCliente.Nombre);
+            param.Add("nombre_sended", clienteNuevo.DatosCliente.Nombre);
             param.Add("dni_sended", clienteNuevo.DatosCliente.Dni);
             param.Add("apellido_sended", clienteNuevo.DatosCliente.Apellido);
             param.Add("telefono_sended", clienteNuevo.DatosCliente.Telefono);
@@ -439,7 +441,7 @@ namespace GrouponDesktop.User
             param.Add("username_sended", clienteViejo.DatosLogin.UserName);
             param.Add("result output", "");
             SqlCommand cmd = new SqlCommand();
-            spManager.executeSPWithParameters("MR_ANDERSON.sp_modify_client", param,out cmd);
+            spManager.executeSPWithParameters("MR_ANDERSON.sp_modify_client", param, out cmd);
             string resultado = (string)cmd.Parameters["@result"].Value;
             spManager.Close();
 
@@ -447,8 +449,8 @@ namespace GrouponDesktop.User
             {
                 throw new Exception(resultado);
             }
-            
-            
+
+
         }
 
         public void modificarDireccion(String username, Direccion dir)
@@ -464,17 +466,19 @@ namespace GrouponDesktop.User
             param.Add("localidad", dir.Localidad);
             param.Add("codigo_postal", dir.CodigoPostal);
             SqlCommand cmd = new SqlCommand();
-            try{
+            try
+            {
                 spManager.executeSPWithParameters("MR_ANDERSON.sp_modify_direccion", param);
-            
-            spManager.Close();
 
-        }
-            catch(Exception e){
+                spManager.Close();
+
+            }
+            catch (Exception e)
+            {
                 spManager.Close();
                 throw new Exception(e.ToString());
             }
-            
+
 
         }
 
@@ -484,9 +488,10 @@ namespace GrouponDesktop.User
             Dictionary<String, Object> param = new Dictionary<String, Object>();
             param.Add("dni", Convert.ToInt32(dni));
             SqlCommand cmd = new SqlCommand();
-            
-            
-            foreach(String c in ciudades){
+
+
+            foreach (String c in ciudades)
+            {
 
                 try
                 {
@@ -496,24 +501,25 @@ namespace GrouponDesktop.User
                     param.Remove("ciudad_a_borrar");
                     spManager.Close();
                 }
-                catch (Exception )
+                catch (Exception)
                 {
                     ok = false;
-                    
+
                 }
-                
+
             }
 
-            if (!ok) {
+            if (!ok)
+            {
                 throw new Exception("Fallo al eliminar ciudades");
             }
-            
+
         }
 
         public void agregarCiudadesACliente(String dni, List<String> ciudades)
         {
             Boolean ok = true;
-            
+
 
             Dictionary<String, Object> param = new Dictionary<String, Object>();
             param.Add("dni", Convert.ToInt32(dni));
@@ -523,13 +529,13 @@ namespace GrouponDesktop.User
             foreach (String c in ciudades)
             {
                 DataAccess.SPManager spManager = new DataAccess.SPManager();
-                    param.Add("ciudad", c);
-                    spManager.executeSPWithParameters("MR_ANDERSON.sp_agregar_ciudad", param, out cmd);
-                    string resultado = (string)cmd.Parameters["@result"].Value;
-                    param.Remove("ciudad");
-                    if (!resultado.Equals("OK")) ok = false;
-                    spManager.Close();
-                
+                param.Add("ciudad", c);
+                spManager.executeSPWithParameters("MR_ANDERSON.sp_agregar_ciudad", param, out cmd);
+                string resultado = (string)cmd.Parameters["@result"].Value;
+                param.Remove("ciudad");
+                if (!resultado.Equals("OK")) ok = false;
+                spManager.Close();
+
             }
 
             if (!ok)
@@ -540,7 +546,7 @@ namespace GrouponDesktop.User
         }
 
         public void modificarCliente(User clienteViejo, User clienteNuevo,
-            List<String> ciudadesOriginales, List<String> ciudadesSeleccionadas, Boolean modificarCiudades,Boolean habilitado)
+            List<String> ciudadesOriginales, List<String> ciudadesSeleccionadas, Boolean modificarCiudades, Boolean habilitado)
         {
             DataAccess.SPManager spManager = new DataAccess.SPManager();
             SqlTransaction tran = spManager.DbManager.Connection.BeginTransaction();
@@ -592,7 +598,7 @@ namespace GrouponDesktop.User
             }
         }
 
-        public void modificarProveedor(User provViejo , User provNuevo,Boolean habilitado)
+        public void modificarProveedor(User provViejo, User provNuevo, Boolean habilitado)
         {
             DataAccess.SPManager spManager = new DataAccess.SPManager();
             SqlTransaction tran = spManager.DbManager.Connection.BeginTransaction();
@@ -613,7 +619,7 @@ namespace GrouponDesktop.User
             spManager.Close();
         }
 
-        
+
         ////VALIDACIONES////
         public Boolean usuarioNoExistente(String nombre)
         {
@@ -624,7 +630,7 @@ namespace GrouponDesktop.User
             param.Add("result output", "");
             SqlCommand command;
 
-            SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_nombre_usuario_no_existente", param,out command);
+            SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_nombre_usuario_no_existente", param, out command);
             if (command.Parameters["@result"].Value.ToString().Equals("0"))
             {
                 reader.Close();
@@ -634,8 +640,8 @@ namespace GrouponDesktop.User
             reader.Close();
             spManager.Close();
             return true;
-            
-            
+
+
         }
     }
 }

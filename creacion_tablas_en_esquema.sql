@@ -726,8 +726,22 @@ GO
 create procedure MR_ANDERSON.sp_new_rol (@nombre_rol NVARCHAR(255))
     as
         begin
-            insert into MR_ANDERSON.Roles(Rol,Habilitado)
-                VALUES(@nombre_rol, 1)
+            if @nombre_rol not in (select Rol from MR_ANDERSON.Roles)
+                begin
+                    insert into MR_ANDERSON.Roles(Rol,Habilitado)
+                        VALUES(@nombre_rol, 1)
+                end
+        end
+GO
+
+create procedure MR_ANDERSON.sp_new_rol_tipo (@nombre_rol NVARCHAR(255), @tipo NVARCHAR(100))
+    as
+        begin
+            if not exists(select Rol, Tipo from Rol_Tipo where Rol = @nombre_rol and Tipo = @tipo)
+                begin
+                    insert into MR_ANDERSON.Rol_Tipo(Rol,Tipo)
+                        values(@nombre_rol, @tipo)
+                end
         end
 GO
 
@@ -776,6 +790,14 @@ create procedure MR_ANDERSON.sp_change_rol_name (@nombre_rol NVARCHAR(255), @nue
             update MR_ANDERSON.Roles
                 set Rol = @nuevo_nombre_rol
                 where Rol = @nombre_rol
+        end
+GO
+
+create procedure MR_ANDERSON.sp_change_rol_name_a_usuarios (@nombre_viejo NVARCHAR(255), @nombre_nuevo variable_type1, 
+                                @variable_name2 variable_type2 output)
+    as
+        begin
+            
         end
 GO
 
@@ -1226,7 +1248,7 @@ create procedure MR_ANDERSON.sp_cargar_credito (@monto int, @dni NUMERIC(18),
                                             set @result = 'Tarjeta no emitida! Error!'
                                             return
                                         end
-                                        
+
                                     declare @res BIT
                                     
                                     exec MR_ANDERSON.sp_agregar_tarjeta @dni = @dni,
@@ -1963,12 +1985,12 @@ create procedure MR_ANDERSON.sp_get_roles_para_tipo (@tipo varchar(100))
 GO
 
 --modify rol de usuario
-create procedure MR_ANDERSON.sp_modificar_rol_usr (@nombre_rol nvarchar(255),@nombre_antiguo NVARCHAR(255))
+create procedure MR_ANDERSON.sp_modificar_rol_usr (@nombre_rol nvarchar(255),@nuevo_nombre_rol NVARCHAR(255))
     as
         begin
             update MR_ANDERSON.Login
-                set rol = @nombre_rol
-                where rol = @nombre_antiguo
+                set rol = @nuevo_nombre_rol
+                where rol = @nombre_rol
         end
 GO
 

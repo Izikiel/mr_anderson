@@ -106,5 +106,28 @@ namespace GrouponDesktop.DataAccess
                 throw e;
             }
         }
+
+        public void executeSPWithParametersWithOutReturn(String spName, Dictionary<String, Object> parameters,
+                                                         SqlTransaction tran )
+        {
+            SqlConnection conn = dbManager.Connection;
+            SqlDataReader rdr = null;
+            try
+            {
+                SqlCommand cmd = new SqlCommand(spName, conn,tran);
+                cmd.CommandType = CommandType.StoredProcedure;
+                foreach (String paramKey in parameters.Keys)
+                {
+                    cmd.Parameters.Add(new SqlParameter("@" + paramKey, parameters[paramKey]));
+                }
+                rdr = cmd.ExecuteReader();
+                rdr.Close();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
     }
 }
