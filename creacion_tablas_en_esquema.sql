@@ -1474,40 +1474,41 @@ create procedure MR_ANDERSON.sp_ver_cupones_habilitados (@dni numeric(18), @fech
 GO
 
 create procedure MR_ANDERSON.sp_comprar_cupon (@dni numeric(18), @codigo NVARCHAR(50), 
-                                @cantidad numeric(10,0),@fecha_compra DATETIME)
+                                1 numeric(10,0),@fecha_compra DATETIME, @id_compra numeric output)
     as
         begin
-            if (select stock_disponible from MR_ANDERSON.Cupones where codigo = @codigo) < @cantidad
+            if (select stock_disponible from MR_ANDERSON.Cupones where codigo = @codigo) < 1
                 begin
                     RAISERROR('No hay stock para la cantidad pedida',13,1)
                     return
                 end
 
             if (select saldo from MR_ANDERSON.Datos_Clientes where dni = @dni) <
-                (select precio * @cantidad from MR_ANDERSON.Cupones where codigo = @codigo)
+                (select precio * 1 from MR_ANDERSON.Cupones where codigo = @codigo)
                 begin
                     RAISERROR('Saldo insuficiente',13,1)
                     return
                 end
 
-            if (select cantidad_x_usuario from MR_ANDERSON.Cupones where codigo = @codigo) < @cantidad
+            if (select cantidad_x_usuario from MR_ANDERSON.Cupones where codigo = @codigo) < 1
                 begin
                     RAISERROR('Excede cantidad maxima para el usuario',13,1)
                     return
                 end
 
             update MR_ANDERSON.Cupones
-                set stock_disponible = stock_disponible - @cantidad
+                set stock_disponible = stock_disponible - 1
                 where codigo = @codigo
 
-            update MR_ANDERSON.Datos_Clientes set saldo = saldo - (select precio* @cantidad from MR_ANDERSON.Cupones where codigo = @codigo) 
+            update MR_ANDERSON.Datos_Clientes set saldo = saldo - (select precio * 1 from MR_ANDERSON.Cupones where codigo = @codigo) 
                 where dni = @dni
             
-            while @cantidad > 0
-                begin
-                    insert into MR_ANDERSON.Compras(dni,fecha,codigo)
-                      VALUES(@dni,@fecha_compra,@codigo)
-                end
+            insert into MR_ANDERSON.Compras(dni,fecha,codigo)
+                VALUES(@dni,@fecha_compra,@codigo)
+
+            set @id_compra = (select top 1 id_compra from MR_ANDERSON.Compras where codigo = @codigo and dni = @dni 
+                                                                        order by id_compra desc)
+              
         end
 GO
 
