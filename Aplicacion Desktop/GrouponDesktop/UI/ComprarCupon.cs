@@ -65,7 +65,7 @@ namespace GrouponDesktop
         private void Btn_Comprar_Click(object sender, EventArgs e)
         {
             String codigoCupon = (String) DataGrid_Cupones["Codigo del Cupon",rowSelectedIndex].Value;
-            String msg = cupones.comprarCupones(login.UsuarioActivo.DatosCliente.Dni, codigoCupon, (int)Numeric_CantidadCupones.Value);
+            String msg = cupones.comprarCupones(login.UsuarioActivo.DatosCliente.Dni, codigoCupon);
             MessageBox.Show(msg);
         }
 

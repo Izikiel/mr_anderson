@@ -49,10 +49,7 @@ namespace GrouponDesktop
             usuarios.setInformacionAlUsuario(login.UsuarioActivo);
             MessageBox.Show(result);
             this.Close();
-            /*
-create procedure MR_ANDERSON.sp_compra_giftcard (@cliente_origen NUMERIC(18), @cliente_destino NUMERIC(18),  
-                                @monto int, @fecha DATETIME, @result NVARCHAR(20))*/
-            //Do SP
+
         }
 
 

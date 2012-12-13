@@ -33,18 +33,22 @@ namespace GrouponDesktop.Dominio.DataAdapter
             return cupones;
         }
 
-        public string comprarCupones(String dni, String codigo, int cantidad, DateTime fecha)
+        public string comprarCupones(String dni, String codigo, DateTime fecha)
         {
             DataAccess.SPManager spManager = new GrouponDesktop.DataAccess.SPManager();
+            String id_compra = "";
             Dictionary<String, Object> parameters = new Dictionary<string, object>();
             parameters.Add("dni", Int32.Parse(dni));
             parameters.Add("codigo", codigo);
-            parameters.Add("cantidad", cantidad);
             parameters.Add("fecha_compra", fecha);
+            parameters.Add("id_compra output", "");
+            SqlCommand command;
             try
             {
-                spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_comprar_cupon", parameters);
-                return "Compra exitosa";
+                SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_comprar_cupon", parameters, out command);
+                id_compra = command.Parameters["@id_compra"].Value.ToString();
+                reader.Close();
+                return "Compra exitosa. Numero compra: " + id_compra + " Promoción: " + codigo;
             }
             catch (Exception e)
             {

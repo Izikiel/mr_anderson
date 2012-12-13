@@ -25,9 +25,9 @@ namespace GrouponDesktop.Dominio
             
         }
 
-        public String comprarCupones(String dni, String codigo, int cantidad)
+        public String comprarCupones(String dni, String codigo)
         {
-            return funcionesCupones.comprarCupones(dni, codigo, cantidad, AdministradorConfiguracion.obtenerFecha());
+            return funcionesCupones.comprarCupones(dni, codigo, AdministradorConfiguracion.obtenerFecha());
         }
 
         public String publicar(String codigoCupon)
