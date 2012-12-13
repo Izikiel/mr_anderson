@@ -442,21 +442,6 @@ ALTER TABLE [MR_ANDERSON].[Compras] DROP CONSTRAINT [Cupones_Compras]
 GO
 
 
-ALTER TABLE [MR_ANDERSON].[Devoluciones] DROP CONSTRAINT [Datos_Clientes_Devoluciones]
-GO
-
-
-ALTER TABLE [MR_ANDERSON].[Devoluciones] DROP CONSTRAINT [Cupones_Devoluciones]
-GO
-
-
-ALTER TABLE [MR_ANDERSON].[Consumos] DROP CONSTRAINT [Cupones_Consumos]
-GO
-
-
-ALTER TABLE [MR_ANDERSON].[Consumos] DROP CONSTRAINT [Datos_Clientes_Consumos]
-GO
-
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[Codigo_Ciudad]') AND parent_object_id = OBJECT_ID(N'[MR_ANDERSON].[Ciudades_Cupon]'))
 ALTER TABLE [MR_ANDERSON].[Ciudades_Cupon] DROP CONSTRAINT [Codigo_Ciudad]
 GO
@@ -566,11 +551,6 @@ GO
 /* ---------------------------------------------------------------------- */
 /* Drop table "Datos_Tarjeta"                                             */
 /* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [MR_ANDERSON].[Datos_Tarjeta] DROP CONSTRAINT 
-GO
 
 
 /* Drop table */

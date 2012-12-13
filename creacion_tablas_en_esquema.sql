@@ -241,7 +241,6 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
 
     CREATE TABLE [Compras] (
         [dni] NUMERIC NOT NULL,
-        [cantidad] NUMERIC(10) NOT NULL,
         [fecha] DATETIME NOT NULL,
         [id_compra] NUMERIC IDENTITY(0,1) NOT NULL,
         [codigo] NVARCHAR(50),
@@ -256,11 +255,8 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
 
     CREATE TABLE [Devoluciones] (
         [fecha_devolucion] DATETIME NOT NULL,
-        [dni] NUMERIC(18) NOT NULL,
-        [codigo] NVARCHAR(50) NOT NULL,
         [motivo] NVARCHAR(255),
-        [id_compra] NUMERIC NOT NULL,
-        [cantidad] NUMERIC(10) NOT NULL
+        [id_compra] NUMERIC NOT NULL
     )
     
 
@@ -271,8 +267,7 @@ CREATE SCHEMA [MR_ANDERSON] AUTHORIZATION [gd]
 
     CREATE TABLE [Consumos] (
         [fecha_consumo] DATETIME NOT NULL,
-        [codigo] NVARCHAR(50),
-        [dni] NUMERIC(18),
+        [id_compra] NUMERIC NOT NULL,
         [facturado] bit
     )
     
@@ -285,10 +280,6 @@ GO
 
     ALTER TABLE [MR_ANDERSON].[Ciudades_Cupon] ADD CONSTRAINT [Codigo_Ciudad]
         FOREIGN KEY ([codigo]) REFERENCES [MR_ANDERSON].[Cupones] ([codigo])
-    GO
-
-    ALTER TABLE [MR_ANDERSON].[Devoluciones] ADD CONSTRAINT [Compras_Devoluciones]
-        FOREIGN KEY ([id_compra]) REFERENCES [MR_ANDERSON].[Compras] ([id_compra])
     GO
 
     ALTER TABLE [MR_ANDERSON].[Datos_Clientes] ADD CONSTRAINT [Login_Datos_Clientes] 
@@ -387,25 +378,14 @@ GO
         FOREIGN KEY ([codigo]) REFERENCES [MR_ANDERSON].[Cupones] ([codigo])
     GO
 
-
-    ALTER TABLE [MR_ANDERSON].[Devoluciones] ADD CONSTRAINT [Datos_Clientes_Devoluciones] 
-        FOREIGN KEY ([dni]) REFERENCES [MR_ANDERSON].[Datos_Clientes] ([dni]) on update cascade;
+    ALTER TABLE [MR_ANDERSON].[Devoluciones] ADD CONSTRAINT [Compras_Devoluciones]
+        FOREIGN KEY ([id_compra]) REFERENCES [MR_ANDERSON].[Compras] ([id_compra])
     GO
 
-
-    ALTER TABLE [MR_ANDERSON].[Devoluciones] ADD CONSTRAINT [Cupones_Devoluciones] 
-        FOREIGN KEY ([codigo]) REFERENCES [MR_ANDERSON].[Cupones] ([codigo])
+    ALTER TABLE [MR_ANDERSON].[Consumos] ADD CONSTRAINT [Compras_Consumos] 
+        FOREIGN KEY ([id_compra]) REFERENCES [MR_ANDERSON].[Compras] ([id_compra])
     GO
 
-
-    ALTER TABLE [MR_ANDERSON].[Consumos] ADD CONSTRAINT [Cupones_Consumos] 
-        FOREIGN KEY ([codigo]) REFERENCES [MR_ANDERSON].[Cupones] ([codigo])
-    GO
-
-
-    ALTER TABLE [MR_ANDERSON].[Consumos] ADD CONSTRAINT [Datos_Clientes_Consumos] 
-        FOREIGN KEY ([dni]) REFERENCES [MR_ANDERSON].[Datos_Clientes] ([dni]) on update cascade;
-    GO
 GO
 
 --Migracion de Datos 
@@ -559,9 +539,9 @@ begin tran trn_inserts_tablas
 
                 having master.Groupon_Fecha is not null
 
-        insert into MR_ANDERSON.Compras(dni,cantidad,fecha,codigo)
+        insert into MR_ANDERSON.Compras(dni,fecha,codigo)
 
-            select  master.Cli_Dni, 1, master.Groupon_Fecha_Compra, master.Groupon_Codigo
+            select  master.Cli_Dni, master.Groupon_Fecha_Compra, master.Groupon_Codigo
                 from gd_esquema.Maestra master
                 
                 join MR_ANDERSON.Datos_Clientes Clientes
@@ -575,9 +555,9 @@ begin tran trn_inserts_tablas
                 group by master.Cli_Dni, master.Groupon_Fecha_Compra,
                     master.Groupon_Codigo
 
-        insert into MR_ANDERSON.Devoluciones(fecha_devolucion,dni,codigo,motivo, cantidad, id_compra)
+        insert into MR_ANDERSON.Devoluciones(fecha_devolucion,motivo, id_compra)
 
-            select master.Groupon_Devolucion_Fecha, master.Cli_Dni, master.Groupon_Codigo, NULL, 1,
+            select master.Groupon_Devolucion_Fecha, NULL,
                 (select id_compra 
                     from MR_ANDERSON.Compras C 
                     where master.Cli_Dni = C.dni and master.Groupon_Codigo = C.codigo
@@ -596,11 +576,15 @@ begin tran trn_inserts_tablas
 
         Merge into MR_ANDERSON.Cupones
             using(
-                    select Cupones.Codigo as codigo, sum(Devoluciones.cantidad) as stock    
+                    select count(Cupones.Codigo) as stock, Cupones.codigo    
                 from MR_ANDERSON.Devoluciones
 
-                 join MR_ANDERSON.Cupones Cupones
-                    on   Devoluciones.codigo = Cupones.codigo
+                 join MR_ANDERSON.Compras Compras
+                    on   Devoluciones.id_compra = Compras.id_compra
+
+                join MR_ANDERSON.Cupones Cupones
+                    on   Compras.codigo = Cupones.codigo
+                
                     
                  group by Cupones.codigo
                  ) as source
@@ -614,7 +598,7 @@ begin tran trn_inserts_tablas
 
         Merge into MR_ANDERSON.Cupones
             using(
-                    select Cupones.Codigo as codigo, sum(Compras.cantidad) as out    
+                    select count(Cupones.Codigo) as out  
                 from MR_ANDERSON.Compras
 
                  join MR_ANDERSON.Cupones Cupones
@@ -629,20 +613,17 @@ begin tran trn_inserts_tablas
 
         GO
             
-        insert into MR_ANDERSON.Consumos(fecha_consumo, codigo, dni)
+        insert into MR_ANDERSON.Consumos(fecha_consumo, id_compra, facturado)
 
-            select master.Groupon_Entregado_Fecha, master.Groupon_Codigo, master.Cli_Dni 
+            select master.Groupon_Entregado_Fecha, Compras.id_compra, 1 
                 from gd_esquema.Maestra master
 
-                join MR_ANDERSON.Cupones Cupones
-                    on   master.Groupon_Codigo = Cupones.codigo
-                
-                join MR_ANDERSON.Datos_Clientes Cliente
-                    on   master.Cli_Dni = Cliente.dni
+                join MR_ANDERSON.Compras Compras
+                    on   master.Groupon_Fecha_Compra = Compras.fecha
+                        and master.Groupon_Codigo = Compras.codigo
                 
                 where master.Groupon_Entregado_Fecha is not null
 
-        update MR_ANDERSON.Consumos set facturado = 1
 
         insert into MR_ANDERSON.Factura(factura_nro,factura_fecha,provee_cuit)
 
@@ -654,7 +635,7 @@ begin tran trn_inserts_tablas
 
         insert into MR_ANDERSON.Factura_Renglon(cantidad,factura_nro,codigo)
 
-            select sum(Compras.cantidad), master.Factura_Nro, master.Groupon_Codigo 
+            select count(Compras.codigo), master.Factura_Nro, master.Groupon_Codigo 
                 from gd_esquema.Maestra master
 
                 join MR_ANDERSON.Factura Factura
@@ -798,7 +779,7 @@ create procedure MR_ANDERSON.sp_change_rol_name (@nombre_rol NVARCHAR(255), @nue
         end
 GO
 
-
+/*
 create procedure MR_ANDERSON.sp_eliminar_rol (@nombre_rol NVARCHAR(255))
     as
     begin
@@ -809,6 +790,7 @@ create procedure MR_ANDERSON.sp_eliminar_rol (@nombre_rol NVARCHAR(255))
             where rol = @nombre_rol
     end
 GO
+*/
 
 
 --Fin ABM ROL!
@@ -1374,9 +1356,13 @@ create procedure MR_ANDERSON.sp_ajusta_saldo_devoluciones
         begin
             declare recorre_devoluciones cursor
  
-            for (select dni,sum(precio) from MR_ANDERSON.Cupones C
+            for (select dni, sum(C.precio) from MR_ANDERSON.Cupones C
+                        join MR_ANDERSON.Compras Compras
+                            on   C.codigo = Compras.codigo
+                        
                         join MR_ANDERSON.Devoluciones D
-                            on   C.codigo = D.codigo
+                            on   Compras.id_compra = D.id_compra
+
                         group by dni)
 
             open recorre_devoluciones
@@ -1436,7 +1422,7 @@ create procedure MR_ANDERSON.sp_ajusta_saldo_compras
         end
 GO
 
-exec MR_ANDERSON.sp_ajusta_saldo_devoluciones
+exec MR_ANDERSON.sp_ajusta_saldo_compras
 
 --confirmar nombre usuario no existente
 GO
@@ -1459,8 +1445,13 @@ create procedure MR_ANDERSON.historial_compra (@dni numeric(18,0), @fecha_inicio
                 from MR_ANDERSON.Compras C 
                 where C.dni = @dni and C.fecha >= @fecha_inicio and C.fecha <= @fecha_final
             union select codigo,'DEVUELTO' as Estado 
-                from MR_ANDERSON.Devoluciones D 
-                where D.dni = @dni and D.fecha_devolucion >= @fecha_inicio and D.fecha_devolucion <= @fecha_final
+                from MR_ANDERSON.Compras Compras
+
+                join MR_ANDERSON.Devoluciones D
+                    on   Compras.id_compra = D.id_compra
+                
+
+                where Compras.dni = @dni and D.fecha_devolucion >= @fecha_inicio and D.fecha_devolucion <= @fecha_final
             order by Estado
         end
 GO
@@ -1505,41 +1496,32 @@ create procedure MR_ANDERSON.sp_comprar_cupon (@dni numeric(18), @codigo NVARCHA
                     return
                 end
 
-            insert into MR_ANDERSON.Compras(dni,cantidad,fecha,codigo)
-                VALUES(@dni,@cantidad,@fecha_compra,@codigo)
-
             update MR_ANDERSON.Cupones
                 set stock_disponible = stock_disponible - @cantidad
                 where codigo = @codigo
 
             update MR_ANDERSON.Datos_Clientes set saldo = saldo - (select precio* @cantidad from MR_ANDERSON.Cupones where codigo = @codigo) 
                 where dni = @dni
+            
+            while @cantidad > 0
+                begin
+                    insert into MR_ANDERSON.Compras(dni,fecha,codigo)
+                      VALUES(@dni,@fecha_compra,@codigo)
+                end
         end
 GO
 
 --Punto 9
-create procedure MR_ANDERSON.sp_chequear_pertenencia (@dni numeric(18), @codigo NVARCHAR(50), 
-                                @result bit output)
-    as
-        begin
-                if exists (select dni, Compras.codigo from MR_ANDERSON.Compras Compras 
-                            join MR_ANDERSON.Cupones Cupones on   Compras.codigo = Cupones.codigo
-                            where dni = @dni and Compras.codigo = @codigo )
-                    begin
-                        set @result = 1
-                    end
-                
-            set @result = 0
 
-        end
-
-GO
-
-create procedure MR_ANDERSON.sp_pedir_devolucion (@dni numeric(18), @codigo nvarchar(50), @fecha_devolucion DATETIME,
+create procedure MR_ANDERSON.sp_pedir_devolucion (@dni numeric(18),@fecha_devolucion DATETIME,
                                 @motivo NVARCHAR(255), @id_compra numeric )
     as
         begin
-            if @fecha_devolucion > (select vencimiento_canje from MR_ANDERSON.Cupones where codigo = @codigo)
+            if @fecha_devolucion > (select Cupones.vencimiento_canje from MR_ANDERSON.Cupones Cupones
+                                    join MR_ANDERSON.Compras Compras
+                                        on   Cupones.codigo = Compras.codigo
+                                    
+                                    where Compras.id_compra = @id_compra)
                 begin
                     RAISERROR('No se puede devolver',13,1)
                     return
@@ -1553,47 +1535,56 @@ create procedure MR_ANDERSON.sp_pedir_devolucion (@dni numeric(18), @codigo nvar
 
 
             update MR_ANDERSON.Datos_Clientes
-                set saldo = saldo + (select precio from MR_ANDERSON.Cupones where codigo = @codigo)
+                set saldo = saldo + (select precio from MR_ANDERSON.Cupones Cupones
+									join MR_ANDERSON.Compras Compras
+									on Cupones.codigo = Compras.codigo and Compras.id_compra = @id_compra)
                 where dni = @dni
 
             update MR_ANDERSON.Cupones
-                set stock_disponible = stock_disponible + (select cantidad from MR_ANDERSON.Compras where id_compra = @id_compra)
-                where codigo = @codigo
+                set stock_disponible = stock_disponible + 1
+                where codigo = (select codigo from MR_ANDERSON.Compras where id_compra = @id_compra)
 
-            insert into MR_ANDERSON.Devoluciones(fecha_devolucion,dni,codigo,motivo,cantidad, id_compra)
-                values(@fecha_devolucion,@dni,@codigo,@motivo, 
-                        (select cantidad from MR_ANDERSON.Compras where dni = @dni and codigo = @codigo),
-                        @id_compra)
+            insert into MR_ANDERSON.Devoluciones(fecha_devolucion,motivo, id_compra)
+                values(@fecha_devolucion,@motivo,@id_compra)
 
         end
 GO 
 
 -- Punto 12
 
-create procedure MR_ANDERSON.sp_registra_consumo_cupon (@fecha_actual DATETIME,@provee_cuit nvarchar(20), @cod_cupon nvarchar(50), 
-                                @dni_cliente numeric(18,0))
+create procedure MR_ANDERSON.sp_registra_consumo_cupon (@fecha_actual DATETIME,@provee_cuit nvarchar(20), @id_compra numeric)
     as
         begin
-            if not exists(select codigo from MR_ANDERSON.Compras C where C.dni = @dni_cliente and C.codigo = @cod_cupon)
-            begin
-                RAISERROR('Cupon no encontrado o ya canjeado',13,1)
-                return
-            end
 
-            if ((select vencimiento_canje from MR_ANDERSON.Cupones where codigo = @cod_cupon) < @fecha_actual)
+            if not exists (select id_compra from MR_ANDERSON.Compras where id_compra = @id_compra)
+                begin
+                    RAISERROR('Cupon no comprado',13,1)
+                    return
+                end
+
+            if exists (select  id_compra from MR_ANDERSON.Consumos where id_compra = @id_compra)
+                begin
+                    RAISERROR('Cupon ya canjeado',13,1)
+                    return
+                end
+
+            declare @codigo NVARCHAR(50)
+            set @codigo = (select codigo from MR_ANDERSON.Compras where id_compra = @id_compra)
+            
+
+            if ((select vencimiento_canje from MR_ANDERSON.Cupones where codigo = @codigo) < @fecha_actual)
             begin
                 RAISERROR('Cupon vencido',13,1)
                 return
             end
 
-            if not exists(select codigo from MR_ANDERSON.Cupones C where C.codigo = @cod_cupon and C.provee_cuit = @provee_cuit)
+            if not exists(select codigo from MR_ANDERSON.Cupones C where C.codigo = @codigo and C.provee_cuit = @provee_cuit)
             begin
                 RAISERROR('Cupon no pertenece a proveedor dado',13,1)
                 return 
             end
 
-            insert into MR_ANDERSON.Consumos VALUES (@fecha_actual, @cod_cupon, @dni_cliente, 0)
-            delete MR_ANDERSON.Compras where MR_ANDERSON.Compras.dni = @dni_cliente and MR_ANDERSON.Compras.codigo = @cod_cupon
+            insert into MR_ANDERSON.Consumos VALUES (@fecha_actual, @id_compra, 0)
 
         end
 GO
@@ -2062,24 +2053,27 @@ GO
 create procedure MR_ANDERSON.sp_estadistico_devoluciones (@year numeric(4,0), @semestre int)
     as
         begin
-            select top 5 sum(Compras.cantidad) as 'vendidos' , sum(case when Devoluciones.cantidad is null then 0 else Devoluciones.cantidad end ) as 'devueltos',
-                    sum(case when Devoluciones.cantidad is null then 0 else Devoluciones.cantidad end)*100/sum(Compras.cantidad) as 'porcentaje_devueltos', 
+            select top 5  count(Compras.codigo) as 'vendidos' , count(Devoluciones.id_compra) as 'devueltos',
+                    count(Devoluciones.id_compra)*100/count(Compras.codigo) as 'porcentaje_devueltos', 
                     Proveedores.username
                 from MR_ANDERSON.Compras Compras
 
                 left join MR_ANDERSON.Devoluciones Devoluciones
-                    on   Compras.codigo = Devoluciones.codigo
+                    on   Compras.id_compra = Devoluciones.id_compra
 
                 join MR_ANDERSON.Cupones Cupones
                     on   Compras.codigo = Cupones.codigo
                 
                 join MR_ANDERSON.Datos_Proveedores Proveedores
                     on   Cupones.provee_cuit = Proveedores.provee_cuit
-
-            group by Proveedores.username, Compras.fecha
-
-            having YEAR(Compras.fecha) = @year and MR_ANDERSON.fn_in_semester(@semestre,Compras.fecha) = 1
-            order by sum(Compras.cantidad * Cupones.precio) desc
+                    
+            where YEAR(Compras.fecha) = @year and MR_ANDERSON.fn_in_semester(@semestre,Compras.fecha) = 1
+            
+            group by Proveedores.username, Compras.codigo
+            
+            having COUNT(Devoluciones.id_compra) > 0
+            
+            order by sum(Cupones.precio) desc
         end
 GO
 
