@@ -1291,6 +1291,10 @@ create procedure MR_ANDERSON.sp_compra_giftcard (@cliente_origen NUMERIC(18), @c
                 set saldo = saldo + @monto
                 where dni = @cliente_destino
 
+            update MR_ANDERSON.Datos_Clientes
+                set saldo = saldo - @monto
+                where dni = @cliente_origen
+
             if @cliente_origen not in (select dni 
                 from MR_ANDERSON.Cliente_Origen
                 where dni = @cliente_origen)
