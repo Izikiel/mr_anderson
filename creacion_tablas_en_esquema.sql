@@ -1451,17 +1451,18 @@ create procedure MR_ANDERSON.historial_compra (@dni numeric(18,0), @fecha_inicio
                                 @fecha_final DATETIME)
     as
         begin
-            select codigo,'COMPRADO' as Estado 
+            select codigo, C.id_compra,'COMPRADO' as Estado 
                 from MR_ANDERSON.Compras C 
                 where C.dni = @dni and C.fecha >= @fecha_inicio and C.fecha <= @fecha_final
-            union select codigo,'DEVUELTO' as Estado 
+
+            union select codigo, D.id_compra,'DEVUELTO' as Estado 
                 from MR_ANDERSON.Compras Compras
 
                 join MR_ANDERSON.Devoluciones D
                     on   Compras.id_compra = D.id_compra
                 
-
                 where Compras.dni = @dni and D.fecha_devolucion >= @fecha_inicio and D.fecha_devolucion <= @fecha_final
+                
             order by Estado
         end
 GO
