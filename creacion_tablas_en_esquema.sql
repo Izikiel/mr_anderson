@@ -1473,8 +1473,7 @@ create procedure MR_ANDERSON.sp_ver_cupones_habilitados (@dni numeric(18), @fech
         end
 GO
 
-create procedure MR_ANDERSON.sp_comprar_cupon (@dni numeric(18), @codigo NVARCHAR(50), 
-                                1 numeric(10,0),@fecha_compra DATETIME, @id_compra numeric output)
+create procedure MR_ANDERSON.sp_comprar_cupon (@dni numeric(18), @codigo NVARCHAR(50), ,@fecha_compra DATETIME, @id_compra numeric output)
     as
         begin
             if (select stock_disponible from MR_ANDERSON.Cupones where codigo = @codigo) < 1
