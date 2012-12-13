@@ -35,6 +35,15 @@ namespace GrouponDesktop.Dominio.DataAdapter
             SqlCommand command;
             SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_cargar_credito", param, out command);
             result = (string)command.Parameters["@result"].Value;
+            if (result == "OK")
+                result = "Se cargó el credito correctamente";
+            else if (result == "DNI_ERROR")
+                result = "Error con el Numero de DNI";
+            else if (result == "Datos_Tarjeta_Invalidos")
+                result = "Los datos de la tarjeta son invalidos";
+            else if (result == "Monto_Minimo_15")
+                result = "El monto minimo a cargar es de $15";
+
             //spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.", param);
             spManager.Close();
             return result;
