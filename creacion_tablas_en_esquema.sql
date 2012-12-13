@@ -1499,7 +1499,8 @@ create procedure MR_ANDERSON.sp_comprar_cupon (@dni numeric(18), @codigo NVARCHA
                     return
                 end
 
-            if (select cantidad_x_usuario from MR_ANDERSON.Cupones where codigo = @codigo) < 1
+            if (select cantidad_x_usuario from MR_ANDERSON.Cupones where codigo = @codigo) 
+                < (select count(Compras.id_compra) from MR_ANDERSON.Compras where dni = @dni and codigo = @codigo) 
                 begin
                     RAISERROR('Excede cantidad maxima para el usuario',13,1)
                     return
