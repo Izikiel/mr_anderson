@@ -18,7 +18,9 @@ namespace GrouponDesktop.UI
         {
             InitializeComponent();
             this.loginWindow = loginWindow;
-            
+            //Para inicializar a las fechas del Archivo de configuración
+            dateTimePicker1.Value = AdministradorConfiguracion.obtenerFecha();
+            dateTimePicker2.Value = AdministradorConfiguracion.obtenerFecha();
         }
 
         public Boolean datosValidos()

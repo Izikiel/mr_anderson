@@ -25,7 +25,7 @@ namespace GrouponDesktop
             {
                 case "ABM Rol":
                     ABMRol w = new ABMRol(loginWindow);
-                    w.Show();
+                    w.ShowDialog();
                     break;
                 case "Cargar Credito":
                     if (this.loginWindow.UsuarioActivo.DatosCliente == null)
@@ -34,7 +34,7 @@ namespace GrouponDesktop
                         return;
                     }
                     CargarCredito creditoWindow = new CargarCredito(loginWindow);
-                    creditoWindow.Show();
+                    creditoWindow.ShowDialog();
                     break;
                 case "ABM Usuario":
                     Button BAbmClientes = new Button();
@@ -51,7 +51,7 @@ namespace GrouponDesktop
                     wABM.Controls.Add(BAbmProveedores);
                     wABM.Controls.Add(BAbmClientes);
                     wABM.Size = new System.Drawing.Size(200,200);
-                    wABM.Show();
+                    wABM.ShowDialog();
                     break;
                    
                 case "Comprar Giftcard":
@@ -61,7 +61,7 @@ namespace GrouponDesktop
                         return;
                     }
                     ComprarGiftCard comprarGiftCard = new ComprarGiftCard(loginWindow);
-                    comprarGiftCard.Show();
+                    comprarGiftCard.ShowDialog();
                     break;
                 case "Comprar Cupon":
                     if (this.loginWindow.UsuarioActivo.DatosCliente == null)
@@ -70,7 +70,7 @@ namespace GrouponDesktop
                         return;
                     }
                     ComprarCupon comprarCupon = new ComprarCupon(loginWindow);
-                    comprarCupon.Show();
+                    comprarCupon.ShowDialog();
                     break;
                 case "Pedir Devolucion":
                     if (this.loginWindow.UsuarioActivo.DatosCliente == null)
@@ -79,7 +79,7 @@ namespace GrouponDesktop
                         return;
                     }
                     DevolverCupon devolverCupon = new DevolverCupon(loginWindow);
-                    devolverCupon.Show();
+                    devolverCupon.ShowDialog();
                     break;
                 case "Simular Usuario":
                     new SimularOtroUsuario(loginWindow).Show();
@@ -90,19 +90,19 @@ namespace GrouponDesktop
                         MessageBox.Show("Ingrese como un proveedor");
                         return;
                     }
-                    new ArmarCupon(loginWindow).Show();
+                    new ArmarCupon(loginWindow).ShowDialog();
                     break;
                 case "Registro Consumo":
-                    new RegistroConsumo(loginWindow).Show();
+                    new RegistroConsumo(loginWindow).ShowDialog();
                     break;
                 case "Publicar Cupones":
-                    new PublicarCupon().Show();
+                    new PublicarCupon().ShowDialog();
                     break;
                 case "Listado Estadistico":
                     new ListadoEstadistico().Show();
                     break;
                 case "Facturar Proveedor":
-                    new FacturarProveedor().Show();
+                    new FacturarProveedor().ShowDialog();
                     break;
                 case "Ver Historial":
                     if (this.loginWindow.UsuarioActivo.DatosCliente == null)
@@ -113,7 +113,7 @@ namespace GrouponDesktop
                     new ListadoHistorialCupones(loginWindow).Show();
                     break;
                 case "Cambiar Password":
-                    new CambiarPassword(loginWindow).Show();
+                    new CambiarPassword(loginWindow).ShowDialog();
                     break;
             }
         }

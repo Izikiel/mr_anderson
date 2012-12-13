@@ -74,7 +74,7 @@ namespace GrouponDesktop
                 String[] fecha = TxtBox_FechaVencimiento.Text.Split('/');
                 int mes = Int32.Parse(fecha[0]);
                 int anio = Int32.Parse(fecha[1]) + 2000;
-                if(mes<0 && mes>12 && anio > 2050 && anio<2000)
+                if(mes<0 || mes>12 || anio > 2050 || anio<2000)
                 {
                     MessageBox.Show("Error En Fecha");
                     return;

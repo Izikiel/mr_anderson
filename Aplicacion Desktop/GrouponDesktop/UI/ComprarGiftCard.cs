@@ -46,8 +46,9 @@ namespace GrouponDesktop
 
             String result = Dominio.DataAdapter.GiftCard.comprarGiftCard(login.UsuarioActivo.DatosCliente.Dni,
                 clienteDestino.Dni, Int32.Parse(TxtBoxMontoGift.Text), AdministradorConfiguracion.obtenerFecha());
+            usuarios.setInformacionAlUsuario(login.UsuarioActivo);
             MessageBox.Show(result);
-
+            this.Close();
             /*
 create procedure MR_ANDERSON.sp_compra_giftcard (@cliente_origen NUMERIC(18), @cliente_destino NUMERIC(18),  
                                 @monto int, @fecha DATETIME, @result NVARCHAR(20))*/

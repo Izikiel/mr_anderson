@@ -76,7 +76,6 @@ namespace GrouponDesktop.Dominio.DataAdapter
         {
             DataAccess.SPManager spManager = new GrouponDesktop.DataAccess.SPManager();
             Dictionary<String, Object> parameters = new Dictionary<string, object>();
-            parameters.Add("codigo", codigo);
             parameters.Add("dni", Int32.Parse(dni));
             parameters.Add("fecha_devolucion", fecha);
             parameters.Add("motivo", motivo);
