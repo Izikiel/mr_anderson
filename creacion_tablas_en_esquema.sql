@@ -576,7 +576,7 @@ begin tran trn_inserts_tablas
 
         Merge into MR_ANDERSON.Cupones
             using(
-                    select count(Cupones.Codigo) as stock, Cupones.codigo    
+                    select count(Cupones.Codigo) as stock, Cupones.codigo as codigo    
                 from MR_ANDERSON.Devoluciones
 
                  join MR_ANDERSON.Compras Compras
@@ -598,7 +598,7 @@ begin tran trn_inserts_tablas
 
         Merge into MR_ANDERSON.Cupones
             using(
-                    select count(Cupones.Codigo) as out  
+                    select count(Cupones.Codigo) as out, Cupones.Codigo as codigo  
                 from MR_ANDERSON.Compras
 
                  join MR_ANDERSON.Cupones Cupones
