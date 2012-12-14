@@ -53,6 +53,7 @@
             this.DataGrid_Cupones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DataGrid_Cupones.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DataGrid_Cupones.Location = new System.Drawing.Point(0, 0);
+            this.DataGrid_Cupones.MultiSelect = false;
             this.DataGrid_Cupones.Name = "DataGrid_Cupones";
             this.DataGrid_Cupones.ReadOnly = true;
             this.DataGrid_Cupones.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
