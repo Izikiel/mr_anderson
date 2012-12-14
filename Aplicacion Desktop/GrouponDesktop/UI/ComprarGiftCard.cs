@@ -14,10 +14,15 @@ namespace GrouponDesktop
     {
         LoginWindow login;
         String saldo;
+        Int16 montoMinimo;
+        Int16 montoMaximo;
 
         public ComprarGiftCard(LoginWindow login)
         {
             InitializeComponent();
+            this.montoMinimo = 10;
+            this.montoMaximo = 50;
+            this.labelMonto.Text = "El monto\nno puede ser\nmenor a "+this.montoMinimo.ToString()+"\nni mayor a "+this.montoMaximo.ToString()+".";
             this.TxtBoxUsuarioDestino.Enabled = false;
             this.login = login;
             saldo = login.UsuarioActivo.DatosCliente.Saldo.ToString();
@@ -34,6 +39,11 @@ namespace GrouponDesktop
             if (Int32.TryParse(TxtBoxMontoGift.Text, out montoGiftCard) == false)
             {
                 MessageBox.Show("Monto no valido");
+                return;
+            }
+            if (this.montoMinimo > montoGiftCard | this.montoMaximo < montoGiftCard)
+            {
+                MessageBox.Show("El monto debe estar entre los valores indicados");
                 return;
             }
             Boolean usuarioNoExistente;
