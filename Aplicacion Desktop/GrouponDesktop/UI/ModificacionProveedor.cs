@@ -69,10 +69,24 @@ namespace GrouponDesktop.UI
 
             prov.Direccion.Calle = this.textBox6.Text;
             prov.DatosProveedor.Ciudad = this.textBox5.Text;
-            if(!this.textBox11.Text.Equals(""))prov.Direccion.CodigoPostal = Convert.ToInt32(this.textBox11.Text);
-            if(!this.textBox8.Text.Equals("")) prov.Direccion.Piso = Convert.ToInt32(this.textBox8.Text);
             prov.Direccion.Depto = this.textBox9.Text;
             prov.Direccion.Localidad = this.textBox10.Text;
+
+            String campo = "";
+            try
+            {
+                campo = "piso";
+                if (!this.textBox8.Text.Equals("-")) prov.Direccion.Piso = Convert.ToInt32(this.textBox8.Text);
+                campo = "codigo postal";
+                prov.Direccion.CodigoPostal = Convert.ToInt32(this.textBox11.Text);
+
+            }
+            catch (Exception)
+            {
+                String error = "El campo " + campo + " tiene un formato incorrecto.";
+                if (campo.Equals("piso")) error = error + " Por omision ingrese -";
+                throw new Exception(error);
+            }
 
             return prov;
         }
@@ -91,7 +105,7 @@ namespace GrouponDesktop.UI
             }
             catch (Exception except)
             {
-                MessageBox.Show("No se ha podido modificar al proveedor");
+                MessageBox.Show("No se ha podido modificar al proveedor"+ except.ToString());
                 return;
             }
 

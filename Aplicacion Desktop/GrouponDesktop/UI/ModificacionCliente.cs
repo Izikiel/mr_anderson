@@ -111,8 +111,23 @@ namespace GrouponDesktop.UI
             nuevoCliente.Direccion.Calle = this.textBox6.Text;
             nuevoCliente.Direccion.Depto = this.textBox9.Text;
             nuevoCliente.Direccion.Localidad = this.textBox10.Text;
-            if(!this.textBox8.Text.Equals(""))nuevoCliente.Direccion.Piso = Convert.ToInt32(this.textBox8.Text);
-            if (!this.textBox11.Text.Equals("")) nuevoCliente.Direccion.CodigoPostal = Convert.ToInt32(this.textBox11.Text);
+
+            String campo = "";
+            try
+            {
+                campo = "piso";
+                if (!this.textBox8.Text.Equals("-")) nuevoCliente.Direccion.Piso = Convert.ToInt32(this.textBox8.Text);
+                campo = "codigo postal";
+                nuevoCliente.Direccion.CodigoPostal = Convert.ToInt32(this.textBox11.Text);
+
+            }
+            catch (Exception)
+            {
+                String error = "El campo " + campo + " tiene un formato incorrecto.";
+                if (campo.Equals("piso")) error = error + " Por omision ingrese -";
+                throw new Exception(error);
+            }
+            
             return nuevoCliente;
         }
 
@@ -124,9 +139,9 @@ namespace GrouponDesktop.UI
                 homeUsr.modificarCliente(this.clienteSeleccionado, nuevoCliente, this.ciudadesOriginales, this.ciudadesSeleccionadas,
                     this.modificarCiudades, nuevoCliente.DatosLogin.Habilitado,this.comboBox1.Text);
             }
-            catch (Exception)
+            catch (Exception except)
             {
-                MessageBox.Show("No se ha podido modificar el cliente");
+                MessageBox.Show("No se ha podido modificar el cliente "+except.ToString());
                 return;
             }
             
