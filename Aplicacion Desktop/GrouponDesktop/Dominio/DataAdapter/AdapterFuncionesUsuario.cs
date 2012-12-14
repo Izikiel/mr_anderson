@@ -214,16 +214,6 @@ ALTER procedure [MR_ANDERSON].[sp_facturar_proveedor] (@fecha_actual DATETIME, @
             SqlCommand command;
             try
             {
-                SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_facturar_proveedor_nfactura", parameters, out command);
-                numeroFactura = command.Parameters["@nro_factura"].Value.ToString();
-                reader.Close();
-            }
-            catch
-            {
-                return cantidadElementosPorCodigo;
-            }
-            try
-            {
                 SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_factura_proveedor_importe", parameters, out command);
                 importeFactura = command.Parameters["@importe_factura"].Value.ToString();
                 reader.Close();
@@ -232,6 +222,19 @@ ALTER procedure [MR_ANDERSON].[sp_facturar_proveedor] (@fecha_actual DATETIME, @
             {
                 return cantidadElementosPorCodigo;
             }
+            if (String.IsNullOrEmpty(importeFactura))
+                return cantidadElementosPorCodigo;
+            try
+            {
+                SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_facturar_proveedor_nfactura", parameters, out command);
+                numeroFactura = command.Parameters["@nro_factura"].Value.ToString();
+                reader.Close();
+            }
+            catch
+            {
+                return cantidadElementosPorCodigo;
+            }
+
             parameters.Remove("nro_factura output");
             parameters.Remove("importe_factura output");
             try

@@ -27,6 +27,7 @@ namespace GrouponDesktop.UI
 
         private void Btn_Facturar_Click(object sender, EventArgs e)
         {
+            borrarDataGrid();
             String importeFact = "";
             String numeroFact = "";
 
@@ -36,7 +37,18 @@ namespace GrouponDesktop.UI
             TxtBox_NumeroFactura.Text = numeroFact;
             TxtBox_Total.Text = importeFact;
             agregarDataAlDataGrid();
+            if (!String.IsNullOrEmpty(importeFact))
+                MessageBox.Show("La Factura se realizó correctamente");
+            else
+                MessageBox.Show("No se encontraron datos del Proveedor en el periodo de tiempo");
             
+        }
+
+        public void borrarDataGrid()
+        {
+            DataGrid_Clientes.Rows.Clear();
+            TxtBox_NumeroFactura.Text = "";
+            TxtBox_Total.Text = "";
         }
 
         public void GenerarColumnas()
