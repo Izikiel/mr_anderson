@@ -83,7 +83,7 @@ namespace GrouponDesktop.DataAccess
             }
             catch (Exception e)
             {
-                throw new Exception("no se pudo ejecutar el StoredProcedure por: " + e);
+                throw e;
             }
         }
         public void executeSPWithParametersWithOutReturn(String spName, Dictionary<String, Object> parameters)

@@ -53,7 +53,7 @@ namespace GrouponDesktop
                 }
                 else
                 {
-                    MessageBox.Show(excep.ToString());
+                    MessageBox.Show("Error al loguearse. Verifique su usuario y contraseña");
                     return;
                 }
             }
