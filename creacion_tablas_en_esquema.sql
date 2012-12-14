@@ -1127,9 +1127,16 @@ create procedure MR_ANDERSON.sp_modify_proveedor (@cuit_sended NVARCHAR(20), @rs
                     return 2
                 end
 
-            if @telefono_sended in (select telefono from MR_ANDERSON.Datos_Clientes where username != @username_sended)
+            if @telefono_sended in (select provee_telefono from MR_ANDERSON.Datos_Proveedores where username != @username_sended)
                 begin 
                     set @result = 'PROV_TEL_EXISTENT'
+                    return 1
+                end
+
+            if exists(select provee_cuit, provee_rs from MR_ANDERSON.Datos_Proveedores 
+                                                where provee_cuit = @cuit_sended and provee_rs = @rs_sended )
+                begin
+                    set @result = 'Ya existe esta combinación de cuit y razon social'
                     return 1
                 end
 
