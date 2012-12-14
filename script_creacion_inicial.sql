@@ -1523,7 +1523,7 @@ create procedure MR_ANDERSON.historial_compra (@dni numeric(18,0), @fecha_inicio
                 where C.dni = @dni and C.fecha >= @fecha_inicio and C.fecha <= @fecha_final
                     and C.id_compra not in (select id_compra from MR_ANDERSON.Devoluciones)
                     and C.id_compra not in (select id_compra from MR_ANDERSON.Consumos)
-                    and Cupones.vencimiento_canje >= @fecha_final 
+                   -- and Cupones.vencimiento_canje >= @fecha_final 
 
             union select codigo, D.id_compra,'DEVUELTO' as Estado 
                 from MR_ANDERSON.Compras Compras
@@ -1541,7 +1541,7 @@ create procedure MR_ANDERSON.historial_compra (@dni numeric(18,0), @fecha_inicio
 
                 where Compras.dni = @dni and Consumos.fecha_consumo >= @fecha_inicio and Consumos.fecha_consumo <= @fecha_final
 
-            union select Cupones.codigo, Compras.id_compra, 'Vencido' as Estado 
+        /*    union select Cupones.codigo, Compras.id_compra, 'Vencido' as Estado 
                 from MR_ANDERSON.Compras Compras
 
                 join MR_ANDERSON.Cupones Cupones
@@ -1550,7 +1550,7 @@ create procedure MR_ANDERSON.historial_compra (@dni numeric(18,0), @fecha_inicio
                 where Compras.dni = @dni and Compras.fecha >= @fecha_inicio and Compras.fecha <= @fecha_final
                     and Compras.id_compra not in (select id_compra from MR_ANDERSON.Devoluciones)
                     and Compras.id_compra not in (select id_compra from MR_ANDERSON.Consumos)
-                    and Cupones.vencimiento_canje <= @fecha_final 
+                    and Cupones.vencimiento_canje <= @fecha_final */
 
             order by Estado
         end
