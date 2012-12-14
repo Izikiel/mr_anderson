@@ -34,6 +34,11 @@ namespace GrouponDesktop.UI
             User.User user = new GrouponDesktop.User.User(true);
             user.DatosLogin.UserName = userName;
             homeUsuario.setInformacionAlUsuario(user);
+            if (user.DatosLogin.Habilitado == false)
+            {
+                MessageBox.Show("No se puede usar la simulacion sobre un usuario inhabilitado");
+                return;
+            }
 
             login.UsuarioActivo = user;
             MessageBox.Show("Simulación como usuario \"" + userName + "\" activa.\n" +
