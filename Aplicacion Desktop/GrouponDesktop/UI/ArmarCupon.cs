@@ -83,6 +83,8 @@ namespace GrouponDesktop.UI
                 return false;
             if (TimePicker_Publicacion.Value > TimePicker_Oferta.Value)
                 return false;
+            if (Int32.Parse(TxtBox_CantidadDisponible.Text) < Int32.Parse(TxtBox_CantidadMaxima.Text))
+                return false;
 
             if (Dominio.Utilidades.areNumericControls(numericControls) == false)
                 return false;
