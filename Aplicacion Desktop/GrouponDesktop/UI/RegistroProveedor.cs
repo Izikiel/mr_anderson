@@ -44,6 +44,8 @@ namespace GrouponDesktop
                 this.padre.Usuario.Direccion.Depto = this.textBox9.Text;
                 this.padre.Usuario.Direccion.Localidad = this.textBox10.Text;
 
+                
+                
                 String campo = "";
                 try
                 {
@@ -60,6 +62,7 @@ namespace GrouponDesktop
                     MessageBox.Show(error);
                     return;
                 }
+                homeUsr.persistir(this.padre.Usuario);
             }
             catch (Exception exception)
             {
