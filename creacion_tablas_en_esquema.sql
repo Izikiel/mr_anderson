@@ -863,6 +863,19 @@ create procedure MR_ANDERSON.sp_login (@username_sended NVARCHAR(100) , @user_pa
                             return 1
                         end
 
+
+                    -- Si intentos_fallidos = 3, deshabilitar usuario
+                    set @check_fallidos = (select intentos_fallidos from MR_ANDERSON.Login where username = @username_sended)
+                    if (@check_fallidos >= 3)
+                        begin
+                                update MR_ANDERSON.Login
+                                    set Habilitado = 0
+                                    where username = @username_sended
+
+                                set @result = 'LOGIN_TOO_MANY_TIMES'
+                                return 1
+                        end    
+
                     -- Usuario correcto pero contraseña incorrecta
                     if (@check_password <> @user_password_sended)
                         
@@ -873,19 +886,7 @@ create procedure MR_ANDERSON.sp_login (@username_sended NVARCHAR(100) , @user_pa
 
                                 set @result = 'LOGIN_PASS_ERR'
                                 return 1
-                        end
-
-                    -- Si intentos_fallidos = 3, deshabilitar usuario
-                    set @check_fallidos = (select intentos_fallidos from MR_ANDERSON.Login where username = @username_sended)
-                    if (@check_fallidos = 3)
-                        begin
-                                update MR_ANDERSON.Login
-                                    set Habilitado = 0
-                                    where username = @username_sended
-
-                                set @result = 'LOGIN_TOO_MANY_TIMES'
-                                return 1
-                        end                  
+                        end              
 
                     -- Login Correcto deberia entrar aca
                     if (@check_habilitado = 1 and @check_password = @user_password_sended)
@@ -898,7 +899,7 @@ create procedure MR_ANDERSON.sp_login (@username_sended NVARCHAR(100) , @user_pa
                             return 0
                         end
                 end
-                
+            
             -- Si no se cumple ninguna de las condiciones anteriores, (usuario inexistente, otro error, etc) retornar error
             set @result = 'LOGIN_ERROR'
             return 1
@@ -1546,7 +1547,7 @@ GO
 create procedure MR_ANDERSON.sp_ver_cupones_habilitados (@dni numeric(18), @fecha DATETIME )
     as
         begin
-            select Cupones.codigo, Cupones.descripcion, Cupones.precio 
+            select Cupones.codigo, Cupones.descripcion, Cupones.precio, Cupones.vencimiento_canje 
                 from MR_ANDERSON.Cupones Cupones
 
                 join MR_ANDERSON.Ciudades_Cupon Ciudades_Cupon
