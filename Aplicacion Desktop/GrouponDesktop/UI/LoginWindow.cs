@@ -52,12 +52,17 @@ namespace GrouponDesktop
                     return;
                 }
                 
-                if(excep.Message.Equals("LOGIN_PASS_ERR") || excep.Message.Equals("LOGIN_ERRROR"))
+                if(excep.Message.Equals("LOGIN_PASS_ERR"))
                 {
                     MessageBox.Show("Error al loguearse. Verifique su usuario y contraseña");
                     return;
                 }
 
+                if(excep.Message.Equals("LOGIN_ERROR"))
+                {
+                    MessageBox.Show("Error de login");
+                    return;
+                }
                 if (excep.Message.Equals("LOGIN_TOO_MANY_TIMES"))
                 {
                     MessageBox.Show("Se superó la cantidad de intentos para loguearse.\nEl usuario queda inhabilitado.");
