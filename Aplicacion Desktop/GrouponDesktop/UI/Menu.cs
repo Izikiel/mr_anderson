@@ -27,6 +27,7 @@ namespace GrouponDesktop
             {
                 label1.Visible = true;
                 Lbl_Saldo.Visible = true;
+                Lbl_Saldo.Text = loginWindow.UsuarioActivo.DatosCliente.Saldo.ToString();
             }
             else
             {
@@ -155,7 +156,6 @@ namespace GrouponDesktop
         private void Timer_RefreshMenu_Tick(object sender, EventArgs e)
         {
             mostrarSaldoSiEsCliente();
-            Lbl_Saldo.Text = loginWindow.UsuarioActivo.DatosCliente.Saldo.ToString();
         }
     }
 }
