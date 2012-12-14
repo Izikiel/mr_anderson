@@ -20,5 +20,12 @@ namespace GrouponDesktop.Dominio.DataAdapter
             get { return cantidadDeGiftCardsAcreditadas; }
             set { cantidadDeGiftCardsAcreditadas = value; }
         }
+
+        private String dni;
+        public String Dni
+        {
+            get { return dni; }
+            set { dni = value; }
+        }
     }
 }

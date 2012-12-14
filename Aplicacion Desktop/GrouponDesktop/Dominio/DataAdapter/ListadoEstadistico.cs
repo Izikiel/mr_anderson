@@ -52,6 +52,7 @@ namespace GrouponDesktop.Dominio.DataAdapter
                 UsuariosGiftCardsStringContainer objResultado = new UsuariosGiftCardsStringContainer();
                 if (!Convert.IsDBNull(reader["nombre_usuario"])) objResultado.NombreUsuario = Convert.ToString(reader["nombre_usuario"]);
                 if (!Convert.IsDBNull(reader["cantidad"])) objResultado.CantidadDeGiftCardsAcreditadas = Convert.ToString(reader["cantidad"]);
+                if (!Convert.IsDBNull(reader["dni"])) objResultado.Dni = Convert.ToString(reader["dni"]);
 
                 listResultado.Add(objResultado);
             }
