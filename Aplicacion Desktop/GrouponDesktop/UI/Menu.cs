@@ -17,6 +17,22 @@ namespace GrouponDesktop
         {
             this.loginWindow = loginWindow;
             InitializeComponent();
+            //Timer_RefreshMenu.
+            mostrarSaldoSiEsCliente();
+        }
+
+        private void mostrarSaldoSiEsCliente()
+        {
+            if (loginWindow.UsuarioActivo.Rol.TipoUsuario == "Cliente")
+            {
+                label1.Visible = true;
+                Lbl_Saldo.Visible = true;
+            }
+            else
+            {
+                label1.Visible = false;
+                Lbl_Saldo.Visible = false;
+            }
         }
 
         public void do_f(string f)
@@ -134,6 +150,12 @@ namespace GrouponDesktop
         {
             ABMUsr w = new ABMUsr("Cliente");
             w.Show();
+        }
+
+        private void Timer_RefreshMenu_Tick(object sender, EventArgs e)
+        {
+            mostrarSaldoSiEsCliente();
+            Lbl_Saldo.Text = loginWindow.UsuarioActivo.DatosCliente.Saldo.ToString();
         }
     }
 }
