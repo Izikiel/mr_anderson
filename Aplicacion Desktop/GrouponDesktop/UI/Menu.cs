@@ -45,7 +45,7 @@ namespace GrouponDesktop
                     w.ShowDialog();
                     break;
                 case "Cargar Credito":
-                    if (this.loginWindow.UsuarioActivo.DatosCliente == null)
+                    if (this.loginWindow.UsuarioActivo.Rol.TipoUsuario != "Cliente")
                     {
                         MessageBox.Show("Ingrese como un cliente");
                         return;
@@ -72,7 +72,7 @@ namespace GrouponDesktop
                     break;
                    
                 case "Comprar Giftcard":
-                    if (this.loginWindow.UsuarioActivo.DatosCliente == null)
+                    if (this.loginWindow.UsuarioActivo.Rol.TipoUsuario != "Cliente")
                     {
                         MessageBox.Show("Ingrese como un cliente");
                         return;
@@ -81,7 +81,7 @@ namespace GrouponDesktop
                     comprarGiftCard.ShowDialog();
                     break;
                 case "Comprar Cupon":
-                    if (this.loginWindow.UsuarioActivo.DatosCliente == null)
+                    if (this.loginWindow.UsuarioActivo.Rol.TipoUsuario != "Cliente")
                     {
                         MessageBox.Show("Ingrese como un cliente");
                         return;
@@ -90,7 +90,7 @@ namespace GrouponDesktop
                     comprarCupon.ShowDialog();
                     break;
                 case "Pedir Devolucion":
-                    if (this.loginWindow.UsuarioActivo.DatosCliente == null)
+                    if (this.loginWindow.UsuarioActivo.Rol.TipoUsuario != "Cliente")
                     {
                         MessageBox.Show("Ingrese como un cliente");
                         return;
@@ -102,7 +102,7 @@ namespace GrouponDesktop
                     new SimularOtroUsuario(loginWindow).Show();
                     break;
                 case "Armar Cupon":
-                    if (this.loginWindow.UsuarioActivo.DatosProveedor == null)
+                    if (this.loginWindow.UsuarioActivo.Rol.TipoUsuario != "Proveedor")
                     {
                         MessageBox.Show("Ingrese como un proveedor");
                         return;
@@ -122,7 +122,7 @@ namespace GrouponDesktop
                     new FacturarProveedor().ShowDialog();
                     break;
                 case "Ver Historial":
-                    if (this.loginWindow.UsuarioActivo.DatosCliente == null)
+                    if (this.loginWindow.UsuarioActivo.Rol.TipoUsuario != "Cliente")
                     {
                         MessageBox.Show("Ingrese como un cliente");
                         return;
