@@ -20,5 +20,12 @@ namespace GrouponDesktop.Dominio.DataAdapter
             get { return estado; }
             set { estado = value; }
         }
+
+        private String idCompra;
+        public String IdCompra
+        {
+            get { return idCompra; }
+            set { idCompra = value; }
+        }
     }
 }

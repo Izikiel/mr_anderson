@@ -24,6 +24,7 @@ namespace GrouponDesktop.Dominio.DataAdapter
                 CuponesStringContainer objResultado = new CuponesStringContainer();
                 if (!Convert.IsDBNull(reader["codigo"])) objResultado.Codigo = Convert.ToString(reader["codigo"]);
                 if (!Convert.IsDBNull(reader["estado"])) objResultado.Estado = Convert.ToString(reader["estado"]);
+                if (!Convert.IsDBNull(reader["id_compra"])) objResultado.IdCompra = Convert.ToString(reader["id_compra"]);
 
                 listResultado.Add(objResultado);
             }
