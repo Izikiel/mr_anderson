@@ -26,8 +26,15 @@ namespace GrouponDesktop
         {
             foreach (Control c in this.Controls)
             {
-                if (c.Text.Equals("")) { MessageBox.Show("Tiene que completar todos los campos"); return; }
+                if ((c.Text.Equals("")))
+                { MessageBox.Show("Tiene que completar todos los campos\nEl campo piso y depto no son obligatorios."); return; }
 
+            }
+
+            foreach (Control c in this.groupBox1.Controls)
+            {
+                if ((c.Text.Equals("")) & (!c.Name.Equals(textBox8.Name)) & (!c.Name.Equals(textBox9.Name)))
+                { MessageBox.Show("Tiene que completar todos los campos\nEl campo piso y depto no son obligatorios."); return; }
             }
             try
             {
@@ -50,7 +57,7 @@ namespace GrouponDesktop
                 try
                 {
                     campo = "piso";
-                    if (!this.textBox8.Text.Equals("-")) this.padre.Usuario.Direccion.Piso = Convert.ToInt32(this.textBox8.Text);
+                    if (!this.textBox8.Text.Equals("")) this.padre.Usuario.Direccion.Piso = Convert.ToInt32(this.textBox8.Text);
                     campo = "codigo postal";
                     this.padre.Usuario.Direccion.CodigoPostal = Convert.ToInt32(this.textBox11.Text);
 
@@ -58,7 +65,6 @@ namespace GrouponDesktop
                 catch (Exception)
                 {
                     String error = "El campo " + campo + " tiene un formato incorrecto.";
-                    if (campo.Equals("piso")) error = error + " Por omision ingrese -";
                     MessageBox.Show(error);
                     return;
                 }

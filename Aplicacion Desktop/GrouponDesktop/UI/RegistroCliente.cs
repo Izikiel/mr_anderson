@@ -32,13 +32,18 @@ namespace GrouponDesktop
         {
             foreach (Control c in this.Controls)
             {
+                if ((c.Text.Equals("")))
+                { MessageBox.Show("Tiene que completar todos los campos\nEl campo piso y depto no son obligatorios."); return; }
+
+            }
+
+            foreach (Control c in this.groupBox1.Controls)
+            {
                 if (c.Text.Equals("") && 
                     (c.Name != "piso_box" || c.Name != "depto_box" || c.Name != "postal_box") ) 
-                { 
-                    MessageBox.Show("Tiene que completar todos los campos"); 
+                
+				  MessageBox.Show("Tiene que completar todos los campos\nEl campo piso y depto no son obligatorios.");
                     return; 
-                }
-
             }
             try
             {
@@ -85,6 +90,7 @@ namespace GrouponDesktop
             MessageBox.Show("El usuario se ha generado correctamente");
 
         }
+
 
         private String getFechaToAAAAMMDD()
         {
