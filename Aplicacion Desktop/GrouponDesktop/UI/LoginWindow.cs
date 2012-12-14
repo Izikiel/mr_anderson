@@ -51,9 +51,22 @@ namespace GrouponDesktop
                     new RegistrarPassword(login).Show();
                     return;
                 }
-                else
+                
+                if(excep.Message.Equals("LOGIN_PASS_ERR") || excep.Message.Equals("LOGIN_ERRROR"))
                 {
                     MessageBox.Show("Error al loguearse. Verifique su usuario y contraseña");
+                    return;
+                }
+
+                if (excep.Message.Equals("LOGIN_TOO_MANY_TIMES"))
+                {
+                    MessageBox.Show("Se superó la cantidad de intentos para loguearse.\nEl usuario queda inhabilitado.");
+                    return;
+                }
+
+                if (excep.Message.Equals("LOGIN_OFF"))
+                {
+                    MessageBox.Show("Usuario inhabilitado.");
                     return;
                 }
             }

@@ -1149,7 +1149,7 @@ create procedure MR_ANDERSON.sp_modify_proveedor (@cuit_sended NVARCHAR(20), @rs
 
             if exists(select provee_cuit, provee_rs from MR_ANDERSON.Datos_Proveedores 
                                                 where provee_cuit = @cuit_sended and provee_rs = @rs_sended
-                                                      and username != @username )
+                                                      and username != @username_sended )
                 begin
                     set @result = 'Ya existe esta combinación de cuit y razon social'
                     return 1
