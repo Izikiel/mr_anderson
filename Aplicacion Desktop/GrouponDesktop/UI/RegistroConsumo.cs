@@ -26,8 +26,13 @@ namespace GrouponDesktop.UI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Dominio.DataAdapter.RegistrarConsumo.Registrar(this.codigo_cupon.Text, this.dni_cliente.Text,
+            if (!Dominio.Utilidades.isNumeric(this.codigo_cupon.Text))
+            {
+                MessageBox.Show("El Codigo del cupon es solo numerico. ");
+            }
+            String msg = Dominio.DataAdapter.RegistrarConsumo.Registrar(this.codigo_cupon.Text, this.dni_cliente.Text,
                                                             this.cuit);
+            MessageBox.Show(msg);
             this.Close();
         }
 

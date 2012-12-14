@@ -55,9 +55,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(28, 30);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(74, 13);
+            this.label2.Size = new System.Drawing.Size(79, 13);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Codigo Cupon";
+            this.label2.Text = "Codigo Compra";
             // 
             // label3
             // 

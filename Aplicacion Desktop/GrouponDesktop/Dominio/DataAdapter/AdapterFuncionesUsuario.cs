@@ -56,21 +56,25 @@ namespace GrouponDesktop.Dominio.DataAdapter
     }
     public class RegistrarConsumo
     {
-        public static void Registrar(String codigo, String dni, String cuit)
+        public static String Registrar(String codigo, String dni, String cuit)
         {
             DataAccess.SPManager spManager = new GrouponDesktop.DataAccess.SPManager();
 
             Dictionary<String, Object> param = new Dictionary<string, object>();
 
             param.Add("fecha_actual", AdministradorConfiguracion.obtenerFecha());
-            param.Add("cod_cupon", codigo);
-            param.Add("dni_cliente", dni);
+            param.Add("id_compra", Decimal.Parse(codigo));
             param.Add("provee_cuit", cuit);
-
-            spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_registra_consumo_cupon", param);
-
+            try
+            {
+                spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_registra_consumo_cupon", param);
+            }
+            catch(Exception e)
+            {
+                return "Se produjo el siguiente error: " + e.Message;
+            }
             spManager.Close();
-            return;
+            return "Se registró correctamente.";
 
         }
     }
@@ -204,14 +208,20 @@ ALTER procedure [MR_ANDERSON].[sp_facturar_proveedor] (@fecha_actual DATETIME, @
             {
                 importeFactura = command.Parameters["@importe_factura"].Value.ToString();
                 reader.Close();
-            } 
-            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_facturar_proveedor", parameters, out command))
+            }
+            parameters.Remove("nro_factura output");
+            parameters.Remove("importe_factura output");
+            try
             {
+                SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_facturar_proveedor", parameters, out command);
                 while (reader.Read())
                 {
                     cantidadElementosPorCodigo.Add((reader["codigo"]).ToString(), (reader["Cantidad"]).ToString());
                 }
                 reader.Close();
+            }
+            catch(Exception e)
+            {
             }
             return cantidadElementosPorCodigo;// cupones;
         }
