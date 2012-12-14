@@ -801,18 +801,21 @@ create procedure MR_ANDERSON.sp_change_rol_name_a_usuarios (@nombre_viejo NVARCH
         end
 GO
 
-/*
+
 create procedure MR_ANDERSON.sp_eliminar_rol (@nombre_rol NVARCHAR(255))
     as
     begin
         delete from MR_ANDERSON.Funcionalidades_Roles
             where rol = @nombre_rol
 
+        delete from MR_ANDERSON.Rol_tipo
+            where rol = @nombre_rol
+        
         delete from MR_ANDERSON.Roles
             where rol = @nombre_rol
+            
     end
-GO
-*/
+
 
 
 --Fin ABM ROL!
