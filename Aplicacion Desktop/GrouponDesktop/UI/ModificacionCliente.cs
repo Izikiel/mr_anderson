@@ -95,9 +95,11 @@ namespace GrouponDesktop.UI
 
         private User.User nuevoCliente() 
         {
+            
             User.User nuevoCliente = new User.User();
             nuevoCliente.DatosCliente = new DatosCliente();
             nuevoCliente.DatosLogin = new Login();
+            nuevoCliente.DatosLogin.UserName = this.clienteSeleccionado.DatosLogin.UserName;
             nuevoCliente.DatosLogin.Habilitado = this.checkBox1.Checked;
             nuevoCliente.DatosCliente.Nombre = textBox1.Text;
             nuevoCliente.DatosCliente.Apellido = this.textBox2.Text;
@@ -120,7 +122,7 @@ namespace GrouponDesktop.UI
             {
                 User.User nuevoCliente = this.nuevoCliente();
                 homeUsr.modificarCliente(this.clienteSeleccionado, nuevoCliente, this.ciudadesOriginales, this.ciudadesSeleccionadas,
-                    this.modificarCiudades, nuevoCliente.DatosLogin.Habilitado);
+                    this.modificarCiudades, nuevoCliente.DatosLogin.Habilitado,this.comboBox1.Text);
             }
             catch (Exception)
             {

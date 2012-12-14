@@ -58,6 +58,7 @@ namespace GrouponDesktop.UI
             prov.DatosProveedor = new DatosProveedor();
             prov.Direccion = new Direccion();
             prov.DatosLogin.Habilitado = this.checkBox1.Checked;
+            prov.DatosLogin.UserName = this.proveedorSeleccionado.DatosLogin.UserName;
 
             prov.DatosProveedor.Cuit = this.textBox4.Text;
             prov.DatosProveedor.Mail = this.textBox2.Text;
@@ -86,7 +87,7 @@ namespace GrouponDesktop.UI
             {
                 User.User nuevoProv = this.nuevoProveedor();
                 homeUsr.modificarProveedor(this.proveedorSeleccionado, nuevoProv,
-                     nuevoProv.DatosLogin.Habilitado);
+                     nuevoProv.DatosLogin.Habilitado,this.comboBox1.Text);
             }
             catch (Exception except)
             {

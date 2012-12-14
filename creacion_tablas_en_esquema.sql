@@ -793,10 +793,13 @@ create procedure MR_ANDERSON.sp_change_rol_name (@nombre_rol NVARCHAR(255), @nue
         end
 GO
 
-create procedure MR_ANDERSON.sp_change_rol_name_a_usuarios (@nombre_viejo NVARCHAR(255), @nombre_nuevo variable_type1, 
-                                @variable_name2 variable_type2 output)
+--le cambia el rol a un determinado usuario
+create procedure MR_ANDERSON.sp_change_rol_name_a_usr (@username NVARCHAR(255), @nombre_nuevo NVARCHAR(255))
     as
         begin
+            update MR_ANDERSON.Login
+                set rol = @nombre_nuevo
+                where username = @username
             
         end
 GO

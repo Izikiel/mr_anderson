@@ -370,7 +370,7 @@ namespace GrouponDesktop.User
         }
 
         public void modificarRol(String nombreViejo, String nombreNuevo)
-        {
+        {//a todos los usuarios
             DataAccess.SPManager spManager = new DataAccess.SPManager();
             Dictionary<String, Object> param = new Dictionary<string, object>();
             param.Add("nombre_rol", nombreViejo);
@@ -546,7 +546,8 @@ namespace GrouponDesktop.User
         }
 
         public void modificarCliente(User clienteViejo, User clienteNuevo,
-            List<String> ciudadesOriginales, List<String> ciudadesSeleccionadas, Boolean modificarCiudades, Boolean habilitado)
+            List<String> ciudadesOriginales, List<String> ciudadesSeleccionadas, Boolean modificarCiudades, Boolean habilitado,
+             String nombreRolNuevo)
         {
             DataAccess.SPManager spManager = new DataAccess.SPManager();
             SqlTransaction tran = spManager.DbManager.Connection.BeginTransaction();
@@ -561,6 +562,7 @@ namespace GrouponDesktop.User
                 this.modificarDireccion(clienteViejo.DatosLogin.UserName, clienteNuevo.Direccion);
                 this.changeStatus(clienteViejo.DatosLogin.UserName, habilitado);
                 this.modificarDatosCliente(clienteViejo, clienteNuevo);
+                this.modificarRolAUsuario(clienteNuevo.DatosLogin.UserName,nombreRolNuevo);
             }
             catch (Exception e)
             {
@@ -598,7 +600,8 @@ namespace GrouponDesktop.User
             }
         }
 
-        public void modificarProveedor(User provViejo, User provNuevo, Boolean habilitado)
+        public void modificarProveedor(User provViejo, User provNuevo, Boolean habilitado,
+            String rolNuevo)
         {
             DataAccess.SPManager spManager = new DataAccess.SPManager();
             SqlTransaction tran = spManager.DbManager.Connection.BeginTransaction();
@@ -607,6 +610,7 @@ namespace GrouponDesktop.User
                 this.modificarDireccion(provViejo.DatosLogin.UserName, provNuevo.Direccion);
                 this.changeStatus(provViejo.DatosLogin.UserName, habilitado);
                 this.modificarDatosProveedor(provViejo, provNuevo);
+                this.modificarRolAUsuario(provNuevo.DatosLogin.UserName, rolNuevo);
             }
             catch (Exception e)
             {
@@ -619,6 +623,18 @@ namespace GrouponDesktop.User
             spManager.Close();
         }
 
+        public void modificarRolAUsuario(String username, String rolNuevo)
+        {
+            DataAccess.SPManager spManager = new DataAccess.SPManager();
+
+            Dictionary<String, Object> param = new Dictionary<string, object>();
+            param.Add("username", username);
+            param.Add("nombre_nuevo", rolNuevo);
+
+            spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.sp_change_rol_name_a_usr", param);
+
+            spManager.Close();
+        }
 
         ////VALIDACIONES////
         public Boolean usuarioNoExistente(String nombre)
