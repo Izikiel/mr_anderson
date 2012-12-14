@@ -103,7 +103,7 @@ namespace GrouponDesktop
                 return;
             }
             MessageBox.Show(resultado);
-
+            this.Close();
         }
 
         private bool checkearDatos()

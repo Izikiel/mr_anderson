@@ -30,7 +30,7 @@ namespace GrouponDesktop
             String mensaje = new Dominio.Cupones().devolver(login.UsuarioActivo.DatosCliente.Dni, TxtBox_NroCupon.Text, 
                 AdministradorConfiguracion.obtenerFecha(), TxtBox_Motivo.Text, TxtBox_IdCompra.Text) ;
             MessageBox.Show(mensaje);
-
+            this.Close();
             //else: 
         
         }

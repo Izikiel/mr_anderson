@@ -41,6 +41,7 @@ namespace GrouponDesktop.UI
             }
 
             MessageBox.Show("Se ha cambiado la contraseña del usuario: " + this.loginWindow.UsuarioActivo.DatosLogin.UserName);
+            this.Close();
         }
 
         private void button2_Click(object sender, EventArgs e)

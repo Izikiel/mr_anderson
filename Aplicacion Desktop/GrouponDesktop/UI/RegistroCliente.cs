@@ -89,7 +89,7 @@ namespace GrouponDesktop
             }
 
             MessageBox.Show("El usuario se ha generado correctamente");
-
+            this.Close();
         }
 
 

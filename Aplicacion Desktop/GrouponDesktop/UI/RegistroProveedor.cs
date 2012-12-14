@@ -77,6 +77,7 @@ namespace GrouponDesktop
             }
 
             MessageBox.Show("El usuario se ha generado correctamente");
+            this.Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
