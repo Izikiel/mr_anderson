@@ -1101,9 +1101,22 @@ GO
 create procedure MR_ANDERSON.sp_change_status_user (@username VARCHAR(100),@habilitado bit)
     as
         begin
+            if @habilitado = 1
+                begin
+                    update MR_ANDERSON.Login
+                        set Habilitado = @habilitado,
+                            intentos_fallidos = 0
+
+                    where username = @username
+                    return
+                end
+
+
             update MR_ANDERSON.Login
                 set Habilitado = @habilitado
             where username = @username
+            return
+
         end
 GO
 
