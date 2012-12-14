@@ -57,7 +57,12 @@ namespace GrouponDesktop
             column.DataPropertyName = "PrecioReal";
             column.Name = "Precio";
             column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
+            DataGrid_Cupones.Columns.Add(column);
+            
+            column = new DataGridViewTextBoxColumn();
+            column.DataPropertyName = "FechaVencimiento";
+            column.Name = "Fecha de Vencimiento";
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             DataGrid_Cupones.Columns.Add(column);
 
         }

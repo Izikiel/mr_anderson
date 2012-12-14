@@ -26,6 +26,13 @@ namespace GrouponDesktop.Dominio.DataAdapter
                     cupon.CuponCodigo = ((String)reader["codigo"]).Trim();
                     cupon.Descripcion = ((String)reader["descripcion"]).Trim();
                     cupon.PrecioReal = Double.Parse(((Decimal)reader["precio"]).ToString());
+                   // cupon.FechaVencimiento 
+                    String vencimiento;
+                    vencimiento = (reader["vencimiento_canje"]).ToString();
+                    if(!String.IsNullOrEmpty(vencimiento.Trim()))
+                    {
+                        cupon.FechaVencimiento = DateTime.Parse(vencimiento);
+                    }
                     cupones.Add(cupon);
                 }
                 reader.Close();
