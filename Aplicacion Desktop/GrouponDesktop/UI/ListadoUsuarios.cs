@@ -13,11 +13,12 @@ namespace GrouponDesktop.UI
 {
     public partial class ListadoUsuarios : Form
     {
-        String tipo; //cliente o proveedor
-        String f; //Baja o Modificacion
+        String tipo; //Cliente o Proveedor
+        String f; //Baja o Modificacion o GiftCard
         String SelectedUsrname;
         List<UserStringContainer> listaUsuarios;
         HomeUsuarios home_usuarios = new HomeUsuarios();
+        ComprarGiftCard giftcardWindow;
 
         public ListadoUsuarios(String t,String f)
         {
@@ -26,6 +27,16 @@ namespace GrouponDesktop.UI
             this.f = f;
             this.initFiltros();
             this.fillGridSinFiltros();
+        }
+
+        public ListadoUsuarios(String t, String f, ComprarGiftCard giftcardWindow)
+        {
+            InitializeComponent();
+            this.tipo = t;
+            this.f = f;
+            this.initFiltros();
+            this.giftcardWindow = giftcardWindow;
+            this.fillGridSinFiltros();    
         }
 
         private void initFiltros()
@@ -95,6 +106,11 @@ namespace GrouponDesktop.UI
                         dModifP.ShowDialog();
                         this.fillGrid();
                     }
+                    break;
+
+                case "GiftCard":
+                    this.giftcardWindow.TxtBoxUsuarioDestino.Text = this.SelectedUsrname;
+                    this.Close();
                     break;
 
         }

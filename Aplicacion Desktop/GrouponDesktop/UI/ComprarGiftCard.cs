@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using GrouponDesktop.UI;
 
 namespace GrouponDesktop
 {
@@ -13,10 +14,11 @@ namespace GrouponDesktop
     {
         LoginWindow login;
         String saldo;
+
         public ComprarGiftCard(LoginWindow login)
         {
             InitializeComponent();
-
+            this.TxtBoxUsuarioDestino.Enabled = false;
             this.login = login;
             saldo = login.UsuarioActivo.DatosCliente.Saldo.ToString();
             if (String.IsNullOrEmpty(saldo))
@@ -50,6 +52,13 @@ namespace GrouponDesktop
             MessageBox.Show(result);
             this.Close();
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ListadoUsuarios w = new ListadoUsuarios("Cliente", "GiftCard", this);
+            w.ShowDialog();
+            
         }
 
 
