@@ -41,11 +41,11 @@
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBox11 = new System.Windows.Forms.TextBox();
+            this.postal_box = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.textBox10 = new System.Windows.Forms.TextBox();
-            this.textBox9 = new System.Windows.Forms.TextBox();
-            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.depto_box = new System.Windows.Forms.TextBox();
+            this.piso_box = new System.Windows.Forms.TextBox();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -166,11 +166,11 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.textBox11);
+            this.groupBox1.Controls.Add(this.postal_box);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.textBox10);
-            this.groupBox1.Controls.Add(this.textBox9);
-            this.groupBox1.Controls.Add(this.textBox8);
+            this.groupBox1.Controls.Add(this.depto_box);
+            this.groupBox1.Controls.Add(this.piso_box);
             this.groupBox1.Controls.Add(this.textBox7);
             this.groupBox1.Controls.Add(this.textBox6);
             this.groupBox1.Controls.Add(this.label10);
@@ -185,12 +185,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Direccion";
             // 
-            // textBox11
+            // postal_box
             // 
-            this.textBox11.Location = new System.Drawing.Point(75, 134);
-            this.textBox11.Name = "textBox11";
-            this.textBox11.Size = new System.Drawing.Size(100, 20);
-            this.textBox11.TabIndex = 11;
+
+            this.postal_box.Location = new System.Drawing.Point(75, 134);
+            this.postal_box.Name = "postal_box";
+            this.postal_box.Size = new System.Drawing.Size(100, 20);
+            this.postal_box.TabIndex = 11;
+
             // 
             // label11
             // 
@@ -208,19 +210,24 @@
             this.textBox10.Size = new System.Drawing.Size(100, 20);
             this.textBox10.TabIndex = 10;
             // 
-            // textBox9
+            // depto_box
             // 
-            this.textBox9.Location = new System.Drawing.Point(170, 73);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(61, 20);
-            this.textBox9.TabIndex = 9;
+
+            this.depto_box.Location = new System.Drawing.Point(170, 73);
+            this.depto_box.Name = "depto_box";
+            this.depto_box.Size = new System.Drawing.Size(61, 20);
+            this.depto_box.TabIndex = 9
+            ;
+
             // 
-            // textBox8
+            // piso_box
             // 
-            this.textBox8.Location = new System.Drawing.Point(49, 73);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(63, 20);
-            this.textBox8.TabIndex = 8;
+
+            this.piso_box.Location = new System.Drawing.Point(49, 73);
+            this.piso_box.Name = "piso_box";
+            this.piso_box.Size = new System.Drawing.Size(63, 20);
+            this.piso_box.TabIndex = 8;
+
             // 
             // textBox7
             // 
@@ -404,11 +411,11 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox11;
+        private System.Windows.Forms.TextBox postal_box;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox textBox10;
-        private System.Windows.Forms.TextBox textBox9;
-        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.TextBox depto_box;
+        private System.Windows.Forms.TextBox piso_box;
         private System.Windows.Forms.TextBox textBox7;
         private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.Label label10;

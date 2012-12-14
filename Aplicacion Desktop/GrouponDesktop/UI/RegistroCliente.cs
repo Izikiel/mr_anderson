@@ -32,7 +32,12 @@ namespace GrouponDesktop
         {
             foreach (Control c in this.Controls)
             {
-                if (c.Text.Equals("")) { MessageBox.Show("Tiene que completar todos los campos"); return; }
+                if (c.Text.Equals("") && 
+                    (c.Name != "piso_box" || c.Name != "depto_box" || c.Name != "postal_box") ) 
+                { 
+                    MessageBox.Show("Tiene que completar todos los campos"); 
+                    return; 
+                }
 
             }
             try
@@ -46,7 +51,7 @@ namespace GrouponDesktop
                 this.padre.Usuario.DatosCliente.FechaNac = this.getFechaToAAAAMMDD();
 
                 this.padre.Usuario.Direccion.Calle = this.textBox6.Text+" "+this.textBox7.Text;
-                this.padre.Usuario.Direccion.Depto = this.textBox9.Text;
+                this.padre.Usuario.Direccion.Depto = this.depto_box.Text;
                 this.padre.Usuario.Direccion.Localidad = this.textBox10.Text;
 
                 
@@ -54,15 +59,18 @@ namespace GrouponDesktop
                 try
                 {
                     campo = "piso";
-                    if (!this.textBox8.Text.Equals("-")) this.padre.Usuario.Direccion.Piso = Convert.ToInt32(this.textBox8.Text);
+                    if(this.piso_box.Text.Equals(""))
+                        this.padre.Usuario.Direccion.Piso = 0;
+                    else
+                        this.padre.Usuario.Direccion.Piso = Convert.ToInt32(this.piso_box.Text);
+
                     campo = "codigo postal";
-                    this.padre.Usuario.Direccion.CodigoPostal = Convert.ToInt32(this.textBox11.Text);
+                    this.padre.Usuario.Direccion.CodigoPostal = Convert.ToInt32(this.postal_box.Text);
 
                 }
                 catch (Exception)
                 {
                     String error = "El campo " + campo + " tiene un formato incorrecto.";
-                    if (campo.Equals("piso")) error = error + " Por omision ingrese -";
                     MessageBox.Show(error);
                     return;
                 }
