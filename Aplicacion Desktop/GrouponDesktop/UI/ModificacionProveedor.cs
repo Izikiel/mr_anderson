@@ -44,7 +44,6 @@ namespace GrouponDesktop.UI
             this.textBox3.Text = this.proveedorSeleccionado.DatosProveedor.Telefono;
 
             this.textBox6.Text = this.proveedorSeleccionado.Direccion.Calle; 
-            this.textBox5.Text = this.proveedorSeleccionado.DatosProveedor.Ciudad;
             this.textBox11.Text = Convert.ToString(this.proveedorSeleccionado.Direccion.CodigoPostal);
             this.textBox8.Text = Convert.ToString(this.proveedorSeleccionado.Direccion.Piso);
             this.textBox9.Text = this.proveedorSeleccionado.Direccion.Depto;
@@ -68,7 +67,6 @@ namespace GrouponDesktop.UI
             prov.DatosProveedor.Telefono = this.textBox3.Text;
 
             prov.Direccion.Calle = this.textBox6.Text;
-            prov.DatosProveedor.Ciudad = this.textBox5.Text;
             prov.Direccion.Depto = this.textBox9.Text;
             prov.Direccion.Localidad = this.textBox10.Text;
 

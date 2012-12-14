@@ -47,7 +47,6 @@ namespace GrouponDesktop
 
                 this.padre.Usuario.Direccion.Calle = this.textBox6.Text +" "+ this.textBox7.Text;
                 this.padre.Usuario.Direccion.Numero = Convert.ToInt32(this.textBox7.Text);
-                this.padre.Usuario.DatosProveedor.Ciudad = this.textBox5.Text;
                 this.padre.Usuario.Direccion.Depto = this.textBox9.Text;
                 this.padre.Usuario.Direccion.Localidad = this.textBox10.Text;
 

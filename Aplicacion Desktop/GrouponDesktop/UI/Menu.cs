@@ -162,7 +162,15 @@ namespace GrouponDesktop
                 case "Cambiar Password":
                     new CambiarPassword(loginWindow).ShowDialog();
                     break;
+                case "Darse de baja":
+                    ConfirmarEliminarUsuarioDialog weliminar = new ConfirmarEliminarUsuarioDialog(loginWindow.UsuarioActivo.DatosLogin.UserName,this.loginWindow);
+                    weliminar.ShowDialog();
+                    if (this.loginWindow.UsuarioActivo.DatosLogin.Habilitado == false)
+                        this.Close();
+                    break;
             }
+
+            
         }
 
         private void menu_closed(object sender, EventArgs e)
