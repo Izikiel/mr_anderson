@@ -133,7 +133,7 @@
             this.dateTimePicker1.Location = new System.Drawing.Point(297, 231);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker1.TabIndex = 21;
+            this.dateTimePicker1.TabIndex = 12;
             // 
             // groupBox1
             // 
@@ -159,7 +159,7 @@
             this.textBox11.Location = new System.Drawing.Point(75, 134);
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new System.Drawing.Size(100, 20);
-            this.textBox11.TabIndex = 23;
+            this.textBox11.TabIndex = 10;
             // 
             // label11
             // 
@@ -175,28 +175,28 @@
             this.textBox10.Location = new System.Drawing.Point(75, 102);
             this.textBox10.Name = "textBox10";
             this.textBox10.Size = new System.Drawing.Size(100, 20);
-            this.textBox10.TabIndex = 21;
+            this.textBox10.TabIndex = 9;
             // 
             // textBox9
             // 
             this.textBox9.Location = new System.Drawing.Point(170, 65);
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(61, 20);
-            this.textBox9.TabIndex = 20;
+            this.textBox9.TabIndex = 8;
             // 
             // textBox8
             // 
             this.textBox8.Location = new System.Drawing.Point(49, 65);
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(63, 20);
-            this.textBox8.TabIndex = 14;
+            this.textBox8.TabIndex = 7;
             // 
             // textBox6
             // 
             this.textBox6.Location = new System.Drawing.Point(78, 23);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(100, 20);
-            this.textBox6.TabIndex = 14;
+            this.textBox6.TabIndex = 6;
             // 
             // label10
             // 
@@ -239,7 +239,7 @@
             this.textBox5.Location = new System.Drawing.Point(90, 170);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(100, 20);
-            this.textBox5.TabIndex = 33;
+            this.textBox5.TabIndex = 5;
             // 
             // label5
             // 
@@ -255,7 +255,7 @@
             this.textBox4.Location = new System.Drawing.Point(90, 134);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(100, 20);
-            this.textBox4.TabIndex = 31;
+            this.textBox4.TabIndex = 4;
             // 
             // label4
             // 
@@ -271,7 +271,7 @@
             this.textBox3.Location = new System.Drawing.Point(90, 101);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(100, 20);
-            this.textBox3.TabIndex = 29;
+            this.textBox3.TabIndex = 3;
             // 
             // label3
             // 
@@ -287,14 +287,14 @@
             this.textBox2.Location = new System.Drawing.Point(90, 67);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 27;
+            this.textBox2.TabIndex = 2;
             // 
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(90, 32);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 26;
+            this.textBox1.TabIndex = 1;
             // 
             // label2
             // 
@@ -329,7 +329,7 @@
             this.button1.Location = new System.Drawing.Point(263, 279);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 22;
+            this.button1.TabIndex = 14;
             this.button1.Text = "Aceptar";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -340,7 +340,7 @@
             this.checkBox1.Location = new System.Drawing.Point(51, 231);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(73, 17);
-            this.checkBox1.TabIndex = 42;
+            this.checkBox1.TabIndex = 11;
             this.checkBox1.Text = "Habilitado";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
@@ -350,7 +350,7 @@
             this.comboBox1.Location = new System.Drawing.Point(90, 279);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 43;
+            this.comboBox1.TabIndex = 13;
             // 
             // label7
             // 

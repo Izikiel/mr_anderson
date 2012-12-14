@@ -85,7 +85,7 @@
             this.TxtBox_Descripcion.Multiline = true;
             this.TxtBox_Descripcion.Name = "TxtBox_Descripcion";
             this.TxtBox_Descripcion.Size = new System.Drawing.Size(251, 105);
-            this.TxtBox_Descripcion.TabIndex = 7;
+            this.TxtBox_Descripcion.TabIndex = 5;
             // 
             // label1
             // 
@@ -137,7 +137,7 @@
             this.TimePicker_Oferta.Location = new System.Drawing.Point(408, 160);
             this.TimePicker_Oferta.Name = "TimePicker_Oferta";
             this.TimePicker_Oferta.Size = new System.Drawing.Size(200, 20);
-            this.TimePicker_Oferta.TabIndex = 7;
+            this.TimePicker_Oferta.TabIndex = 6;
             this.TimePicker_Oferta.Value = new System.DateTime(2012, 12, 9, 18, 30, 19, 453);
             // 
             // TimePicker_Vencimiento
@@ -145,7 +145,7 @@
             this.TimePicker_Vencimiento.Location = new System.Drawing.Point(408, 203);
             this.TimePicker_Vencimiento.Name = "TimePicker_Vencimiento";
             this.TimePicker_Vencimiento.Size = new System.Drawing.Size(200, 20);
-            this.TimePicker_Vencimiento.TabIndex = 18;
+            this.TimePicker_Vencimiento.TabIndex = 7;
             this.TimePicker_Vencimiento.Value = new System.DateTime(2012, 12, 9, 18, 30, 19, 453);
             // 
             // label5
@@ -171,7 +171,7 @@
             this.Btn_Confirmar.Location = new System.Drawing.Point(291, 300);
             this.Btn_Confirmar.Name = "Btn_Confirmar";
             this.Btn_Confirmar.Size = new System.Drawing.Size(75, 23);
-            this.Btn_Confirmar.TabIndex = 20;
+            this.Btn_Confirmar.TabIndex = 9;
             this.Btn_Confirmar.Text = "Confirmar";
             this.Btn_Confirmar.UseVisualStyleBackColor = true;
             this.Btn_Confirmar.Click += new System.EventHandler(this.Btn_Confirmar_Click);
@@ -190,7 +190,7 @@
             this.TimePicker_Publicacion.Location = new System.Drawing.Point(408, 241);
             this.TimePicker_Publicacion.Name = "TimePicker_Publicacion";
             this.TimePicker_Publicacion.Size = new System.Drawing.Size(200, 20);
-            this.TimePicker_Publicacion.TabIndex = 21;
+            this.TimePicker_Publicacion.TabIndex = 8;
             this.TimePicker_Publicacion.Value = new System.DateTime(2012, 12, 9, 18, 30, 19, 473);
             // 
             // listBox1

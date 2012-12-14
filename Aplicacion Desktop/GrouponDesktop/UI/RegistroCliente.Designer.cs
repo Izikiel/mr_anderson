@@ -107,21 +107,21 @@
             this.textBox1.Location = new System.Drawing.Point(117, 19);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 4;
+            this.textBox1.TabIndex = 1;
             // 
             // textBox2
             // 
             this.textBox2.Location = new System.Drawing.Point(117, 54);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 5;
+            this.textBox2.TabIndex = 2;
             // 
             // textBox3
             // 
             this.textBox3.Location = new System.Drawing.Point(117, 88);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(100, 20);
-            this.textBox3.TabIndex = 7;
+            this.textBox3.TabIndex = 3;
             // 
             // label3
             // 
@@ -137,7 +137,7 @@
             this.textBox4.Location = new System.Drawing.Point(117, 121);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(100, 20);
-            this.textBox4.TabIndex = 9;
+            this.textBox4.TabIndex = 4;
             // 
             // label4
             // 
@@ -153,7 +153,7 @@
             this.textBox5.Location = new System.Drawing.Point(117, 157);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(100, 20);
-            this.textBox5.TabIndex = 11;
+            this.textBox5.TabIndex = 5;
             // 
             // label5
             // 
@@ -190,7 +190,7 @@
             this.textBox11.Location = new System.Drawing.Point(75, 134);
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new System.Drawing.Size(100, 20);
-            this.textBox11.TabIndex = 23;
+            this.textBox11.TabIndex = 11;
             // 
             // label11
             // 
@@ -206,35 +206,35 @@
             this.textBox10.Location = new System.Drawing.Point(75, 102);
             this.textBox10.Name = "textBox10";
             this.textBox10.Size = new System.Drawing.Size(100, 20);
-            this.textBox10.TabIndex = 21;
+            this.textBox10.TabIndex = 10;
             // 
             // textBox9
             // 
             this.textBox9.Location = new System.Drawing.Point(170, 73);
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(61, 20);
-            this.textBox9.TabIndex = 20;
+            this.textBox9.TabIndex = 9;
             // 
             // textBox8
             // 
             this.textBox8.Location = new System.Drawing.Point(49, 73);
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(63, 20);
-            this.textBox8.TabIndex = 14;
+            this.textBox8.TabIndex = 8;
             // 
             // textBox7
             // 
             this.textBox7.Location = new System.Drawing.Point(78, 48);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(100, 20);
-            this.textBox7.TabIndex = 19;
+            this.textBox7.TabIndex = 7;
             // 
             // textBox6
             // 
             this.textBox6.Location = new System.Drawing.Point(78, 23);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(100, 20);
-            this.textBox6.TabIndex = 14;
+            this.textBox6.TabIndex = 6;
             // 
             // label10
             // 
@@ -286,7 +286,7 @@
             this.dateTimePicker1.Location = new System.Drawing.Point(224, 212);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker1.TabIndex = 0;
+            this.dateTimePicker1.TabIndex = 12;
             // 
             // label12
             // 
