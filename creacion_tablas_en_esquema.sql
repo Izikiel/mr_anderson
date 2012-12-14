@@ -1568,7 +1568,14 @@ create procedure MR_ANDERSON.sp_ver_cupones_habilitados (@dni numeric(18), @fech
                     on   Cupones.codigo = Ciudades_Cupon.codigo 
                     and Ciudades_Cupon.ciudad in (select C.ciudad from MR_ANDERSON.Ciudades C where C.dni = @dni)
 
-                where Cupones.fecha_publicacion = @fecha and publicado = 1
+                join MR_ANDERSON.Datos_Proveedores Proveedores
+                    on   Cupones.provee_cuit = Proveedores.provee_cuit
+                
+                join MR_ANDERSON.Login Login
+                    on   Proveedores.username = Login.username 
+                
+
+                where Cupones.fecha_publicacion = @fecha and publicado = 1 and Login.Habilitado = 1
                                         
         end
 GO
