@@ -298,11 +298,18 @@ namespace GrouponDesktop.User
                 param_user.Add("nombre_sended", usuario.DatosCliente.Nombre);
                 param_user.Add("result output", "");
                 SqlCommand command;
-                spManager.executeSPWithParameters("MR_ANDERSON.sp_insert_cliente", param_user, out command);
-                string resultado = (string)command.Parameters["@result"].Value;
-                if (!resultado.Equals("CLIENT_REG_OK"))
+                try
                 {
-                    throw new Exception(resultado);
+                    spManager.executeSPWithParameters("MR_ANDERSON.sp_insert_cliente", param_user, out command);
+                    string resultado = (string)command.Parameters["@result"].Value;
+                    if (!resultado.Equals("CLIENT_REG_OK"))
+                    {
+                        throw new Exception(resultado);
+                    }
+                }
+                catch(Exception e)
+                {
+                    throw new Exception("Error en Sistema: " + e.Message);
                 }
 
 
@@ -331,11 +338,18 @@ namespace GrouponDesktop.User
                 param_prov.Add("provee_email_sended", usuario.DatosProveedor.Mail);
                 param_prov.Add("result output", "");
                 SqlCommand command_prov;
-                spManager.executeSPWithParameters("MR_ANDERSON.sp_insert_proveedor", param_prov, out command_prov);
-                String resultado_prov = command_prov.Parameters["@result"].Value.ToString();
-                if (!resultado_prov.Equals("PROV_REG_OK"))
+                try
                 {
-                    throw new Exception(resultado_prov);
+                    spManager.executeSPWithParameters("MR_ANDERSON.sp_insert_proveedor", param_prov, out command_prov);
+                    String resultado_prov = command_prov.Parameters["@result"].Value.ToString();
+                    if (!resultado_prov.Equals("PROV_REG_OK"))
+                    {
+                        throw new Exception(resultado_prov);
+                    }
+                }
+                catch(Exception e)
+                {
+                    throw new Exception("Error Sistema: " + e.Message);
                 }
 
             }
@@ -356,14 +370,20 @@ namespace GrouponDesktop.User
             param_direccion.Add("result output", "");
 
             SqlCommand command2;
-            spManager4.executeSPWithParameters("MR_ANDERSON.sp_insert_direccion", param_direccion, out command2);
-
-            String resultado2 = command2.Parameters["@result"].Value.ToString();
-            if (!resultado2.Equals("OK"))
+            try
             {
-                throw new Exception(resultado2);
-            }
+                spManager4.executeSPWithParameters("MR_ANDERSON.sp_insert_direccion", param_direccion, out command2);
 
+                String resultado2 = command2.Parameters["@result"].Value.ToString();
+                if (!resultado2.Equals("OK"))
+                {
+                    throw new Exception(resultado2);
+                }
+            }
+            catch
+            {
+                throw new Exception("Error en Sistema");
+            }
             spManager4.Close();
 
 
@@ -416,11 +436,15 @@ namespace GrouponDesktop.User
 
             Dictionary<String, Object> param = new Dictionary<String, Object>();
             param.Add("nombre_usuario", usuario.DatosLogin.UserName);
-            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.get_nombre_rol_de_usuario", param))
+            try
             {
+                SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.get_nombre_rol_de_usuario", param);
                 reader.Read();
                 HomeRoles home = new HomeRoles();
                 usuario.Rol = home.getRol((String)reader["rol"]);
+            }
+            catch
+            {
             }
 
             spManager.Close();

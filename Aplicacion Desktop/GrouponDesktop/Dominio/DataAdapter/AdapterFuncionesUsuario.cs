@@ -33,17 +33,23 @@ namespace GrouponDesktop.Dominio.DataAdapter
             param.Add("tipo_tarjeta", tipoTarjeta);
             param.Add("result output", result);
             SqlCommand command;
-            SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_cargar_credito", param, out command);
-            result = (string)command.Parameters["@result"].Value;
-            if (result == "OK")
-                result = "Se cargó el credito correctamente";
-            else if (result == "DNI_ERROR")
-                result = "Error con el Numero de DNI";
-            else if (result == "Datos_Tarjeta_Invalidos")
-                result = "Los datos de la tarjeta son invalidos";
-            else if (result == "Monto_Minimo_15")
-                result = "El monto minimo a cargar es de $15";
-
+            try
+            {
+                SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_cargar_credito", param, out command);
+                result = (string)command.Parameters["@result"].Value;
+                if (result == "OK")
+                    result = "Se cargó el credito correctamente";
+                else if (result == "DNI_ERROR")
+                    result = "Error con el Numero de DNI";
+                else if (result == "Datos_Tarjeta_Invalidos")
+                    result = "Los datos de la tarjeta son invalidos";
+                else if (result == "Monto_Minimo_15")
+                    result = "El monto minimo a cargar es de $15";
+            }
+            catch (Exception e)
+            {
+                result = "Error en el sistema: " + e.Message;
+            }
             //spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.", param);
             spManager.Close();
             return result;
@@ -101,14 +107,21 @@ namespace GrouponDesktop.Dominio.DataAdapter
             param.Add("result output", result);
 
             SqlCommand command;
-            SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_compra_giftcard", param, out command);
-            result = (string)command.Parameters["@result"].Value;
-            if (result == "OK")
-                result = "Se realizó correctamente la operación";
-            else if (result == "CLIENTE_INHABILITADO")
-                result = "El Cliente se encuentra inhabilitado";
-            else if (result == "origen=destino")
-                result = "El usuario de origen y destino es el mismo.";
+            try
+            {
+                SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_compra_giftcard", param, out command);
+                result = (string)command.Parameters["@result"].Value;
+                if (result == "OK")
+                    result = "Se realizó correctamente la operación";
+                else if (result == "CLIENTE_INHABILITADO")
+                    result = "El Cliente se encuentra inhabilitado";
+                else if (result == "origen=destino")
+                    result = "El usuario de origen y destino es el mismo.";
+            }
+            catch (Exception e)
+            {
+                result = "Error del sistema: " + e.Message;
+            }
 
             //spManager.executeSPWithParametersWithOutReturn("MR_ANDERSON.", param);
             spManager.Close();
@@ -188,7 +201,8 @@ ALTER procedure [MR_ANDERSON].[sp_facturar_proveedor] (@fecha_actual DATETIME, @
         public static Dictionary<String, String> facturar(String proveedor, DateTime fechaInicio, DateTime fechaFin, out String importeFactura, out String numeroFactura)
         {
             Dictionary<String, String> cantidadElementosPorCodigo = new Dictionary<string, string>();
-
+            importeFactura = "";
+            numeroFactura = "";
             DataAccess.SPManager spManager = new GrouponDesktop.DataAccess.SPManager();
             Dictionary<String, Object> parameters = new Dictionary<string, object>();
             parameters.Add("provee_cuit", proveedor);
@@ -198,16 +212,25 @@ ALTER procedure [MR_ANDERSON].[sp_facturar_proveedor] (@fecha_actual DATETIME, @
             parameters.Add("nro_factura output", "");
             parameters.Add("importe_factura output", "");
             SqlCommand command;
-            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_facturar_proveedor_nfactura", parameters, out command))
+            try
             {
-
+                SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_facturar_proveedor_nfactura", parameters, out command);
                 numeroFactura = command.Parameters["@nro_factura"].Value.ToString();
                 reader.Close();
             }
-            using (SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_factura_proveedor_importe", parameters, out command))
+            catch
             {
+                return cantidadElementosPorCodigo;
+            }
+            try
+            {
+                SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_factura_proveedor_importe", parameters, out command);
                 importeFactura = command.Parameters["@importe_factura"].Value.ToString();
                 reader.Close();
+            }
+            catch
+            {
+                return cantidadElementosPorCodigo;
             }
             parameters.Remove("nro_factura output");
             parameters.Remove("importe_factura output");

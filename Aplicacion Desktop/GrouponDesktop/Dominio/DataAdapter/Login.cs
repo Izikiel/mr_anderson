@@ -19,10 +19,17 @@ namespace GrouponDesktop.DataAdapter
            parameters.Add("user_password_sended", password);
            parameters.Add("result output", "");
            SqlCommand command;
-           SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_login", parameters, out command);
-           string resultado = (string)command.Parameters["@result"].Value;
-
-           reader.Close();
+           string resultado = "";
+           try
+           {
+               SqlDataReader reader = spManager.executeSPWithParameters("MR_ANDERSON.sp_login", parameters, out command);
+               resultado = (string)command.Parameters["@result"].Value;
+               reader.Close();
+           }
+           catch
+           {
+               
+           }
            spManager.Close();
 
 
