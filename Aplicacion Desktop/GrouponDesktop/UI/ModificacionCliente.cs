@@ -153,7 +153,7 @@ namespace GrouponDesktop.UI
             }
             catch (Exception except)
             {
-                MessageBox.Show("No se ha podido modificar el cliente "+except.ToString());
+                MessageBox.Show("No se ha podido modificar el cliente "+except.Message.ToString());
                 return;
             }
             

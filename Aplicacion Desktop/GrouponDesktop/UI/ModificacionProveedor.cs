@@ -114,7 +114,7 @@ namespace GrouponDesktop.UI
             }
             catch (Exception except)
             {
-                MessageBox.Show("No se ha podido modificar al proveedor"+ except.ToString());
+                MessageBox.Show("No se ha podido modificar al proveedor"+ except.Message.ToString());
                 return;
             }
 

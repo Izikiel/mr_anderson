@@ -71,7 +71,7 @@ namespace GrouponDesktop
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.ToString());
+                MessageBox.Show(exception.Message.ToString());
                 return;
             }
 
