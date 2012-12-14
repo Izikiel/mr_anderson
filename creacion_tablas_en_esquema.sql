@@ -1514,7 +1514,7 @@ create procedure MR_ANDERSON.historial_compra (@dni numeric(18,0), @fecha_inicio
                                 @fecha_final DATETIME)
     as
         begin
-            select codigo, C.id_compra,'COMPRADO' as Estado 
+            select Cupones.codigo, C.id_compra,'COMPRADO' as Estado 
                 from MR_ANDERSON.Compras C
 
                 join MR_ANDERSON.Cupones Cupones
@@ -1537,11 +1537,11 @@ create procedure MR_ANDERSON.historial_compra (@dni numeric(18,0), @fecha_inicio
                 from MR_ANDERSON.Compras Compras
 
                 join MR_ANDERSON.Consumos Consumos
-                    on   Compras.condition = Consumos.id_compra
+                    on   Compras.id_compra = Consumos.id_compra
 
                 where Compras.dni = @dni and Consumos.fecha_consumo >= @fecha_inicio and Consumos.fecha_consumo <= @fecha_final
 
-            union select codigo, Compras.id_compra, 'Vencido' as Estado 
+            union select Cupones.codigo, Compras.id_compra, 'Vencido' as Estado 
                 from MR_ANDERSON.Compras Compras
 
                 join MR_ANDERSON.Cupones Cupones
