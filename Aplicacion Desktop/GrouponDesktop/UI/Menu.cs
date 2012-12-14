@@ -41,6 +41,11 @@ namespace GrouponDesktop
             switch (f)
             {
                 case "ABM Rol":
+                    if (this.loginWindow.UsuarioActivo.Rol.TipoUsuario != "Administrador")
+                    {
+                        MessageBox.Show("Ingrese como administrador");
+                        return;
+                    }
                     ABMRol w = new ABMRol(loginWindow);
                     w.ShowDialog();
                     break;
@@ -54,6 +59,11 @@ namespace GrouponDesktop
                     creditoWindow.ShowDialog();
                     break;
                 case "ABM Usuario":
+                    if (this.loginWindow.UsuarioActivo.Rol.TipoUsuario != "Administrador")
+                    {
+                        MessageBox.Show("Ingrese como administrador");
+                        return;
+                    }
                     Button BAbmClientes = new Button();
                     Button BAbmProveedores = new Button();
                     BAbmClientes.Text = "Abm Clientes";
@@ -110,15 +120,35 @@ namespace GrouponDesktop
                     new ArmarCupon(loginWindow).ShowDialog();
                     break;
                 case "Registro Consumo":
+                    if (this.loginWindow.UsuarioActivo.Rol.TipoUsuario != "Proveedor")
+                    {
+                        MessageBox.Show("Ingrese como un proveedor");
+                        return;
+                    }
                     new RegistroConsumo(loginWindow).ShowDialog();
                     break;
                 case "Publicar Cupones":
+                    if (this.loginWindow.UsuarioActivo.Rol.TipoUsuario != "Administrador")
+                    {
+                        MessageBox.Show("Ingrese como administrador");
+                        return;
+                    }
                     new PublicarCupon().ShowDialog();
                     break;
                 case "Listado Estadistico":
+                    if (this.loginWindow.UsuarioActivo.Rol.TipoUsuario != "Administrador")
+                    {
+                        MessageBox.Show("Ingrese como administrador");
+                        return;
+                    }
                     new ListadoEstadistico().Show();
                     break;
-                case "Facturar Proveedor":
+                case "Facturar Proveedor": 
+                    if (this.loginWindow.UsuarioActivo.Rol.TipoUsuario != "Administrador")
+                    {
+                        MessageBox.Show("Ingrese como administrador");
+                        return;
+                    }
                     new FacturarProveedor().ShowDialog();
                     break;
                 case "Ver Historial":

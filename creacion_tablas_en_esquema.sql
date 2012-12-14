@@ -2117,7 +2117,7 @@ create procedure MR_ANDERSON.sp_estadistico_devoluciones (@year numeric(4,0), @s
         begin
             select top 5  count(Compras.codigo) as 'vendidos' , count(Devoluciones.id_compra) as 'devueltos',
                     count(Devoluciones.id_compra)*100/count(Compras.codigo) as 'porcentaje_devueltos', 
-                    Proveedores.username, Cupones.codigo, Cupones.descripcion
+                    Proveedores.username, Compras.codigo, Cupones.descripcion
                 from MR_ANDERSON.Compras Compras
 
                 left join MR_ANDERSON.Devoluciones Devoluciones
@@ -2131,7 +2131,7 @@ create procedure MR_ANDERSON.sp_estadistico_devoluciones (@year numeric(4,0), @s
                     
             where YEAR(Compras.fecha) = @year and MR_ANDERSON.fn_in_semester(@semestre,Compras.fecha) = 1
             
-            group by Proveedores.username, Compras.codigo
+            group by Proveedores.username, Compras.codigo, Cupones.descripcion
             
             having COUNT(Devoluciones.id_compra) > 0
             
@@ -2153,7 +2153,7 @@ create procedure MR_ANDERSON.sp_estadistico_usuarios (@year numeric(4,0), @semes
     as
         begin
             
-            select top 5  Clientes.username as 'nombre_usuario', COUNT(Giftcard.id_destino) as 'cantidad'
+            select top 5  Clientes.username as 'nombre_usuario', COUNT(Giftcard.id_destino) as 'cantidad', Clientes.dni as 'DNI'
                 from MR_ANDERSON.Datos_Clientes Clientes
 
             join MR_ANDERSON.Cliente_Destino Destino
@@ -2162,7 +2162,7 @@ create procedure MR_ANDERSON.sp_estadistico_usuarios (@year numeric(4,0), @semes
             join MR_ANDERSON.Giftcard Giftcard
                 on   Destino.id_destino = Giftcard.id_destino
 
-            group by Clientes.username, Giftcard.fecha
+            group by Clientes.username, Giftcard.fecha, Clientes.dni
 
             having YEAR(Giftcard.fecha) = @year and MR_ANDERSON.fn_in_semester(@semestre, Giftcard.fecha) = 1
 
