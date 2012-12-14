@@ -2117,7 +2117,7 @@ create procedure MR_ANDERSON.sp_estadistico_devoluciones (@year numeric(4,0), @s
         begin
             select top 5  count(Compras.codigo) as 'vendidos' , count(Devoluciones.id_compra) as 'devueltos',
                     count(Devoluciones.id_compra)*100/count(Compras.codigo) as 'porcentaje_devueltos', 
-                    Proveedores.username
+                    Proveedores.username, Cupones.codigo, Cupones.descripcion
                 from MR_ANDERSON.Compras Compras
 
                 left join MR_ANDERSON.Devoluciones Devoluciones
