@@ -48,7 +48,7 @@ namespace GrouponDesktop
                 this.usuario.DatosLogin.Password = this.textBox2.Text;
                 this.usuario.Rol.setNombreRol(this.comboBox2.SelectedItem.ToString());
                 this.usuario.TipoUsuario = this.comboBox1.SelectedItem.ToString();
-                if (comboBox2.SelectedItem.ToString().Equals("Cliente"))
+                if (comboBox1.SelectedItem.ToString().Equals("Cliente"))
                 {
                     w = new RegistroCliente(this);
                     this.usuario.DatosProveedor = null;
