@@ -67,6 +67,10 @@ namespace GrouponDesktop
             String codigoCupon = (String) DataGrid_Cupones["Codigo del Cupon",rowSelectedIndex].Value;
             String msg = cupones.comprarCupones(login.UsuarioActivo.DatosCliente.Dni, codigoCupon);
             MessageBox.Show(msg);
+            
+            User.HomeUsuarios usuarios = new GrouponDesktop.User.HomeUsuarios();
+            usuarios.setInformacionAlUsuario(login.UsuarioActivo);
+
         }
 
         int rowSelectedIndex = 0;
