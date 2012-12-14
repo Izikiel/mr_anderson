@@ -27,8 +27,8 @@ namespace GrouponDesktop.Dominio.DataAdapter
                 if(!Convert.IsDBNull(reader["devueltos"])) objResultado.CuponesDevueltos = Convert.ToString(reader["devueltos"]);
                 if(!Convert.IsDBNull(reader["porcentaje_devueltos"])) objResultado.PorcentajeDevolucion = Convert.ToString(reader["porcentaje_devueltos"]);
                 if (!Convert.IsDBNull(reader["username"])) objResultado.NombreProveedor = Convert.ToString(reader["username"]);
-                if (!Convert.IsDBNull(reader["descripcion"])) objResultado.NombreProveedor = Convert.ToString(reader["descripcion"]);
-                if (!Convert.IsDBNull(reader["codigo"])) objResultado.NombreProveedor = Convert.ToString(reader["codigo"]);
+                if (!Convert.IsDBNull(reader["descripcion"])) objResultado.Descripcion = Convert.ToString(reader["descripcion"]);
+                if (!Convert.IsDBNull(reader["codigo"])) objResultado.Codigo = Convert.ToString(reader["codigo"]);
 
                 listResultado.Add(objResultado);
             }

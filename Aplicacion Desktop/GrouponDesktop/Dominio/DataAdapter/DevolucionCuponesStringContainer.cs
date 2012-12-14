@@ -34,5 +34,17 @@ namespace GrouponDesktop.Dominio.DataAdapter
             get { return porcentajeDevolucion; }
             set { porcentajeDevolucion = value; }
         }
+        private String descripcion;
+        public String Descripcion
+        {
+            get { return descripcion; }
+            set { descripcion = value; }
+        }
+        private String codigo;
+        public String Codigo
+        {
+            get { return codigo; }
+            set { codigo = value; }
+        }
     }
 }
