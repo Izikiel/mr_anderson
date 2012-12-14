@@ -818,7 +818,7 @@ create procedure MR_ANDERSON.sp_eliminar_rol (@nombre_rol NVARCHAR(255))
             where rol = @nombre_rol
             
     end
-
+GO
 
 
 --Fin ABM ROL!

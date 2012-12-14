@@ -10,6 +10,16 @@
 USE [GD2C2012]
 GO
 
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_change_rol_name_a_usr]    Script Date: 12/14/2012 01:20:48 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_change_rol_name_a_usr]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_change_rol_name_a_usr]
+GO
+
+/****** Object:  StoredProcedure [MR_ANDERSON].[sp_new_rol_tipo]    Script Date: 12/14/2012 01:18:40 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_new_rol_tipo]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [MR_ANDERSON].[sp_new_rol_tipo]
+GO
+
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[MR_ANDERSON].[sp_facturar_proveedor_nfactura]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [MR_ANDERSON].[sp_facturar_proveedor_nfactura]
