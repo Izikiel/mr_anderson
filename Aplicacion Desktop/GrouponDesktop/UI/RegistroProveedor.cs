@@ -33,7 +33,7 @@ namespace GrouponDesktop
 
             foreach (Control c in this.groupBox1.Controls)
             {
-                if ((c.Text.Equals("")) & (!c.Name.Equals(textBox8.Name)) & (!c.Name.Equals(textBox9.Name)))
+                if ((c.Text.Equals("")) & ((!c.Name.Equals(textBox8.Name)) & (!c.Name.Equals(textBox9.Name))))
                 { MessageBox.Show("Tiene que completar todos los campos\nEl campo piso y depto no son obligatorios."); return; }
             }
             try
