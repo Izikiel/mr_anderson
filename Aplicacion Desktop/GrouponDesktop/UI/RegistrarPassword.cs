@@ -21,16 +21,13 @@ namespace GrouponDesktop.UI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (this.text_pass.Text.Length < 8)
-                MessageBox.Show("La longitud de la contraseña debe ser de al menos 8 caracteres", "Error");
-            else
-            {
+            
                 Login login = new Login();
                 login.UserName = this.username;
                 login.Password = this.text_pass.Text;
                 login.setPasswordOldUser();
                 this.Close();
-            }
+            
         }
 
         private void button2_Click(object sender, EventArgs e)
